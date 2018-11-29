@@ -5,11 +5,11 @@
     <color name="colorAccent">#9d8348</color>
 
     <!--dot colors-->
-    <color name="dot_inactive_screen1">#cccccc</color>
-    <color name="dot_inactive_screen2">#cccccc</color>
-    <color name="dot_inactive_screen3">#cccccc</color>
-    <color name="dot_inactive_screen4">#cccccc</color>
-    <color name="dot_inactive_screen5">#cccccc</color>
+    <color name="dot_inactive_screen1">#0f0f0f</color>
+    <color name="dot_inactive_screen2">#0f0f0f</color>
+    <color name="dot_inactive_screen3">#0f0f0f</color>
+    <color name="dot_inactive_screen4">#0f0f0f</color>
+    <color name="dot_inactive_screen5">#0f0f0f</color>
     <!-- dots active colors -->
     <color name="dot_active_screen1">#000000</color>
     <color name="dot_active_screen2">#000000</color>
