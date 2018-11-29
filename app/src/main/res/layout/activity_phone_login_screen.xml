@@ -29,10 +29,8 @@
         android:padding="70dp"
         android:orientation="vertical">
 
-
-
-
         <EditText
+            android:id="@+id/numberPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="e.g 812345678"
@@ -40,6 +38,14 @@
             android:textColorHint="#333333"
             android:backgroundTint="#333333"
             android:layout_marginBottom="50dp"/>
+
+        <Button
+            android:id="@+id/nextNumberPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button"/>
 
     </LinearLayout>
 

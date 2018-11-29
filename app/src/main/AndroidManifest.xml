@@ -8,10 +8,10 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:hardwareAccelerated="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -19,6 +19,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity android:name=".screen.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,18 +28,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".MasterActivity" />
-        <activity android:name=".QRcodeActivity"></activity>
+        <activity android:name=".QRcodeActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".screen.LoginScreen" />
         <activity android:name=".screen.RegisterScreen" />
         <activity android:name=".screen.SliderActivity" />
         <activity android:name=".screen.PhoneLoginScreen" />
-        <activity android:name=".screen.Dashboard"/>
-
+        <activity android:name=".screen.Dashboard" />
+        <activity android:name=".VerifyPhoneActivity"></activity>
     </application>
 
 </manifest>
-
-
-
-

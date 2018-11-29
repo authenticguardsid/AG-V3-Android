@@ -2,11 +2,10 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#9d8348</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGold">#9d8348</color>
     <color name="colorGREY">#767676</color>
-    <color name="colorAccent">#9d8348</color>
 
     <!--dot colors-->
     <color name="dot_inactive_screen1">#0f0f0f</color>

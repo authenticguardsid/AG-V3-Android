@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.agreader.MasterActivity;
 import com.agreader.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -171,7 +172,7 @@ public class LoginScreen extends AppCompatActivity implements GoogleApiClient.On
         Log.i(TAG, "sudah disini");
         Log.i(TAG, "updateUI: " + user);
         if (user != null) {
-            Intent intent = new Intent(LoginScreen.this,Dashboard.class);
+            Intent intent = new Intent(LoginScreen.this,MasterActivity.class);
             startActivity(intent);
             finish();
         }
