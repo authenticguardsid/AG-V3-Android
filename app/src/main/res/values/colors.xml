@@ -14,11 +14,11 @@
     <color name="dot_inactive_screen4">#0f0f0f</color>
     <color name="dot_inactive_screen5">#0f0f0f</color>
     <!-- dots active colors -->
-    <color name="dot_active_screen1">#000000</color>
-    <color name="dot_active_screen2">#000000</color>
-    <color name="dot_active_screen3">#000000</color>
-    <color name="dot_active_screen4">#000000</color>
-    <color name="dot_active_screen5">#000000</color>
+    <color name="dot_active_screen1">#9d8348</color>
+    <color name="dot_active_screen2">#9d8348</color>
+    <color name="dot_active_screen3">#9d8348</color>
+    <color name="dot_active_screen4">#9d8348</color>
+    <color name="dot_active_screen5">#9d8348</color>
     <array name="array_dot_active">
         <item>@color/dot_active_screen1</item>
         <item>@color/dot_active_screen2</item>

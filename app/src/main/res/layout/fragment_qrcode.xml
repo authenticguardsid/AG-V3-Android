@@ -20,7 +20,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/qrcode"
-            android:tint="@color/colorGREY" />
+            android:tint="#9d8348" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,6 +44,6 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/button_login_email"
         android:text="SCAN QR CODE"
-        android:textColor="@color/colorGREY" />
+        android:textColor="#9d8348" />
 
 </RelativeLayout>

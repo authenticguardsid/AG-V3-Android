@@ -175,7 +175,19 @@ public class SliderActivity extends AppCompatActivity {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(layouts[position], container, false);
+            if (position == 3){
+                btnStart = (Button)view.findViewById(R.id.mulai);
+
+                btnStart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        launchHomeScreen();
+                    }
+                });
+            }
             container.addView(view);
+
+
 
             return view;
         }

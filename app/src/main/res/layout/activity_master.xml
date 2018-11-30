@@ -29,7 +29,32 @@
                     android:adjustViewBounds="false"
                     android:src="@drawable/logo"/>
 
+
             </android.support.v7.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="16dp">
+
+                <ImageView
+                    android:id="@+id/trophy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icons_8_trophy"
+                    android:layout_marginRight="8dp"/>
+
+                <TextView
+                    android:id="@+id/point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100.000 pts"
+                    android:layout_toRightOf="@id/trophy"/>
+
+            </RelativeLayout>
+
 
         </RelativeLayout>
 

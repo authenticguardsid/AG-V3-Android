@@ -3,27 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/ic_home"
-        android:icon="@drawable/menu_home"
+        android:icon="@drawable/icons_8_home"
         android:title="Dashboard">
     </item>
     <item
         android:id="@+id/ic_product"
-        android:icon="@drawable/menu_clinic"
-        android:title="Our Store">
+        android:icon="@drawable/icons_8_add_to_collection"
+        android:title="My Product">
     </item>
     <item
         android:id="@+id/ic_qrcode"
-        android:icon="@drawable/menu_scan"
-        android:title="Authentic">
+        android:icon="@drawable/icons_8_qr_code"
+        android:title="Authentication">
     </item>
     <item
         android:id="@+id/ic_notification"
-        android:icon="@drawable/menu_notif"
+        android:icon="@drawable/icons_8_appointment_reminders"
         android:title="Notification">
     </item>
     <item
         android:id="@+id/ic_profile"
-        android:icon="@drawable/menu_account"
+        android:icon="@drawable/icons_8_user_male_circle"
         android:title="Account">
     </item>
 </menu>
