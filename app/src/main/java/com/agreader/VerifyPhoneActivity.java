@@ -32,7 +32,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     private PhoneAuthProvider.ForceResendingToken resendingToken;
 
-    String phonenumber,code;
+    String phonenumber,code,yeay;
 
     private static final String FORMAT = "%02d:%02d";
 
@@ -50,7 +50,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
         phonenumber = getIntent().getStringExtra("phonenumber");
 
-        String yeay = phonenumber.toString().trim();
+        yeay = phonenumber.toString().trim();
         number.setText("Please type the verification code sent to \n "+phonenumber);
         sendVerificationCode(yeay);
 
@@ -93,7 +93,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private void resendVerificationCode(String phoneNumber,
                                         PhoneAuthProvider.ForceResendingToken token) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,        // Phone number to verify
+                yeay,        // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 this,               // Activity (for callback binding)
@@ -126,7 +126,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     private void sendVerificationCode (String number){
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                number,
+                yeay,
                 60,
                 TimeUnit.SECONDS,
                 this,

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.agreader.R;
@@ -22,6 +23,8 @@ public class PhoneLoginScreen extends AppCompatActivity {
 
         numberPhone = (EditText)findViewById(R.id.numberPhone);
         next = (Button)findViewById(R.id.nextNumberPhone);
+
+
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override

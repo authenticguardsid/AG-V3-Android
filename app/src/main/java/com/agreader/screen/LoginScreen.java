@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -64,6 +65,15 @@ public class LoginScreen extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
+        mRegister = (Button) findViewById(R.id.register);
+        buttonLogin = (Button) findViewById(R.id.btnLogin);
+
+        mRegister.setEnabled(false);
+        buttonLogin.setEnabled(false);
+
+        mRegister.setAlpha((float) 0.3);
+        buttonLogin.setAlpha((float)0.3);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -80,7 +90,6 @@ public class LoginScreen extends AppCompatActivity {
                 .build();
 
         mFirebaseAuth=FirebaseAuth.getInstance();
-
 
 
         slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -102,7 +111,7 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
-        buttonLogin = (Button) findViewById(R.id.btnLogin);
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +136,7 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
-        mRegister = (Button) findViewById(R.id.register);
+
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,11 +146,33 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
+
+
+
     }
 
    protected void signInwithGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN);
+    }
+
+    public void syaratKlik(View view){
+        boolean checked = ((CheckBox)view).isChecked();
+        switch (view.getId()){
+            case R.id.check:
+                if (checked){
+                    mRegister.setEnabled(true);
+                    buttonLogin.setEnabled(true);
+
+                    mRegister.setAlpha((float) 1);
+                    buttonLogin.setAlpha((float) 1);
+                }else {
+                    mRegister.setEnabled(false);
+                    buttonLogin.setEnabled(false);
+                    mRegister.setAlpha((float) 0.3);
+                    buttonLogin.setAlpha((float)0.3);
+                }
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.agreader.screen;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -33,4 +34,6 @@ public class SplashScreen extends AppCompatActivity {
         },3000L);
 
     }
+
+
 }

@@ -93,6 +93,25 @@
                 android:layout_below="@+id/register"
                 android:textColor="#FFF"/>
 
+            <CheckBox
+                android:id="@+id/check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="syaratKlik"
+                android:layout_below="@+id/btnLogin"
+                android:buttonTint="@android:color/white"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/check"
+                android:text="Agree"
+                android:layout_below="@+id/btnLogin"
+                android:layout_marginTop="15dp"
+                android:textColor="@android:color/white"/>
+
             <!--</LinearLayout>-->
         </RelativeLayout>
         <TextView

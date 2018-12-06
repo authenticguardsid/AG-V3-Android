@@ -43,7 +43,7 @@
                     android:id="@+id/trophy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icons_8_trophy"
+                    android:src="@drawable/ic_trophy"
                     android:layout_marginRight="8dp"/>
 
                 <TextView
