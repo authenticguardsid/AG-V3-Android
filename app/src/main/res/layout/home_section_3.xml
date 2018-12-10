@@ -4,86 +4,75 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="8dp"
-            android:textStyle="bold"
-            android:textSize="16dp"            android:text="This Week's Highlights"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_view_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            app:cardElevation="2dp"
-            app:cardCornerRadius="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorSecondary"
+                android:textSize="21sp"
+                android:text="This Week's Highlights"/>
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:padding="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test2"
+                app:riv_corner_radius="8dp"
+                app:riv_mutate_background="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/image_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="12dp"
-                    android:src="@drawable/test2"
-                    android:scaleType="centerCrop"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/text_1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="horizontal">
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorSecondary"
+                    android:layout_marginBottom="8dp"
+                    android:text="THE BEST DEALING EVER"/>
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Get tasty promo up to 40% and chance to win Iphone X Max"/>
 
-                        <TextView
-                            android:id="@+id/text_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:text="THE BEST DEALING EVER"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:layout_below="@+id/text_1"
-                            android:text="Get tasty promo up to 40% and chance to win Iphone X Max"/>
-
-                    </RelativeLayout>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="36dp"
-                        android:layout_weight="0.3"
-                        android:textSize="10sp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_margin="24dp"
-                        android:background="@color/colorGold"
-                        android:textColor="@color/colorWhite"
-                        android:text="MORE INFO"/>
-
-                </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end"
+                    android:textSize="10sp"
+                    android:background="@drawable/button"
+                    android:textColor="@color/colorWhite"
+                    android:text="GO" />
 
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </LinearLayout>
 
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

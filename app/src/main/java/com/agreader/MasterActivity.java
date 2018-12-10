@@ -33,9 +33,10 @@ public class MasterActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_nav_view);
-        bottomNavigationViewEx.setIconSize(24, 24);
+        bottomNavigationViewEx.setIconSize(20, 20);
+        bottomNavigationViewEx.setTextSize(12);
         bottomNavigationViewEx.enableAnimation(false);
-        bottomNavigationViewEx.setTextVisibility(false);
+        bottomNavigationViewEx.setTextVisibility(true);
         bottomNavigationViewEx.enableShiftingMode(false);
         bottomNavigationViewEx.enableItemShiftingMode(false);
 

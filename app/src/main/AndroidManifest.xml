@@ -27,7 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MasterActivity" />
+        <activity android:name=".MasterActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".QRcodeActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".screen.LoginScreen" />
