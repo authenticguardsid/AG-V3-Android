@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agreader.MasterActivity;
@@ -45,6 +46,7 @@ public class LoginScreen extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient googleApiClient;
     private FirebaseAuth mFirebaseAuth;
+    TextView tos,privacy;
 
     @Override
     protected void onStart() {
@@ -65,6 +67,25 @@ public class LoginScreen extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
+        tos =(TextView) findViewById(R.id.tos);
+        privacy = (TextView) findViewById(R.id.privacy);
+        tos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), TermEndService.class);
+                intent.putExtra("EXTRA_SESSION_ID", "https://www.authenticguards.com/term/");
+                startActivity(intent);
+            }
+        });
+
+        privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), TermEndService.class);
+                intent.putExtra("EXTRA_SESSION_ID", "https://www.authenticguards.com/privacy-policy/");
+                startActivity(intent);
+            }
+        });
         mRegister = (Button) findViewById(R.id.register);
         buttonLogin = (Button) findViewById(R.id.btnLogin);
 
