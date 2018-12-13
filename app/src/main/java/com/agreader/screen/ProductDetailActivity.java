@@ -1,6 +1,7 @@
 package com.agreader.screen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.agreader.R;
+import com.agreader.ShareActivity;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -27,6 +29,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
+
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,16 @@ public class ProductDetailActivity extends AppCompatActivity {
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+
+        button = (Button) findViewById(R.id.claim_product);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this, ShareActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
 

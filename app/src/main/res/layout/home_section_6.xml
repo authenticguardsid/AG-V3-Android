@@ -9,91 +9,84 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="16dp">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="AG Stories"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_margin="8dp"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="AG Stories"-->
+                <!--android:textColor="@color/colorSecondary"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textStyle="bold"/>-->
 
-            <TextView
-                android:id="@+id/text_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorGold"
-                android:text="See All"
-                android:textSize="16sp"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="8dp"/>
+            <!--<TextView-->
+                <!--android:id="@+id/text_3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textColor="@color/colorGold"-->
+                <!--android:text="See All"-->
+                <!--android:textSize="16sp"-->
+                <!--android:layout_alignParentEnd="true"/>-->
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
         <android.support.v7.widget.CardView
             android:id="@+id/card_view_1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            app:cardElevation="2dp"
-            app:cardCornerRadius="8dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/image_1"
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginTop="12dp"
+                    android:padding="16dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/test9"
-                    android:scaleType="centerCrop"/>
+                    app:riv_corner_radius="8dp"
+                    app:riv_mutate_background="true"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_weight="2"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/text_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorSecondary"
+                        android:text="#AGstories"/>
 
-                        <TextView
-                            android:id="@+id/text_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:text="THE BEST DEALING EVER"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:layout_below="@+id/text_1"
-                            android:text="Get tasty promo up to 40% and chance to win Iphone X Max"/>
-
-                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.5"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Peningkatan penjualan setelah bekerjasama dengan AuthenticGuards Mencapai 500% dalam 3 Bulan"/>
 
                     <Button
-                        android:layout_width="0dp"
-                        android:layout_height="36dp"
-                        android:layout_weight="0.3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_gravity="end"
                         android:textSize="10sp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_margin="24dp"
-                        android:background="@color/colorGold"
+                        android:background="@drawable/button"
                         android:textColor="@color/colorWhite"
-                        android:text="READ MORE"/>
+                        android:text="READ MORE" />
 
                 </LinearLayout>
 

@@ -50,6 +50,7 @@
                     android:id="@+id/point"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
                     android:text="100.000 pts"
                     android:layout_toRightOf="@id/trophy"/>
 

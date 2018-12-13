@@ -33,8 +33,6 @@ public class ProfileFragment extends Fragment {
 
     private Button logout;
     private View v;
-    private TextView editProfile;
-    private RelativeLayout connectFacebook;
 
     private GoogleApiClient googleApiClient;
     private GoogleApiClient mGoogleSignInClient;
@@ -55,23 +53,7 @@ public class ProfileFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
-        logout = (Button)v.findViewById(R.id.logout);
-        editProfile = (TextView)v.findViewById(R.id.editProfile);
-        connectFacebook = (RelativeLayout)v.findViewById(R.id.connectFacebook);
-
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Masih Dalam Tahap Pengembangan", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        connectFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Masih Dalam Tahap Pengembangan", Toast.LENGTH_SHORT).show();
-            }
-        });
+        logout = (Button)v.findViewById(R.id.logoutBtn);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

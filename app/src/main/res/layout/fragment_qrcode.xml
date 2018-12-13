@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
+    android:background="@color/colorWhite"
     tools:context=".fragment.QrcodeFragment">
 
     <LinearLayout
@@ -28,9 +29,10 @@
             android:layout_marginTop="30dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
             android:text="Scan the QR code on the product to get authenticity "
             android:textColor="@color/colorGREY"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <Button
@@ -44,6 +46,6 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/button_login_email"
         android:text="SCAN QR CODE"
-        android:textColor="#9d8348" />
+        android:textColor="@color/colorWhite" />
 
 </RelativeLayout>

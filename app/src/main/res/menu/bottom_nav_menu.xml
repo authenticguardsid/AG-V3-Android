@@ -13,8 +13,8 @@
     </item>
     <item
         android:id="@+id/ic_qrcode"
-        android:icon="@drawable/icons_8_qr_code"
-        android:title="Authentication">
+        android:icon="@drawable/menu_scan"
+        android:title="Authentic">
     </item>
     <item
         android:id="@+id/ic_notification"

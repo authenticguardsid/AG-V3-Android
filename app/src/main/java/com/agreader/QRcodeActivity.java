@@ -3,12 +3,17 @@ package com.agreader;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.widget.Toast;
 
+import com.agreader.screen.UnverifiedProductActivity;
+import com.agreader.screen.VerifiedProductActivity;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -23,8 +28,8 @@ import info.androidhive.barcode.BarcodeReader;
 public class QRcodeActivity extends AppCompatActivity implements BarcodeReader.BarcodeReaderListener{
 
     BarcodeReader barcodeReader;
-    String GENIUNE_CODE = "GENIUNE";
-    String FAKE_CODE = "FAKE";
+    String GENIUNE_CODE = "success";
+    String FAKE_CODE = "erroe";
     String rvalid;
 
     @Override
@@ -65,30 +70,24 @@ public class QRcodeActivity extends AppCompatActivity implements BarcodeReader.B
 
     public void validation_code(final String scancode){
 
-        JsonArrayRequest arrayRequest = new JsonArrayRequest("http://admin.authenticguards.net/api/check/"+scancode, new com.android.volley.Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.net/api/check_/" + scancode + "?token=a&appid=001", null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
                     for (int i = 0; i < response.length(); i++) {
                         try {
-                            JSONObject data = response.getJSONObject(i);
-                            rvalid = data.getString("rvalid");
-                            String gcode = data.getString("gcode");
-                            String partner = data.getString("partner");
+                            rvalid = response.getString("status");
                         } catch (JSONException e) {
 
                         }
                     }
-                    if (rvalid.equals(GENIUNE_CODE)){
-//                        Intent intent_geniune = new Intent(QRcodeActivity.this, VerifiedActivity.class);
-//                        intent_geniune.putExtra("key", scancode);
-//                        startActivity(intent_geniune);
-                        Toast.makeText(getApplicationContext(), "Berhasil ", Toast.LENGTH_SHORT).show();
-                    }
-                    if (rvalid.equals(FAKE_CODE)){
-//                        Intent intent_fake = new Intent(QRcodeActivity.this, FakeActivity.class);
-//                        startActivity(intent_fake);
-                        Toast.makeText(getApplicationContext(), "Gagal ", Toast.LENGTH_SHORT).show();
+                    if (rvalid.equals(GENIUNE_CODE)) {
+                        Intent intent_geniune = new Intent(QRcodeActivity.this, VerifiedProductActivity.class);
+                        intent_geniune.putExtra("key", scancode);
+                        startActivity(intent_geniune);
+                    }else {
+                        Intent intent_fake = new Intent(QRcodeActivity.this, UnverifiedProductActivity.class);
+                        startActivity(intent_fake);
                     }
                 }
             }
@@ -98,7 +97,8 @@ public class QRcodeActivity extends AppCompatActivity implements BarcodeReader.B
 
             }
         });
-        Volley.newRequestQueue(this).add(arrayRequest);
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+
     }
 
 }

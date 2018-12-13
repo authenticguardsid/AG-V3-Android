@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ProductFragment">
+    android:layout_centerInParent="true"
+    tools:context=".fragment.QrcodeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
 
         <ImageView
-            android:id="@+id/onTheWay2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@drawable/paper_plane"
-            android:layout_centerInParent="true"/>
+            android:tint="#9d8348" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
             android:text="Masih dalam tahap pengembangan"
-            android:textColor="@android:color/black"
-            android:layout_below="@+id/onTheWay2"
-            android:layout_centerHorizontal="true"/>
-    </RelativeLayout>
-</FrameLayout>
+            android:textColor="@color/colorGREY"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
