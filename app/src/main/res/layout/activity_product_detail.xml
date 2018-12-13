@@ -24,7 +24,7 @@
             android:textColor="#9d8348"/>
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
+            android:id="@+id/viewPagerDetail"
             android:layout_width="250dp"
             android:layout_height="200dp"
             android:layout_centerHorizontal="true"

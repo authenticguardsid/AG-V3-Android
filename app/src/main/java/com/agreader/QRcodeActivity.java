@@ -1,6 +1,12 @@
 package com.agreader;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +22,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.zxing.Result;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,48 +31,61 @@ import org.json.JSONObject;
 import java.util.List;
 
 import info.androidhive.barcode.BarcodeReader;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class QRcodeActivity extends AppCompatActivity implements BarcodeReader.BarcodeReaderListener{
+public class QRcodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
     BarcodeReader barcodeReader;
     String GENIUNE_CODE = "success";
     String FAKE_CODE = "erroe";
     String rvalid;
 
+    final int REQUEST_CODE_CAMERA = 999;
+
+    ZXingScannerView scannerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qrcode);
 
-        barcodeReader = (BarcodeReader) getSupportFragmentManager().findFragmentById(R.id.barcode_scanner);
+        scannerView = new ZXingScannerView(this);
+        setContentView(scannerView);
 
-    }
-
-    @Override
-    public void onScanned(Barcode barcode) {
-        barcodeReader.playBeep();
-        validation_code(barcode.displayValue);
-    }
-
-    @Override
-    public void onScannedMultiple(List<Barcode> barcodes) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+        }
 
     }
 
     @Override
-    public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_CODE_CAMERA){
+            if(grantResults.length <0 && grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(getApplicationContext(), "You don't have permission to access camera!", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
-    public void onScanError(String errorMessage) {
-        Toast.makeText(getApplicationContext(), "Error occurred while scanning " + errorMessage, Toast.LENGTH_SHORT).show();
-
+    protected void onResume() {
+        super.onResume();
+        scannerView.setResultHandler(this);
+        scannerView.startCamera();
     }
 
     @Override
-    public void onCameraPermissionDenied() {
+    protected void onPause() {
+        super.onPause();
+        scannerView.stopCamera();
+    }
 
+    @Override
+    public void handleResult(Result result) {
+        validation_code(result.getText());
     }
 
     public void validation_code(final String scancode){
@@ -100,5 +120,6 @@ public class QRcodeActivity extends AppCompatActivity implements BarcodeReader.B
         Volley.newRequestQueue(this).add(jsonObjectRequest);
 
     }
+
 
 }

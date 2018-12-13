@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.agreader.ImageAdapter;
 import com.agreader.R;
 import com.agreader.ShareActivity;
 
@@ -28,7 +29,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private int[] image;
     private LinearLayout dotsLayout;
     private ViewPager viewPager;
-    private MyViewPagerAdapter myViewPagerAdapter;
+    private ImageAdapter adapter;
 
     private Button button;
 
@@ -50,11 +51,14 @@ public class ProductDetailActivity extends AppCompatActivity {
                 R.drawable.test4
         };
 
-        addBottomDots(0);
 
-        myViewPagerAdapter = new MyViewPagerAdapter();
+        viewPager = (ViewPager)findViewById(R.id.viewPagerDetail);
+        adapter = new ImageAdapter(this);
+        viewPager.setAdapter(adapter);
+
+        /*myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);*/
 
         button = (Button) findViewById(R.id.claim_product);
         button.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +72,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     }
 
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+    /*ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
         public void onPageSelected(int position) {
@@ -83,7 +87,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         public void onPageScrollStateChanged(int arg0) {
         }
     };
-
+*/
 
     private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -99,7 +103,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
         int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
 
-        dotsLayout.removeAllViews();
+
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226;"));
@@ -112,37 +116,5 @@ public class ProductDetailActivity extends AppCompatActivity {
             dots[currentPage].setTextColor(colorsActive[currentPage]);
     }
 
-    public class MyViewPagerAdapter extends PagerAdapter {
-        private LayoutInflater layoutInflater;
-
-        public MyViewPagerAdapter() {
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View view = layoutInflater.inflate(image[position], container, false);
-            container.addView(view);
-
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return image.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object obj) {
-            return view == obj;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            View view = (View) object;
-            container.removeView(view);
-        }
-    }
 
 }

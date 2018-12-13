@@ -275,8 +275,8 @@
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/button"
-            android:elevation="8dp"
+            android:background="@drawable/button_login_email"
+            android:elevation="10dp"
             android:textColor="@android:color/white"
             android:text="product detail"/>
 

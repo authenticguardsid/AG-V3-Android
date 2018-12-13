@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QRcodeActivity">
+
+    <RelativeLayout
+        android:id="@+id/claim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/textClaim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CLAIM THIS PRODUCT IS YOURS"
+            android:textColor="@android:color/black"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/textReward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="and get reward points because you"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/black"
+            android:layout_below="@+id/textClaim"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/textHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="help us fight counterfeiting"
+            android:layout_below="@+id/textReward"
+            android:textColor="@android:color/black"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/textHelp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Menu"
+            android:text="Please take a picture of your Receipt"/>
+
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/barcode_scanner"
+        android:layout_below="@+id/claim"
+        android:name="info.androidhive.barcode.BarcodeReader"
+        android:layout_width="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="250dp"
+        app:auto_focus="true"
+        app:use_flash="false" />
+
+    <info.androidhive.barcode.ScannerOverlay
+        android:id="@+id/scanner"
+        android:layout_width="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/claim"
+        android:layout_height="250dp"
+        android:background="#44000000"
+        app:line_color="@color/colorWhite"
+        app:line_speed="6"
+        app:line_width="4"
+        app:square_height="200"
+        app:square_width="200" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scanner"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icons_8_integrated_webcam_filled"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

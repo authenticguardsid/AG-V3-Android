@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.agreader.EditProfileActivity;
 import com.agreader.R;
 import com.agreader.screen.Dashboard;
 import com.agreader.screen.LoginScreen;
@@ -34,6 +35,8 @@ public class ProfileFragment extends Fragment {
     private Button logout;
     private View v;
 
+    TextView editProfile;
+
     private GoogleApiClient googleApiClient;
     private GoogleApiClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
@@ -54,6 +57,15 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         logout = (Button)v.findViewById(R.id.logoutBtn);
+
+        editProfile = (TextView)v.findViewById(R.id.textEditProfile);
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), EditProfileActivity.class));
+            }
+        });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
