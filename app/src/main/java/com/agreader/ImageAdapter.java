@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends PagerAdapter {
     private Context mContext;
-    private int[] mImageId = new int[]{R.drawable.test1,R.drawable.test2,R.drawable.test3,R.drawable.test4};
+    private int[] mImageId = new int[]{R.drawable.test13,R.drawable.test14,R.drawable.test15,R.drawable.test16};
 
     public ImageAdapter(Context mContext) {
         this.mContext = mContext;
@@ -41,4 +41,6 @@ public class ImageAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((ImageView)object);
     }
+
+
 }

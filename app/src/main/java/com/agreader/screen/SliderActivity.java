@@ -22,8 +22,16 @@ import android.widget.TextView;
 
 import com.agreader.MasterActivity;
 import com.agreader.R;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SliderActivity extends AppCompatActivity {
 

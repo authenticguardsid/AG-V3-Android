@@ -11,6 +11,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.agreader.R;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Satria on 9/21/2018.
@@ -20,7 +30,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     private Context context ;
     private LayoutInflater layoutInflater;
-    private Integer [] images = {R.drawable.banner1,R.drawable.banner2};
+    private int [] images = {R.drawable.banner1,R.drawable.banner2};
 
     public ViewPagerAdapter(Context context) {
         this.context = context;
