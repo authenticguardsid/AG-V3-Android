@@ -59,7 +59,7 @@
                     android:layout_marginBottom="5dp" />
 
                 <TextView
-                    android:id="@+id/textEmail"
+                    android:id="@+id/textFEmail"
                     android:layout_below="@+id/textFname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,8 +72,8 @@
                     android:typeface="normal" />
 
                 <TextView
-                    android:id="@+id/textPhone"
-                    android:layout_below="@+id/textEmail"
+                    android:id="@+id/textFPhone"
+                    android:layout_below="@+id/textFEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"

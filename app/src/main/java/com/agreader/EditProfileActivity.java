@@ -15,10 +15,12 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.soundcloud.android.crop.Crop;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -34,6 +36,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
     Intent CropIntent;
 
+    private MaterialBetterSpinner spinner;
+    private final String [] genderSpinner = {"Male","Female"};
+
     Uri uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,10 @@ public class EditProfileActivity extends AppCompatActivity {
         address = (EditText)findViewById(R.id.editTextLokasiProfile);
         email = (EditText)findViewById(R.id.editTextEmailProfile);
         phonenumber = (EditText)findViewById(R.id.editTextPhoneNumberProfile);
+
+        spinner = (MaterialBetterSpinner) findViewById(R.id.genderProfile);
+        ArrayAdapter<String> genderAdapter= new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, genderSpinner);
+        spinner.setAdapter(genderAdapter);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_DENIED){

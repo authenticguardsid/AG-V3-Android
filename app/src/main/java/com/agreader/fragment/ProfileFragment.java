@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.agreader.EditProfileActivity;
 import com.agreader.R;
+import com.agreader.User;
 import com.agreader.screen.Dashboard;
 import com.agreader.screen.LoginScreen;
 import com.agreader.screen.SliderActivity;
@@ -25,6 +26,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -35,7 +42,7 @@ public class ProfileFragment extends Fragment {
     private Button logout;
     private View v;
 
-    TextView editProfile;
+    TextView editProfile,name,email,phone;
 
     private GoogleApiClient googleApiClient;
     private GoogleApiClient mGoogleSignInClient;
@@ -55,6 +62,33 @@ public class ProfileFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_profile, container, false);
 
         mAuth = FirebaseAuth.getInstance();
+        name = v.findViewById(R.id.textFname);
+        email = v.findViewById(R.id.textFEmail);
+        phone = v.findViewById(R.id.textFPhone);
+
+
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+        dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User us = dataSnapshot.getValue(User.class);
+                name.setText(us.getName());
+                email.setText(us.getEmail());
+                if (us.getNumberPhone().isEmpty()){
+                    phone.setText("PHONE");
+                }else {
+                    phone.setText(us.getNumberPhone());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         logout = (Button)v.findViewById(R.id.logoutBtn);
 
@@ -88,7 +122,7 @@ public class ProfileFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.signOut();
+                FirebaseAuth.getInstance().signOut();
                 getActivity().finish();
                 if (mGoogleSignInClient != null){
                     Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {

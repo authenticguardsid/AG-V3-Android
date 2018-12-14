@@ -88,8 +88,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="Insert your age"
+                android:hint="21"
                 android:inputType="number"
+                android:maxLength="3"
                 android:layout_below="@+id/textUmur"/>
 
             <TextView
@@ -109,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="Insert your address"
+                android:hint=""
                 android:layout_below="@+id/textLokasi"/>
 
             <TextView
@@ -129,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="Insert your email"
+                android:hint="e.g example123@example.com"
                 android:layout_below="@+id/textEmail"/>
 
 
@@ -150,7 +151,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="Insert your email"
+                android:hint="e.g +62821*******"
+                android:maxLength="14"
+                android:digits="+0123456789"
+                android:inputType="number"
                 android:layout_below="@+id/textPhoneNumber"/>
 
             <Button

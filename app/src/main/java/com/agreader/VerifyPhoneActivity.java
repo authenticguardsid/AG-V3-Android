@@ -17,9 +17,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class VerifyPhoneActivity extends AppCompatActivity {
@@ -33,6 +40,16 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private PhoneAuthProvider.ForceResendingToken resendingToken;
 
     String phonenumber,code,yeay;
+
+    String numberPhone = "";
+    String name = "";
+    String email = "";
+    String gender = "";
+    String age = "";
+    String address = "";
+    String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Ficons8-male-user-100.png?alt=media&token=4c93ddec-e12e-429c-87e6-1d610531b4df";
+
+
 
     private static final String FORMAT = "%02d:%02d";
 
@@ -152,6 +169,57 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             if (code != null){
                 editText.setText(code);
                 verifyCode(code);
+
+                final FirebaseUser currentUser = mAuth.getCurrentUser();
+
+                final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+                final HashMap<String, Object> user= new HashMap<>();
+
+                dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User us = dataSnapshot.getValue(User.class);
+
+                        if (dataSnapshot.child("gambar").exists()){
+                            gambar = us.getGambar();
+                        }
+
+                        if (dataSnapshot.child("name").exists()){
+                            name = us.getName();
+                        }
+                        if (dataSnapshot.child("email").exists()){
+                            email = us.getEmail();
+                        }
+                        if (dataSnapshot.child("gender").exists()){
+                            gender = us.getGender();
+                        }
+                        if (dataSnapshot.child("age").exists()){
+                            age = us.getAge();
+                        }
+                        if (dataSnapshot.child("address").exists()){
+                            address = us.getAddress();
+                        }
+
+                        user.put("numberPhone",currentUser.getPhoneNumber());
+                        user.put("idPhone",currentUser.getUid());
+                        user.put("idEmail","");
+                        user.put("name",name);
+                        user.put("email",email);
+                        user.put("gender",gender);
+                        user.put("age",age);
+                        user.put("address",address);
+                        user.put("gambar",gambar);
+
+                        dbf.setValue(user);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         }
 
