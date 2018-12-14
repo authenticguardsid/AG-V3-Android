@@ -38,13 +38,14 @@
         <activity android:name=".screen.PhoneLoginScreen" />
         <activity android:name=".screen.Dashboard" />
         <activity android:name=".VerifyPhoneActivity" />
-        <activity android:name=".screen.TermEndService"/>
+        <activity android:name=".screen.TermEndService" />
         <activity android:name=".screen.VerifiedProductActivity" />
         <activity android:name=".screen.UnverifiedProductActivity" />
         <activity android:name=".screen.ProductDetailActivity" />
         <activity android:name=".ShareActivity" />
         <activity android:name=".ClaimProductActivity" />
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".ReportActivity"></activity>
     </application>
 
 </manifest>
