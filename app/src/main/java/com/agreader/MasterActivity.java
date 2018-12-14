@@ -8,10 +8,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.GridView;
 
+import com.agreader.adapter.brandAdapter;
 import com.agreader.utils.SectionPagesAdapter;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
