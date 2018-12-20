@@ -25,11 +25,17 @@ public class PhoneLoginScreen extends AppCompatActivity {
         next = (Button)findViewById(R.id.nextNumberPhone);
 
 
-
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String number = numberPhone.getText().toString();
+
+                if (numberPhone.getText().toString().substring(0,1).equals("0")){
+                    numberPhone.setError("Invalid Number");
+                    numberPhone.requestFocus();
+                    return;
+                }
+
 
                 if (number.isEmpty()){
                     numberPhone.setError("Required");

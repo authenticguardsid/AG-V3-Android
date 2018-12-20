@@ -152,49 +152,9 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite">
 
+
                     <RelativeLayout
                         android:id="@+id/pmenu1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorWhite"
-                        android:layout_marginTop="8dp"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:id="@+id/iconHelp"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="5dp"
-                            android:clickable="true"
-                            android:src="@drawable/a_help" />
-
-                        <TextView
-                            android:id="@+id/textValuePoint"
-                            android:layout_toRightOf="@+id/iconHelp"
-                            android:layout_alignParentRight="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
-                            android:layout_marginTop="6dp"
-                            android:textColor="@color/colorGREY"
-                            android:text="FAQ"
-                            android:textSize="14sp"
-                            android:textStyle="normal"
-                            android:typeface="normal" />
-
-                        <View
-                            android:layout_below="@+id/iconHelp"
-                            android:layout_width="fill_parent"
-                            android:layout_height="1px"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="40dp"
-                            android:background="@color/colorGREY" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/pmenu2"
-                        android:layout_below="@+id/pmenu1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorWhite"
@@ -232,8 +192,8 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/pmenu3"
-                        android:layout_below="@+id/pmenu2"
+                        android:id="@+id/pmenu2"
+                        android:layout_below="@+id/pmenu1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorWhite"
@@ -271,8 +231,8 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/pmenu4"
-                        android:layout_below="@+id/pmenu3"
+                        android:id="@+id/pmenu3"
+                        android:layout_below="@+id/pmenu2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorWhite"
@@ -310,8 +270,8 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/pmenu5"
-                        android:layout_below="@+id/pmenu4"
+                        android:id="@+id/pmenu4"
+                        android:layout_below="@+id/pmenu3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorWhite"
@@ -348,6 +308,48 @@
 
                     </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/pmenu5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite"
+                        android:layout_marginTop="8dp"
+                        android:layout_below="@+id/pmenu4"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/iconHelp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:layout_below="@+id/pmenu4"
+                            android:src="@drawable/a_help" />
+
+                        <TextView
+                            android:id="@+id/textValuePoint"
+                            android:layout_toRightOf="@+id/iconHelp"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginTop="6dp"
+                            android:textColor="@color/colorGREY"
+                            android:text="Customer Support"
+                            android:textSize="14sp"
+                            android:textStyle="normal"
+                            android:typeface="normal" />
+
+                        <View
+                            android:layout_below="@+id/iconHelp"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="40dp"
+                            android:background="@color/colorGREY" />
+
+                    </RelativeLayout>
+
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -363,7 +365,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp" />
 
+
         </RelativeLayout>
+
 
     </ScrollView>
 

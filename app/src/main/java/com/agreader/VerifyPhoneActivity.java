@@ -33,13 +33,14 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     private String verificationId;
     private FirebaseAuth mAuth;
+    private FirebaseUser gabung;
 
     private EditText editText;
     private TextView tunggu,number;
 
     private PhoneAuthProvider.ForceResendingToken resendingToken;
 
-    String phonenumber,code,yeay;
+    String phonenumber,code,yeay,namaa;
 
     String numberPhone = "";
     String name = "";
@@ -66,6 +67,11 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         number = (TextView)findViewById(R.id.textView);
 
         phonenumber = getIntent().getStringExtra("phonenumber");
+
+        Intent getData = getIntent();
+        if (getData.getStringExtra("nama") != null){
+            namaa = getData.getStringExtra("nama");
+        }
 
         yeay = phonenumber.toString().trim();
         number.setText("Please type the verification code sent to \n "+phonenumber);
@@ -124,12 +130,71 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         signInWithCredential(credential);
     }
 
+
+
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
+
+                            final FirebaseUser currentUser = mAuth.getCurrentUser();
+
+                            final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(gabung.getUid());
+                            final HashMap<String, Object> user= new HashMap<>();
+
+                            dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    User us = dataSnapshot.getValue(User.class);
+
+                                    if (dataSnapshot.child("gambar").exists()){
+                                        gambar = us.getGambar();
+                                    }
+
+                                    if (namaa != null){
+                                        name = namaa;
+                                    }else{
+                                        if (dataSnapshot.child("name").exists()){
+                                            name = us.getName();
+                                        }
+                                    }
+
+
+                                    if (dataSnapshot.child("email").exists()){
+                                        email = us.getEmail();
+                                    }
+                                    if (dataSnapshot.child("gender").exists()){
+                                        gender = us.getGender();
+                                    }
+                                    if (dataSnapshot.child("age").exists()){
+                                        age = us.getAge();
+                                    }
+                                    if (dataSnapshot.child("address").exists()){
+                                        address = us.getAddress();
+                                    }
+
+                                    user.put("numberPhone",currentUser.getPhoneNumber());
+                                    user.put("idPhone",currentUser.getUid());
+                                    user.put("idEmail","");
+                                    user.put("name",name);
+                                    user.put("email",email);
+                                    user.put("gender",gender);
+                                    user.put("age",age);
+                                    user.put("address",address);
+                                    user.put("gambar",gambar);
+
+                                    dbf.setValue(user);
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                             Intent intent = new Intent(VerifyPhoneActivity.this,MasterActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -169,57 +234,6 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             if (code != null){
                 editText.setText(code);
                 verifyCode(code);
-
-                final FirebaseUser currentUser = mAuth.getCurrentUser();
-
-                final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
-                final HashMap<String, Object> user= new HashMap<>();
-
-                dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User us = dataSnapshot.getValue(User.class);
-
-                        if (dataSnapshot.child("gambar").exists()){
-                            gambar = us.getGambar();
-                        }
-
-                        if (dataSnapshot.child("name").exists()){
-                            name = us.getName();
-                        }
-                        if (dataSnapshot.child("email").exists()){
-                            email = us.getEmail();
-                        }
-                        if (dataSnapshot.child("gender").exists()){
-                            gender = us.getGender();
-                        }
-                        if (dataSnapshot.child("age").exists()){
-                            age = us.getAge();
-                        }
-                        if (dataSnapshot.child("address").exists()){
-                            address = us.getAddress();
-                        }
-
-                        user.put("numberPhone",currentUser.getPhoneNumber());
-                        user.put("idPhone",currentUser.getUid());
-                        user.put("idEmail","");
-                        user.put("name",name);
-                        user.put("email",email);
-                        user.put("gender",gender);
-                        user.put("age",age);
-                        user.put("address",address);
-                        user.put("gambar",gambar);
-
-                        dbf.setValue(user);
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
             }
         }
 

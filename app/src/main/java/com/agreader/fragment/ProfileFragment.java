@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.agreader.User;
 import com.agreader.screen.Dashboard;
 import com.agreader.screen.LoginScreen;
 import com.agreader.screen.SliderActivity;
+import com.agreader.screen.TermEndService;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -32,6 +34,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 
 /**
@@ -42,7 +47,10 @@ public class ProfileFragment extends Fragment {
     private Button logout;
     private View v;
 
-    TextView editProfile,name,email,phone;
+    TextView editProfile,name,email,phone,iconTerm,iconPrivacy;
+    ImageView profilePicture;
+
+    RelativeLayout pmenu1,pmenu2,pmenu3,pmenu4,pmenu5;
 
     private GoogleApiClient googleApiClient;
     private GoogleApiClient mGoogleSignInClient;
@@ -65,6 +73,14 @@ public class ProfileFragment extends Fragment {
         name = v.findViewById(R.id.textFname);
         email = v.findViewById(R.id.textFEmail);
         phone = v.findViewById(R.id.textFPhone);
+        pmenu1 = v.findViewById(R.id.pmenu1);
+        pmenu2 = v.findViewById(R.id.pmenu2);
+        pmenu3 = v.findViewById(R.id.pmenu3);
+        pmenu4 = v.findViewById(R.id.pmenu4);
+        pmenu5 = v.findViewById(R.id.pmenu5);
+
+
+        profilePicture = v.findViewById(R.id.imageProfile);
 
 
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,19 +90,69 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-                name.setText(us.getName());
-                email.setText(us.getEmail());
+                if (us.getName().isEmpty()){
+                    name.setText("NAME");
+                }else {
+                    name.setText(us.getName());
+                }
+
+                if (us.getEmail().isEmpty()){
+                    email.setText("EMAIL");
+                }else {
+                    email.setText(us.getEmail());
+                }
+
                 if (us.getNumberPhone().isEmpty()){
                     phone.setText("PHONE");
                 }else {
                     phone.setText(us.getNumberPhone());
                 }
+                Picasso.get().load(us.getGambar()).transform(new RoundedCornersTransformation(100,10)).fit().centerInside().into(profilePicture);
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        pmenu1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Tahap Pengembangan", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        pmenu2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), TermEndService.class);
+                intent.putExtra("EXTRA_SESSION_ID", "https://www.authenticguards.com/term/");
+                startActivity(intent);
+            }
+        });
+
+        pmenu3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), TermEndService.class);
+                intent.putExtra("EXTRA_SESSION_ID", "https://www.authenticguards.com/privacy-policy/");
+                startActivity(intent);
+            }
+        });
+
+        pmenu4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Tahap Pengembangan", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        pmenu5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Tahap Pengembangan", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="2dp"
-                    android:text="100.000 pts"
+                    android:text="0 pts"
                     android:layout_toRightOf="@id/trophy"/>
 
             </RelativeLayout>
@@ -67,7 +67,7 @@
             android:layout_above="@+id/rellayout2"
             android:layout_below="@+id/rellayout0">
 
-            <android.support.v4.view.ViewPager
+            <com.agreader.CustomViewAdapter
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import com.agreader.fragment.HomeFragment;
 import com.agreader.fragment.NotifFragment;
@@ -16,6 +17,8 @@ import com.agreader.fragment.QrcodeFragment;
  */
 
 public class SectionPagesAdapter extends FragmentPagerAdapter {
+
+
 
     private Context mContext;
 

@@ -158,9 +158,10 @@
                 android:layout_below="@+id/textPhoneNumber"/>
 
             <Button
+                android:id="@+id/saveEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_login_email"
+                android:background="@drawable/button"
                 android:layout_below="@+id/editTextPhoneNumberProfile"
                 android:text="Save"
                 android:layout_marginTop="20dp"

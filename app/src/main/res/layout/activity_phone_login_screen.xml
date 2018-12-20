@@ -35,6 +35,9 @@
             android:layout_height="wrap_content"
             android:hint="e.g 812345678"
             android:textColor="#FFF"
+            android:inputType="number"
+            android:digits="1234567890"
+            android:maxLength="11"
             android:textColorHint="#333333"
             android:backgroundTint="#333333"
             android:layout_marginBottom="50dp"/>

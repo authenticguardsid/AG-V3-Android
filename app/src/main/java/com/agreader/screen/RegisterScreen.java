@@ -48,7 +48,8 @@ public class RegisterScreen extends AppCompatActivity {
                     return;
                 }else {
                     Intent intent = new Intent(RegisterScreen.this,VerifyPhoneActivity.class);
-                    intent.putExtra("phonenumber",registerPhoneNumber.getText().toString());
+                    intent.putExtra("phonenumber","+62"+registerPhoneNumber.getText().toString());
+                    intent.putExtra("nama",registerFullName.getText().toString());
                     startActivity(intent);
                 }
             }
@@ -72,10 +73,15 @@ public class RegisterScreen extends AppCompatActivity {
             registerFullName.setError(null);
         }
 
+        if (registerPhoneNumber.getText().toString().substring(0,1).equals("0")){
+            registerPhoneNumber.setError("Invalid Number");
+            result = false;
+        }
+
         if (TextUtils.isEmpty(registerPhoneNumber.getText().toString())){
             registerPhoneNumber.setError("Required");
             result = false;
-        }else if (registerPhoneNumber.getText().toString().length() < 10){
+        }else if (registerPhoneNumber.getText().toString().length() < 11){
             registerPhoneNumber.setError("enter a valid number");
             result = false;
         }else {

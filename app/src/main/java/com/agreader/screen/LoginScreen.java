@@ -11,7 +11,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,13 +19,11 @@ import com.agreader.MasterActivity;
 import com.agreader.R;
 import com.agreader.User;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -178,7 +175,6 @@ public class LoginScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginScreen.this,RegisterScreen.class);
                 startActivity(intent);
-                Toast.makeText(LoginScreen.this, "Yeay", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -303,18 +299,5 @@ public class LoginScreen extends AppCompatActivity {
                     }
                 });
     }
-
-   /* private void updateUI(FirebaseUser user) {
-        Log.i(TAG, "sudah disini");
-        Log.i(TAG, "updateUI: " + user);
-        if (user != null) {
-            Intent intent = new Intent(LoginScreen.this,MasterActivity.class);
-            startActivity(intent);
-            finish();
-        }else  {
-            return;
-        }
-    }
-*/
 
 }

@@ -4,17 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
-    android:background="#0f0f0f"
     tools:context=".fragment.QrcodeFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layer_4"
-        android:gravity="center">
 
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -31,13 +23,13 @@
             android:layout_height="wrap_content"
             android:text="Verification"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:textColor="@android:color/white"/>
+            android:textColor="@color/colorGREY"/>
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/qrcode"
-            android:tint="@android:color/white" />
+            android:tint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +39,7 @@
             android:gravity="center"
             android:lineSpacingMultiplier="1.5"
             android:text="Scan the QR code on the product to get authenticity "
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorGREY"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -60,7 +52,7 @@
         android:layout_marginRight="48dp"
         android:layout_marginBottom="48dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/button_login_email"
+        android:background="@drawable/button"
         android:text="SCAN QR CODE"
         android:textColor="@color/colorWhite" />
 
