@@ -52,9 +52,8 @@ public class brandAdapter extends BaseAdapter {
     }
 
     public Integer[] mThumbIds = {
-            R.drawable.test6, R.drawable.test7,
-            R.drawable.test8, R.drawable.test11,
-            R.drawable.test12, R.drawable.test17
+            R.drawable.test7, R.drawable.test12, R.drawable.test6,
+            R.drawable.test11, R.drawable.test8, R.drawable.test17
     };
 
 }
