@@ -40,6 +40,8 @@ public class MasterActivity extends AppCompatActivity {
         bottomNavigationViewEx.setTextVisibility(true);
         bottomNavigationViewEx.enableShiftingMode(false);
         bottomNavigationViewEx.enableItemShiftingMode(false);
+        bottomNavigationViewEx.setIconTintList(0, getResources().getColorStateList(R.color.colorGold));
+        bottomNavigationViewEx.setTextTintList(0, getResources().getColorStateList(R.color.colorGold));
 
         SectionPagesAdapter adapter = new SectionPagesAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -50,22 +52,72 @@ public class MasterActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.ic_home:
                         viewPager.setCurrentItem(0);
+                        bottomNavigationViewEx.setIconTintList(0, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setTextTintList(0, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setIconTintList(1, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(1, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(2, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(2, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(3, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(3, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(4, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(4, getResources().getColorStateList(R.color.colorGREY));
                         //getSupportActionBar().setTitle("Home");
                         break;
                     case R.id.ic_product:
                         viewPager.setCurrentItem(1);
+                        bottomNavigationViewEx.setIconTintList(0, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(0, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(1, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setTextTintList(1, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setIconTintList(2, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(2, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(3, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(3, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(4, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(4, getResources().getColorStateList(R.color.colorGREY));
                         //getSupportActionBar().setTitle("QR Code");
                         break;
                     case R.id.ic_qrcode:
                         viewPager.setCurrentItem(2);
+                        bottomNavigationViewEx.setIconTintList(0, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(0, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(1, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(1, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(2, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setTextTintList(2, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setIconTintList(3, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(3, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(4, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(4, getResources().getColorStateList(R.color.colorGREY));
                         //getSupportActionBar().setTitle("QR Code");
                         break;
                     case R.id.ic_notification:
                         viewPager.setCurrentItem(3);
+                        bottomNavigationViewEx.setIconTintList(0, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(0, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(1, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(1, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(2, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(2, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(3, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setTextTintList(3, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setIconTintList(4, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(4, getResources().getColorStateList(R.color.colorGREY));
                         //getSupportActionBar().setTitle("QR Code");
                         break;
                     case R.id.ic_profile:
                         viewPager.setCurrentItem(4);
+                        bottomNavigationViewEx.setIconTintList(0, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(0, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(1, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(1, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(2, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(2, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(3, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setTextTintList(3, getResources().getColorStateList(R.color.colorGREY));
+                        bottomNavigationViewEx.setIconTintList(4, getResources().getColorStateList(R.color.colorGold));
+                        bottomNavigationViewEx.setTextTintList(4, getResources().getColorStateList(R.color.colorGold));
                         //getSupportActionBar().setTitle("Profile");
                         break;
                 }

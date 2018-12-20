@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
+    android:background="@color/colorWhite"
     tools:context=".fragment.QrcodeFragment">
 
     <LinearLayout
@@ -20,18 +21,32 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:src="@drawable/paper_plane"
-            android:tint="#9d8348" />
+            android:tint="@color/colorGREY" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="sans-serif-light"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:typeface="sans"
+            android:text="You have no message yet !"
+            android:textColor="@color/colorGREY"
+            android:textStyle="bold"
+            android:textSize="17dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:lineSpacingMultiplier="1.5"
-            android:text="Masih dalam tahap pengembangan"
+            android:text="Notification will appear here"
             android:textColor="@color/colorGREY"
-            android:textSize="16sp" />
+            android:typeface="sans"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="12dp" />
+
     </LinearLayout>
 
 </RelativeLayout>

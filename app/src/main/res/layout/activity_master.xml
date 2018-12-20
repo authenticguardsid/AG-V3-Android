@@ -24,11 +24,10 @@
 
                 <ImageView
                     android:id="@+id/img_logo"
-                    android:layout_width="72dp"
+                    android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:adjustViewBounds="false"
                     android:src="@drawable/logo"/>
-
 
             </android.support.v7.widget.Toolbar>
 
@@ -51,11 +50,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="2dp"
-                    android:text="100.000 pts"
+                    android:text="0 pts"
                     android:layout_toRightOf="@id/trophy"/>
 
             </RelativeLayout>
-
 
         </RelativeLayout>
 
@@ -78,7 +76,7 @@
         <RelativeLayout
             android:id="@+id/rellayout2"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="56dp"
             android:layout_alignParentBottom="true">
 
             <include layout="@layout/layout_bottom_navbar"/>
