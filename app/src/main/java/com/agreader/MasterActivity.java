@@ -1,26 +1,22 @@
 package com.agreader;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.GridView;
 
+import com.agreader.adapter.brandAdapter;
 import com.agreader.utils.SectionPagesAdapter;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import java.lang.reflect.Field;
 
 public class MasterActivity extends AppCompatActivity {
 
@@ -53,7 +49,6 @@ public class MasterActivity extends AppCompatActivity {
         bottomNavigationViewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 switch (item.getItemId()) {
                     case R.id.ic_home:
                         viewPager.setCurrentItem(0);
@@ -101,7 +96,6 @@ public class MasterActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
             }
-
         });
 
     }

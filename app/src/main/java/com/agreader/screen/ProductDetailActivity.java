@@ -45,10 +45,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         changeStatusBarColor();
 
         image = new int[]{
-                R.drawable.test1,
-                R.drawable.test2,
-                R.drawable.test3,
-                R.drawable.test4
+                R.drawable.test14,
+                R.drawable.test15,
+                R.drawable.test16,
+                R.drawable.test12
         };
 
 

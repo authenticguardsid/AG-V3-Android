@@ -7,9 +7,21 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ImageView;
 
 import com.agreader.R;
+import com.agreader.adapter.brandAdapter;
 import com.agreader.utils.ViewPagerAdapter;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,10 +34,12 @@ public class HomeFragment extends Fragment {
 
     ViewPager viewPager;
     View rootView;
+
+    ImageView asd;
+
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +55,9 @@ public class HomeFragment extends Fragment {
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 4000);
+
+        GridView gridview = rootView.findViewById(R.id.gridview);
+        gridview.setAdapter(new brandAdapter(getContext()));
 
         return rootView;
     }
