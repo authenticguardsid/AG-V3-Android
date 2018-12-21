@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.agreader.MasterActivity;
 import com.agreader.R;
+import com.agreader.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,20 +40,18 @@ public class RegisterScreen extends AppCompatActivity {
     String age = "";
     String address = "";
     String gambar;
-    String totalPoint = "0";
+    String totalPoint = "10";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth=FirebaseAuth.getInstance();
         textName = (EditText) findViewById(R.id.fullname);
         textNumber = (EditText) findViewById(R.id.numberPhone);
         textEmail = (EditText) findViewById(R.id.email);
         textPassword = (EditText) findViewById(R.id.password);
         textConfirm = (EditText) findViewById(R.id.confirmationPassword);
-
         btnRegister = (Button) findViewById(R.id.registerAkun);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,14 +91,39 @@ public class RegisterScreen extends AppCompatActivity {
                                     } else {
                                         final FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
                                         final HashMap<String, Object> user= new HashMap<>();
+                                        name = textName.getText().toString();
+                                        numberPhone = textNumber.getText().toString();
                                         final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
                                         dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                User us = dataSnapshot.getValue(User.class);
 
-                                                name = textName.getText().toString();
-                                                numberPhone = textNumber.getText().toString();
-                                                totalPoint = "100";
+                                                if (dataSnapshot.child("gambar").exists()){
+                                                    gambar = us.getGambar();
+                                                }
+
+                                                if (dataSnapshot.child("numberPhone").exists()){
+                                                    numberPhone = us.getNumberPhone();
+                                                }
+
+                                                if (dataSnapshot.child("name").exists()){
+                                                    name = us.getName();
+                                                }
+                                                if (dataSnapshot.child("gender").exists()){
+                                                    gender = us.getGender();
+                                                }
+                                                if (dataSnapshot.child("age").exists()){
+                                                    age = us.getAge();
+                                                }
+                                                if (dataSnapshot.child("address").exists()){
+                                                    address = us.getAddress();
+                                                }
+
+                                                if (dataSnapshot.child("totalPoint").exists()){
+                                                    totalPoint = us.getTotalPoint();
+                                                }
+
                                                 user.put("numberPhone",numberPhone);
                                                 user.put("idEmail",currentUser.getUid());
                                                 user.put("idPhone","");
@@ -112,6 +136,7 @@ public class RegisterScreen extends AppCompatActivity {
                                                 user.put("totalPoint",totalPoint);
 
                                                 dbf.setValue(user);
+
                                             }
 
                                             @Override

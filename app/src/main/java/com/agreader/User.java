@@ -1,10 +1,12 @@
 package com.agreader;
 
+import java.io.Serializable;
+
 /**
  * Created by Yudhistira Caraka on 12/13/2018.
  */
 
-public class User {
+public class User implements Serializable {
     private String idEmail,idPhone,name, email, numberPhone, gender, age, address, gambar,totalPoint;
 
     public User() {

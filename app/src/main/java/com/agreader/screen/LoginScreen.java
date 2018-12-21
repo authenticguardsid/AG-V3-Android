@@ -255,7 +255,6 @@ public class LoginScreen extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     User us = dataSnapshot.getValue(User.class);
-
                                     if (dataSnapshot.child("gambar").exists()){
                                         gambar = us.getGambar();
                                     }
@@ -304,7 +303,6 @@ public class LoginScreen extends AppCompatActivity {
                             Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
                             pindah.putExtra("tambahPoint","100");
                             startActivity(pindah);
-                            //updateUI(user);
                         }else {
                             Log.w(TAG, "onFailure: ", task.getException() );
                         }
