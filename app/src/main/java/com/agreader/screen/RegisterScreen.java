@@ -36,6 +36,7 @@ public class RegisterScreen extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     String numberPhone = "";
     String name = "";
+    String emailnya = "";
     String gender = "";
     String age = "";
     String address = "";
@@ -93,6 +94,7 @@ public class RegisterScreen extends AppCompatActivity {
                                         final HashMap<String, Object> user= new HashMap<>();
                                         name = textName.getText().toString();
                                         numberPhone = textNumber.getText().toString();
+                                        emailnya = textEmail.getText().toString();
                                         final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
                                         dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
@@ -110,6 +112,7 @@ public class RegisterScreen extends AppCompatActivity {
                                                 if (dataSnapshot.child("name").exists()){
                                                     name = us.getName();
                                                 }
+
                                                 if (dataSnapshot.child("gender").exists()){
                                                     gender = us.getGender();
                                                 }
@@ -128,7 +131,7 @@ public class RegisterScreen extends AppCompatActivity {
                                                 user.put("idEmail",currentUser.getUid());
                                                 user.put("idPhone","");
                                                 user.put("name",name);
-                                                user.put("email",currentUser.getEmail());
+                                                user.put("email",emailnya);
                                                 user.put("gender",gender);
                                                 user.put("age",age);
                                                 user.put("address",address);
