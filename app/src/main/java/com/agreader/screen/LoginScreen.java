@@ -1,5 +1,6 @@
 package com.agreader.screen;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -43,6 +44,7 @@ import java.util.HashMap;
 
 public class LoginScreen extends AppCompatActivity {
 
+
     LinearLayout buttonPhoneLogin,buttonemail;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     Button mRegister,buttonLogin;
@@ -51,6 +53,7 @@ public class LoginScreen extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient googleApiClient;
     private FirebaseAuth mFirebaseAuth;
+    private ProgressDialog pDialog;
     TextView tos,privacy;
 
     String numberPhone = "";
@@ -158,7 +161,7 @@ public class LoginScreen extends AppCompatActivity {
         buttonPhoneLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginScreen.this, PhoneLoginScreen.class);
+                Intent i = new Intent(LoginScreen.this, LoginActivity.class);
                 startActivity(i);
             }
         });
@@ -185,7 +188,7 @@ public class LoginScreen extends AppCompatActivity {
 
     }
 
-   protected void signInwithGoogle() {
+    protected void signInwithGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN);
     }
@@ -234,6 +237,7 @@ public class LoginScreen extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle: "+acct.getId());
+        displayLoader();
         AuthCredential credential= GoogleAuthProvider.getCredential(acct.getIdToken(),null);
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -274,7 +278,7 @@ public class LoginScreen extends AppCompatActivity {
                                     }
 
                                     if (dataSnapshot.child("totalPoint").exists()){
-                                        totalPoint = us.getTotalPoint();
+                                            totalPoint = us.getTotalPoint();
                                     }
 
                                     user.put("numberPhone",numberPhone);
@@ -307,5 +311,15 @@ public class LoginScreen extends AppCompatActivity {
                     }
                 });
     }
-
+    private void displayLoader() {
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Account Verification...");
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+        pDialog.show();
+    }
 }
+
+//    Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
+//                            pindah.putExtra("tambahPoint","100");
+//                                    startActivity(pindah);
