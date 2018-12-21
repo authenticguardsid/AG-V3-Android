@@ -18,6 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,10 +34,10 @@ import java.util.TimerTask;
  */
 public class HomeFragment extends Fragment {
 
-    ViewPager viewPager;
     View rootView;
 
-    ImageView asd;
+    CarouselView carouselView;
+    int[] sampleImages = {R.drawable.slider1, R.drawable.slider2, R.drawable.slider3, R.drawable.slider4};
 
     public HomeFragment() {
         // Required empty public constructor
@@ -47,14 +49,10 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
+        carouselView = rootView.findViewById(R.id.slider);
+        carouselView.setPageCount(sampleImages.length);
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getContext());
-
-        viewPager.setAdapter(viewPagerAdapter);
-
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 4000);
+        carouselView.setImageListener(imageListener);
 
         GridView gridview = rootView.findViewById(R.id.gridview);
         gridview.setAdapter(new brandAdapter(getContext()));
@@ -62,23 +60,11 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    private class MyTimerTask extends TimerTask {
+    ImageListener imageListener = new ImageListener() {
         @Override
-        public void run() {
-            if (isVisible()) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (viewPager.getCurrentItem() == 0) {
-                            viewPager.setCurrentItem(1);
-                        } else if (viewPager.getCurrentItem() == 1) {
-                            viewPager.setCurrentItem(2);
-                        } else if (viewPager.getCurrentItem() == 2) {
-                            viewPager.setCurrentItem(0);
-                        }
-                    }
-                });
-            }
+        public void setImageForPosition(int position, ImageView imageView) {
+            imageView.setImageResource(sampleImages[position]);
         }
-    }
+    };
+
 }

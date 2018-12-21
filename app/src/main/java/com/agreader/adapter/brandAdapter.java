@@ -39,9 +39,9 @@ public class brandAdapter extends BaseAdapter {
 
         if (convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
+            imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(0, 0, 0, 15);
+            imageView.setPadding(16, 16, 16, 16);
         }
         else
         {
@@ -52,9 +52,8 @@ public class brandAdapter extends BaseAdapter {
     }
 
     public Integer[] mThumbIds = {
-            R.drawable.test6, R.drawable.test7,
-            R.drawable.test8, R.drawable.test10,
-            R.drawable.test11, R.drawable.test12
+            R.drawable.test7, R.drawable.test12, R.drawable.test6,
+            R.drawable.test11, R.drawable.test8, R.drawable.test17
     };
 
 }
