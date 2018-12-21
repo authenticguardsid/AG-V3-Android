@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,6 +28,7 @@ public class VerifiedProductActivity extends AppCompatActivity {
     private Button button;
     public String PARTNER = "";
     public String GCODE = "";
+    String token;
 
     private static TextView result_code, result_brand, result_company, result_address, result_phone, result_email, result_web;
 
@@ -47,7 +49,14 @@ public class VerifiedProductActivity extends AppCompatActivity {
         result_phone = (TextView) findViewById(R.id.dtext6content);
         result_email = (TextView) findViewById(R.id.dtext7content);
         result_web = (TextView) findViewById(R.id.dtext8content);
-        set_profile_company(getIntent().getStringExtra("key"));
+
+        result_code.setText(getIntent().getStringExtra("key"));
+        result_brand.setText(getIntent().getStringExtra("brand"));
+        result_company.setText(getIntent().getStringExtra("company"));
+        result_address.setText(getIntent().getStringExtra("address"));
+        result_phone.setText(getIntent().getStringExtra("phone"));
+        result_email.setText(getIntent().getStringExtra("email"));
+        result_web.setText(getIntent().getStringExtra("web"));
 
         button = (Button) findViewById(R.id.product_detail);
         button.setOnClickListener(new View.OnClickListener() {
@@ -69,36 +78,4 @@ public class VerifiedProductActivity extends AppCompatActivity {
         }
     }
 
-    public void set_profile_company(String code){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.net/api/check_/" + code + "?token=a&appid=001", null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                if (response.length() > 0) {
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject jsonObject = response.getJSONObject("result");
-                            GCODE = jsonObject.getString("code");
-                            JSONObject dataclient = jsonObject.getJSONObject("client");
-                            JSONObject data = jsonObject.getJSONObject("brand");
-                            result_code.setText(GCODE);
-                            result_brand.setText(data.getString("Name"));
-                            result_company.setText(dataclient.getString("name"));
-                            result_address.setText(data.getString("addressOfficeOrStore"));
-                            result_phone.setText(data.getString("csPhone"));
-                            result_email.setText(data.getString("csEmail"));
-                            result_web.setText(data.getString("web"));
-                        } catch (JSONException e) {
-
-                        }
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
 }
