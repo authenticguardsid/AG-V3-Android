@@ -21,7 +21,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.zxing.Result;
 
 import org.json.JSONArray;
@@ -35,10 +40,13 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QRcodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
-    BarcodeReader barcodeReader;
+    FirebaseUser firebaseUser;
     String GENIUNE_CODE = "success";
-    String FAKE_CODE = "erroe";
+    String GCODE = "";
+    String token = "";
     String rvalid;
+
+    String brand, company, address, phone, email, web;
 
     final int REQUEST_CODE_CAMERA = 999;
 
@@ -55,6 +63,15 @@ public class QRcodeActivity extends AppCompatActivity implements ZXingScannerVie
                 == PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
         }
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        token = task.getResult().getToken();
+                    }
+                });
 
     }
 
@@ -89,21 +106,38 @@ public class QRcodeActivity extends AppCompatActivity implements ZXingScannerVie
     }
 
     public void validation_code(final String scancode){
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.net/api/check_/" + scancode + "?token=a&appid=001", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/check_/"+scancode+"?token="+token+"&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             rvalid = response.getString("status");
+                            JSONObject jsonObject = response.getJSONObject("result");
+                            GCODE = jsonObject.getString("code");
+                            JSONObject dataclient = jsonObject.getJSONObject("client");
+                            JSONObject data = jsonObject.getJSONObject("brand");
+                            brand = data.getString("Name");
+                            company = dataclient.getString("name");
+                            address = data.getString("addressOfficeOrStore");
+                            phone = data.getString("csPhone");
+                            email = data.getString("csEmail");
+                            web = data.getString("web");
                         } catch (JSONException e) {
 
                         }
+                        Log.e("scancode", ""+scancode);
+                        Log.e("token-firebase", ""+token);
                     }
                     if (rvalid.equals(GENIUNE_CODE)) {
                         Intent intent_geniune = new Intent(QRcodeActivity.this, VerifiedProductActivity.class);
                         intent_geniune.putExtra("key", scancode);
+                        intent_geniune.putExtra("brand", brand);
+                        intent_geniune.putExtra("company", company);
+                        intent_geniune.putExtra("address", address);
+                        intent_geniune.putExtra("phone", phone);
+                        intent_geniune.putExtra("email", email);
+                        intent_geniune.putExtra("web", web);
                         startActivity(intent_geniune);
                     }else {
                         Intent intent_fake = new Intent(QRcodeActivity.this, UnverifiedProductActivity.class);

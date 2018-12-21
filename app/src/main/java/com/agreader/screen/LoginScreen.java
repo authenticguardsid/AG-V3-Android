@@ -98,13 +98,13 @@ public class LoginScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        mRegister = (Button) findViewById(R.id.register);
+//        mRegister = (Button) findViewById(R.id.register);
         buttonLogin = (Button) findViewById(R.id.btnLogin);
 
-        mRegister.setEnabled(false);
+//        mRegister.setEnabled(false);
         buttonLogin.setEnabled(false);
 
-        mRegister.setAlpha((float) 0.3);
+//        mRegister.setAlpha((float) 0.3);
         buttonLogin.setAlpha((float)0.3);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -152,14 +152,14 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
-        buttonPhoneLogin = (LinearLayout) findViewById(R.id.login_hp);
-        buttonPhoneLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginScreen.this, PhoneLoginScreen.class);
-                startActivity(i);
-            }
-        });
+//        buttonPhoneLogin = (LinearLayout) findViewById(R.id.login_hp);
+//        buttonPhoneLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(LoginScreen.this, PhoneLoginScreen.class);
+//                startActivity(i);
+//            }
+//        });
 
         buttonemail = (LinearLayout) findViewById(R.id.login_email);
         buttonemail.setOnClickListener(new View.OnClickListener() {
@@ -170,13 +170,13 @@ public class LoginScreen extends AppCompatActivity {
         });
 
 
-        mRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginScreen.this,RegisterScreen.class);
-                startActivity(intent);
-            }
-        });
+//        mRegister.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(LoginScreen.this,RegisterScreen.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
 
@@ -193,13 +193,13 @@ public class LoginScreen extends AppCompatActivity {
         switch (view.getId()){
             case R.id.check:
                 if (checked){
-                    mRegister.setEnabled(true);
+//                    mRegister.setEnabled(true);
                     buttonLogin.setEnabled(true);
 
-                    mRegister.setAlpha((float) 1);
+//                    mRegister.setAlpha((float) 1);
                     buttonLogin.setAlpha((float) 1);
                 }else {
-                    mRegister.setEnabled(false);
+//                    mRegister.setEnabled(false);
                     buttonLogin.setEnabled(false);
                     mRegister.setAlpha((float) 0.3);
                     buttonLogin.setAlpha((float)0.3);

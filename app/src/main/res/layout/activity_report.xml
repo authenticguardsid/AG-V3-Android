@@ -94,7 +94,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="15dp"
-                        android:hint="Nama Clinic"
+                        android:hint="Nama Brand"
                         android:inputType="text" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -108,7 +108,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="15dp"
-                        android:hint="Alamat Clinic"
+                        android:hint="Alamat"
                         android:inputType="text" />
 
                 </android.support.design.widget.TextInputLayout>

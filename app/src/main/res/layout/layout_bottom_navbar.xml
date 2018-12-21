@@ -13,7 +13,7 @@
             app:elevation="0dp"
             android:paddingTop="12dp"
             android:background="@color/colorWhite"
-            app:itemIconTint="@color/colorGold"
+            app:itemIconTint="@color/colorGREY"
             app:itemTextColor="@color/colorGREY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/bottom_nav_menu" />
