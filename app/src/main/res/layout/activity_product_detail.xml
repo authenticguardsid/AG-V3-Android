@@ -30,7 +30,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.5"
                     android:textSize="20sp"
-                    android:textColor="@color/colorGold"
+                    android:background="@color/colorGold"
+                    android:textColor="@color/colorWhite"
                     android:text="PRODUCT DETAIL"
                     android:textStyle="bold"
                     android:gravity="center"/>

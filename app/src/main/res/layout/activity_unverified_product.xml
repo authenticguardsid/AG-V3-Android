@@ -14,8 +14,8 @@
         <RelativeLayout
             android:id="@+id/rellayout0"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="#e7e7e7"
+            android:layout_height="300dp"
+            android:background="@color/colorGold"
             android:gravity="center">
 
             <LinearLayout
@@ -26,10 +26,12 @@
                 android:weightSum="3">
 
                 <ImageView
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_weight="2.3"
+                    android:paddingTop="48dp"
+                    android:tint="@color/colorWhite"
                     android:src="@drawable/icons_8_xbox_x"/>
 
                 <TextView
@@ -38,7 +40,7 @@
                     android:layout_weight="0.2"
                     android:text="OOPS SORRY !"
                     android:textAlignment="center"
-                    android:textColor="#000000"
+                    android:textColor="#FFF"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:typeface="sans"/>
@@ -49,12 +51,9 @@
                     android:layout_weight="0.5"
                     android:text="Sorry this product may be fake"
                     android:textAlignment="center"
-                    android:textColor="#90000000"
+                    android:textColor="#FFF"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:lineSpacingMultiplier="1.5"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginEnd="36dp"
                     android:typeface="sans"/>
 
             </LinearLayout>

@@ -27,12 +27,19 @@
                 android:gravity="center"
                 android:paddingBottom="16dp">
 
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/authentic_guards_logo_favicon"
+                    android:tint="@color/colorGold"
+                    android:layout_marginBottom="8dp"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:gravity="center"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorGold"
                     android:typeface="sans"
                     android:text="THANK YOU !"
                     android:layout_marginBottom="8dp"/>
@@ -43,6 +50,7 @@
                     android:textSize="12sp"
                     android:lineSpacingMultiplier="1.5"
                     android:textAlignment="center"
+                    android:textColor="@color/colorGold"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="24dp"
                     android:typeface="sans"
@@ -64,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:background="@color/colorGold"
                 android:gravity="center"
                 android:paddingBottom="16dp">
 
@@ -72,7 +81,7 @@
                     android:gravity="center"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:textColor="@color/colorGold"
+                    android:textColor="@color/colorWhite"
                     android:text="SHARE TO SOCIAL MEDIA"
                     android:typeface="sans"
                     android:layout_marginBottom="8dp"/>
@@ -81,6 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
+                    android:textColor="@color/colorWhite"
                     android:lineSpacingMultiplier="1.5"
                     android:textAlignment="center"
                     android:typeface="sans"
@@ -100,6 +110,7 @@
                         android:layout_weight="1"
                         android:paddingLeft="16dp"
                         android:paddingTop="36dp"
+                        android:tint="@color/colorWhite"
                         android:src="@drawable/icons_8_instagram_new"/>
 
                     <ImageView
@@ -107,6 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingTop="33dp"
+                        android:tint="@color/colorWhite"
                         android:src="@drawable/icons_8_whatsapp"/>
 
                     <ImageView
@@ -114,12 +126,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingTop="40dp"
+                        android:tint="@color/colorWhite"
                         android:src="@drawable/icons_8_twitter"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:tint="@color/colorWhite"
                         android:paddingTop="37dp"
                         android:paddingRight="16dp"
                         android:src="@drawable/icons_8_facebook"/>

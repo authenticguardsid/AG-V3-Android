@@ -28,7 +28,7 @@ import com.synnapps.carouselview.ImageListener;
 public class ProductDetailActivity extends AppCompatActivity {
 
     CarouselView carouselView;
-    int[] sampleImages = {R.drawable.test14, R.drawable.test15, R.drawable.test16};
+    int[] sampleImages = {R.drawable.test13, R.drawable.test15, R.drawable.test16};
 
     private Button button;
 
