@@ -5,12 +5,12 @@ package com.agreader;
  */
 
 public class User {
-    private String idEmail,idPhone,name, email, numberPhone, gender, age, address, gambar;
+    private String idEmail,idPhone,name, email, numberPhone, gender, age, address, gambar,totalPoint;
 
     public User() {
     }
 
-    public User(String idEmail,String idPhone, String name, String email, String numberPhone, String gender, String age, String address, String gambar) {
+    public User(String idEmail,String idPhone, String name, String email, String numberPhone, String gender, String age, String address, String gambar, String totalPoint) {
         this.idEmail = idEmail;
         this.idPhone = idPhone;
         this.name = name;
@@ -20,6 +20,15 @@ public class User {
         this.age = age;
         this.address = address;
         this.gambar = gambar;
+        this.totalPoint = totalPoint;
+    }
+
+    public String getTotalPoint() {
+        return totalPoint;
+    }
+
+    public void setTotalPoint(String totalPoint) {
+        this.totalPoint = totalPoint;
     }
 
     public String getIdEmail() {

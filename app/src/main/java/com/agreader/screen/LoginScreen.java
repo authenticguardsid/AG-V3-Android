@@ -59,6 +59,7 @@ public class LoginScreen extends AppCompatActivity {
     String age = "";
     String address = "";
     String gambar;
+    String totalPoint = "0";
 
     @Override
     protected void onStart() {
@@ -98,6 +99,7 @@ public class LoginScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         mRegister = (Button) findViewById(R.id.register);
         buttonLogin = (Button) findViewById(R.id.btnLogin);
 
@@ -271,6 +273,10 @@ public class LoginScreen extends AppCompatActivity {
                                         address = us.getAddress();
                                     }
 
+                                    if (dataSnapshot.child("totalPoint").exists()){
+                                        totalPoint = us.getTotalPoint();
+                                    }
+
                                     user.put("numberPhone",numberPhone);
                                     user.put("idEmail",currentUser.getUid());
                                     user.put("idPhone","");
@@ -280,6 +286,7 @@ public class LoginScreen extends AppCompatActivity {
                                     user.put("age",age);
                                     user.put("address",address);
                                     user.put("gambar",gambar);
+                                    user.put("totalPoint",totalPoint);
 
                                     dbf.setValue(user);
 
@@ -290,8 +297,9 @@ public class LoginScreen extends AppCompatActivity {
 
                                 }
                             });
-
-                            startActivity(new Intent(LoginScreen.this,MasterActivity.class));
+                            Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
+                            pindah.putExtra("tambahPoint","100");
+                            startActivity(pindah);
                             //updateUI(user);
                         }else {
                             Log.w(TAG, "onFailure: ", task.getException() );

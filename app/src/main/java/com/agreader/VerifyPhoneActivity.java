@@ -6,7 +6,10 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private EditText editText;
     private TextView tunggu,number;
 
+    private Button kirim;
+
     private PhoneAuthProvider.ForceResendingToken resendingToken;
 
     String phonenumber,code,yeay,namaa;
@@ -66,16 +71,34 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         tunggu = (TextView)findViewById(R.id.tunggu);
         number = (TextView)findViewById(R.id.textView);
 
+        kirim = (Button)findViewById(R.id.kirim);
+
         phonenumber = getIntent().getStringExtra("phonenumber");
+
+        Log.i("Nomor Auth",phonenumber);
 
         Intent getData = getIntent();
         if (getData.getStringExtra("nama") != null){
             namaa = getData.getStringExtra("nama");
         }
 
-        yeay = phonenumber.toString().trim();
+       kirim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(editText.getText().toString())){
+                    editText.setError("Required");
+                    editText.setFocusable(true);
+                    return;
+                }else {
+                    editText.setError(null);
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,code);
+                    signInWithCredential(credential);
+                }
+            }
+        });
+
         number.setText("Please type the verification code sent to \n "+phonenumber);
-        sendVerificationCode(yeay);
+        sendVerificationCode(phonenumber);
 
         countdownTime();
 
@@ -116,7 +139,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private void resendVerificationCode(String phoneNumber,
                                         PhoneAuthProvider.ForceResendingToken token) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                yeay,        // Phone number to verify
+                phoneNumber,        // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 this,               // Activity (for callback binding)
@@ -141,7 +164,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
                             final FirebaseUser currentUser = mAuth.getCurrentUser();
 
-                            final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(gabung.getUid());
+                            final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
                             final HashMap<String, Object> user= new HashMap<>();
 
                             dbf.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -184,6 +207,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                     user.put("age",age);
                                     user.put("address",address);
                                     user.put("gambar",gambar);
+                                    user.put("totalPoint","0");
 
                                     dbf.setValue(user);
 
@@ -208,12 +232,13 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     private void sendVerificationCode (String number){
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                yeay,
+                number,
                 60,
                 TimeUnit.SECONDS,
                 this,
                 mCallBack
         );
+        Log.i("Nomor Auth","Berhasil");
     }
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -225,15 +250,15 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             super.onCodeSent(s, forceResendingToken);
             verificationId = s;
             resendingToken = forceResendingToken;
+            Log.i("Code","Terkirim");
         }
 
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
             code = phoneAuthCredential.getSmsCode();
-            Toast.makeText(VerifyPhoneActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
             if (code != null){
                 editText.setText(code);
-                verifyCode(code);
+                signInWithCredential(phoneAuthCredential);
             }
         }
 
@@ -242,5 +267,18 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             Toast.makeText(VerifyPhoneActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        @Override
+        public void onCodeAutoRetrievalTimeOut(String s) {
+            super.onCodeAutoRetrievalTimeOut(s);
+            Log.i("Code","Terikimr2");
+            code = editText.getText().toString().trim();
+            if (TextUtils.isEmpty(code)){
+                Toast.makeText(VerifyPhoneActivity.this, "Gagal", Toast.LENGTH_SHORT).show();
+            }else {
+                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(s,code);
+                signInWithCredential(credential);
+            }
+
+        }
     };
 }

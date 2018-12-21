@@ -6,85 +6,87 @@
     android:background="#e7e7e7"
     tools:context=".fragment.HomeFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <!-- Body -->
         <RelativeLayout
-            android:id="@+id/rellayout0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/ToolbarHome"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@drawable/toolbar">
-
-                <ImageView
-                    android:id="@+id/img_logo"
-                    android:layout_width="72dp"
-                    android:layout_height="42dp"
-                    android:adjustViewBounds="false"
-                    android:src="@drawable/logo"/>
-
-
-            </android.support.v7.widget.Toolbar>
-
+            <!-- Body -->
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:paddingRight="16dp">
+                android:id="@+id/rellayout0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/trophy"
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/ToolbarHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/toolbar">
+
+                    <ImageView
+                        android:id="@+id/img_logo"
+                        android:layout_width="72dp"
+                        android:layout_height="42dp"
+                        android:adjustViewBounds="false"
+                        android:src="@drawable/logo"/>
+
+
+                </android.support.v7.widget.Toolbar>
+
+                <RelativeLayout
+                    android:id="@+id/points"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_trophy"
-                    android:layout_marginRight="8dp"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="16dp">
 
-                <TextView
-                    android:id="@+id/point"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="2dp"
-                    android:text="0 pts"
-                    android:layout_toRightOf="@id/trophy"/>
+                    <ImageView
+                        android:id="@+id/trophy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_trophy"
+                        android:layout_marginRight="8dp"/>
+
+                    <TextView
+                        android:id="@+id/point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="2dp"
+                        android:text="0 pts"
+                        android:layout_toRightOf="@id/trophy"/>
+
+                </RelativeLayout>
+
 
             </RelativeLayout>
 
-
-        </RelativeLayout>
-
-        <!-- Body -->
-        <RelativeLayout
-            android:id="@+id/rellayout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/rellayout2"
-            android:layout_below="@+id/rellayout0">
-
-            <com.agreader.CustomViewAdapter
-                android:id="@+id/viewpager"
+            <!-- Body -->
+            <RelativeLayout
+                android:id="@+id/rellayout1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/rellayout2"
+                android:layout_below="@+id/rellayout0">
+
+                <com.agreader.CustomViewAdapter
+                    android:id="@+id/viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </RelativeLayout>
+
+            <!-- Bottom Navbar-->
+            <RelativeLayout
+                android:id="@+id/rellayout2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true">
+
+                <include layout="@layout/layout_bottom_navbar"/>
+
+            </RelativeLayout>
 
         </RelativeLayout>
-
-        <!-- Bottom Navbar-->
-        <RelativeLayout
-            android:id="@+id/rellayout2"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true">
-
-            <include layout="@layout/layout_bottom_navbar"/>
-
-        </RelativeLayout>
-
-    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

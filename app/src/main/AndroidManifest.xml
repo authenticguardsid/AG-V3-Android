@@ -5,6 +5,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +23,9 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".screen.SplashScreen">
+        <activity android:name=".screen.SplashScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,23 +34,76 @@
         </activity>
         <activity
             android:name=".MasterActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".QRcodeActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".screen.LoginScreen" />
-        <activity android:name=".screen.RegisterScreen" />
-        <activity android:name=".screen.SliderActivity" />
-        <activity android:name=".screen.PhoneLoginScreen" />
-        <activity android:name=".screen.Dashboard" />
-        <activity android:name=".VerifyPhoneActivity" />
-        <activity android:name=".screen.TermEndService" />
-        <activity android:name=".screen.VerifiedProductActivity" />
-        <activity android:name=".screen.UnverifiedProductActivity" />
-        <activity android:name=".screen.ProductDetailActivity" />
-        <activity android:name=".ShareActivity" />
-        <activity android:name=".ClaimProductActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ReportActivity"></activity>
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".QRcodeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.LoginScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.RegisterScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.SliderActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.PhoneLoginScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.Dashboard"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".VerifyPhoneActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.TermEndService"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.VerifiedProductActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.UnverifiedProductActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".screen.ProductDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ShareActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ClaimProductActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".EditProfileActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ReportActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".PointActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

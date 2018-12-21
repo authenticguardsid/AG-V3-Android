@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.agreader.fragment.ProfileFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -105,7 +106,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveSetting();
-                startActivity(new Intent());
+                startActivity(new Intent(EditProfileActivity.this, MasterActivity.class));
             }
         });
     }
@@ -195,6 +196,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     user.put("email",emaile);
                     user.put("id",currentUser.getUid());
                     user.put("numberPhone",phoneNumbere);
+                    user.put("totalPoint",usr.getTotalPoint());
                     dbf.setValue(user);
 
                 }

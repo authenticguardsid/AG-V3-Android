@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
+
+    <ImageView
+        android:id="@+id/gambarHadiah"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_trophy"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/judulHadiah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/gambarHadiah"
+        android:text="Pulsa Telkomsel Rp50.000"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/jmlhPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25000 pts"
+        android:layout_toRightOf="@+id/gambarHadiah"
+        android:layout_below="@+id/judulHadiah"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/jmlhTersisa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="9"
+        android:layout_toRightOf="@+id/gambarHadiah"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/jmlhTersisa"
+        android:text="Tersisa"
+        android:layout_toRightOf="@+id/gambarHadiah"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tukarPoint"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Tukar Poin"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
