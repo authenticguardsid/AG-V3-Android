@@ -19,11 +19,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.agreader.ClaimProductActivity;
 import com.agreader.ImageAdapter;
 import com.agreader.R;
 import com.agreader.ShareActivity;
+import com.soundcloud.android.crop.CropImageView;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -47,9 +50,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductDetailActivity.this, ShareActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(ProductDetailActivity.this, ShareActivity.class);
+//                startActivity(intent);
+//                finish();
+//                CropImage.activity()
+//                        .setGuidelines(CropImageView.Guidelines.ON)
+//                        .setAspectRatio(1,1)
+//                        .start(getContext(), PostFragment.this);
             }
         });
 
