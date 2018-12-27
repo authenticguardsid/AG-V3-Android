@@ -62,7 +62,6 @@ public class PointActivity extends AppCompatActivity {
 
 
         dbf = FirebaseDatabase.getInstance().getReference("hadiah");
-
         loadData();
 
 
@@ -142,7 +141,7 @@ public class PointActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
 
-                Picasso.get().load(us.getGambar())/*.transform(new RoundedCornersTransformation(50,10))*/.fit().centerInside().into(fotoProfile);
+                Picasso.get().load(us.getGambar()).into(fotoProfile);
                 namaProfile.setText(us.getName());
                 totalPoints.setText(us.getTotalPoint() + " pts");
             }

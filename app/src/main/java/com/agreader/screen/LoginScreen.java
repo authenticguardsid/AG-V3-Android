@@ -292,7 +292,9 @@ public class LoginScreen extends AppCompatActivity {
                                     user.put("totalPoint",totalPoint);
 
                                     dbf.setValue(user);
-
+                                    Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
+                                    pindah.putExtra("tambahPoint","100");
+                                    startActivity(pindah);
                                 }
 
                                 @Override
@@ -300,9 +302,7 @@ public class LoginScreen extends AppCompatActivity {
 
                                 }
                             });
-                            Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
-                            pindah.putExtra("tambahPoint","100");
-                            startActivity(pindah);
+
                         }else {
                             Log.w(TAG, "onFailure: ", task.getException() );
                         }

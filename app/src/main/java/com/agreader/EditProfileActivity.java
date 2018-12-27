@@ -126,7 +126,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (!us.getEmail().isEmpty()){
                     email.setFocusable(false);
                 }
-                Picasso.get().load(us.getGambar()).transform(new RoundedCornersTransformation(200,20)).fit().centerInside().into(picture);
+                Picasso.get().load(us.getGambar()).into(picture);
                 phonenumber.setText(us.getNumberPhone());
                 if (!us.getNumberPhone().isEmpty()){
                     phonenumber.setFocusable(false);

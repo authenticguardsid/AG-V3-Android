@@ -40,7 +40,7 @@ public class RegisterScreen extends AppCompatActivity {
     String gender = "";
     String age = "";
     String address = "";
-    String gambar;
+    String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Fuser.png?alt=media&token=a07b3aa8-90d4-4322-8e1d-8f20b91e54b0";
     String totalPoint = "10";
 
     @Override
@@ -52,6 +52,7 @@ public class RegisterScreen extends AppCompatActivity {
         textNumber = (EditText) findViewById(R.id.numberPhone);
         textEmail = (EditText) findViewById(R.id.email);
         textPassword = (EditText) findViewById(R.id.password);
+        totalPoint = "10" ;
         textConfirm = (EditText) findViewById(R.id.confirmationPassword);
         btnRegister = (Button) findViewById(R.id.registerAkun);
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +101,6 @@ public class RegisterScreen extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                 User us = dataSnapshot.getValue(User.class);
-
                                                 if (dataSnapshot.child("gambar").exists()){
                                                     gambar = us.getGambar();
                                                 }
@@ -112,7 +112,6 @@ public class RegisterScreen extends AppCompatActivity {
                                                 if (dataSnapshot.child("name").exists()){
                                                     name = us.getName();
                                                 }
-
                                                 if (dataSnapshot.child("gender").exists()){
                                                     gender = us.getGender();
                                                 }
@@ -139,7 +138,9 @@ public class RegisterScreen extends AppCompatActivity {
                                                 user.put("totalPoint",totalPoint);
 
                                                 dbf.setValue(user);
-
+                                                Intent pindah = new Intent(RegisterScreen.this,MasterActivity.class);
+                                                pindah.putExtra("tambahPoint","100");
+                                                startActivity(pindah);
                                             }
 
                                             @Override
@@ -147,10 +148,7 @@ public class RegisterScreen extends AppCompatActivity {
 
                                             }
                                         });
-                                        Intent pindah = new Intent(RegisterScreen.this,MasterActivity.class);
-                                        pindah.putExtra("tambahPoint","100");
-                                        startActivity(pindah);
-                                    }
+                                                                    }
                                 }
                             });
                 }

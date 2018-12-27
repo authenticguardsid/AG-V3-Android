@@ -191,7 +191,7 @@ public class MasterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-                if (ada.getStringExtra("tambahPoint") != null){
+                if (getIntent().getStringExtra("tambahPoint") != null){
                     int point = Integer.parseInt(us.getTotalPoint());
                     int tambahPoint = point + 100;
                     String points = String.valueOf(tambahPoint);
