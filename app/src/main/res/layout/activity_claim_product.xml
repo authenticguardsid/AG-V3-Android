@@ -88,7 +88,7 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/bg"
+            android:src="@drawable/icons_8_integrated_webcam_filled"
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 

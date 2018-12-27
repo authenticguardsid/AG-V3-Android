@@ -9,13 +9,16 @@ android {
             storePassword '12345678'
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.agreader"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 14
-        versionName "14.0"
+        versionCode 15
+        versionName "15.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -46,8 +49,7 @@ dependencies {
 
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -55,6 +57,11 @@ dependencies {
     //Database
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     //Picture
     implementation 'com.squareup.picasso:picasso:2.71828'
