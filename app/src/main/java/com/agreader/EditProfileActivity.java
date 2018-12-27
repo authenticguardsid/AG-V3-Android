@@ -184,6 +184,7 @@ public class EditProfileActivity extends AppCompatActivity {
         final String addresse = address.getText().toString();
         final String emaile = email.getText().toString();
         final String phoneNumbere = phonenumber.getText().toString();
+        final String point;
 
         final StorageReference ref = storageReference.child("users/"+ UUID.randomUUID().toString());
         if (filepath == null){
@@ -201,6 +202,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     user.put("email",emaile);
                     user.put("id",currentUser.getUid());
                     user.put("numberPhone",phoneNumbere);
+                    user.put("totalPoint", usr.getTotalPoint());
                     dbf.setValue(user);
 
                 }
@@ -224,6 +226,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    User usr = dataSnapshot.getValue(User.class);
                                     final HashMap<String, Object> user= new HashMap<>();
                                     user.put("name",namee);
                                     user.put("gender",gendeer);
@@ -232,6 +235,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                     user.put("email",emaile);
                                     user.put("numberPhone",phoneNumbere);
                                     user.put("gambar",urlGambar);
+                                    user.put("totalPoint", usr.getTotalPoint());
                                     dbf.setValue(user);
                                 }
 

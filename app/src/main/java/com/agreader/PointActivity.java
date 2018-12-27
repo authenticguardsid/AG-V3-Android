@@ -105,10 +105,13 @@ public class PointActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-
                 Picasso.get().load(us.getGambar()).into(fotoProfile);
                 namaProfile.setText(us.getName());
-                totalPoints.setText(us.getTotalPoint() + " pts");
+                if(us.getTotalPoint() != null)
+                    totalPoints.setText(us.getTotalPoint() + " pts");
+                else{
+                    totalPoints.setText("0 pts");
+                }
             }
 
             @Override

@@ -184,7 +184,11 @@ public class MasterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-                    pointt.setText(us.getTotalPoint() + " pts");
+                    if(us.getTotalPoint() != null)
+                        pointt.setText(us.getTotalPoint() + " pts");
+                    else{
+                        pointt.setText("0 pts");
+                    }
                 }
 
 
