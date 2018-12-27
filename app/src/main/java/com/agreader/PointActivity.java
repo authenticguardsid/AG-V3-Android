@@ -59,46 +59,11 @@ public class PointActivity extends AppCompatActivity {
         totalPoints = (TextView)findViewById(R.id.totalPoints);
         peringkat = (RelativeLayout)findViewById(R.id.peringkat);
 
-
-
         dbf = FirebaseDatabase.getInstance().getReference("hadiah");
         loadData();
 
 
-        /*for (int i = 0; i < 3 ; i++) {
-            final HashMap<String, Object> hadiah = new HashMap<>();
-            if (i == 0){
-                hadiah.put("gambar","https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/hadiah%2F1.jpg?alt=media&token=1d3b030a-0595-4589-97fc-22e645ac66f8");
-                hadiah.put("judul","Voucher Discount 50%");
-                hadiah.put("totalPoint","25000");
-                hadiah.put("tersisa","5");
-            }else if (i == 1){
-                hadiah.put("gambar","https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/hadiah%2F2.jpg?alt=media&token=f4d5465e-a363-40b9-aa42-eb0312407fa6");
-                hadiah.put("judul","Pulsa Telkomsel Rp50.000");
-                hadiah.put("totalPoint","25000");
-                hadiah.put("tersisa","5");
-            }else if (i == 2){
-                hadiah.put("gambar","https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/hadiah%2F3.jpg?alt=media&token=c367b633-e090-4bc5-8c15-e5df2539597c");
-                hadiah.put("judul","Voucher GO-JEK Rp25.000");
-                hadiah.put("totalPoint","25000");
-                hadiah.put("tersisa","5");
-            }
-            dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String key = dbf.push().getKey();
-                    hadiah.put("idHadiah",key);
-                    dbf.child(key).setValue(hadiah);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }*/
-
-       dbf.addValueEventListener(new ValueEventListener() {
+        dbf.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 hadiahs = new ArrayList<>();
@@ -119,10 +84,10 @@ public class PointActivity extends AppCompatActivity {
 
             }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
+            }
         });
 
         peringkat.setOnClickListener(new View.OnClickListener() {

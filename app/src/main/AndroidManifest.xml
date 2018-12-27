@@ -30,23 +30,41 @@
         <activity
             android:name=".MasterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".QRcodeActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".screen.LoginScreen" />
-        <activity android:name=".screen.RegisterScreen" />
-        <activity android:name=".screen.SliderActivity" />
-        <activity android:name=".screen.PhoneLoginScreen" />
+        <activity android:name=".QRcodeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.LoginScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.RegisterScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.SliderActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.PhoneLoginScreen"
+            android:screenOrientation="portrait"/>
         <activity android:name=".screen.Dashboard" />
-        <activity android:name=".VerifyPhoneActivity" />
-        <activity android:name=".screen.TermEndService" />
-        <activity android:name=".screen.VerifiedProductActivity" />
-        <activity android:name=".screen.UnverifiedProductActivity" />
-        <activity android:name=".screen.ProductDetailActivity" />
-        <activity android:name=".ShareActivity" />
-        <activity android:name=".ClaimProductActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ReportActivity" />
-        <activity android:name=".screen.LoginActivity"></activity>
+        <activity android:name=".VerifyPhoneActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.TermEndService"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.VerifiedProductActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.UnverifiedProductActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.ProductDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ShareActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ClaimProductActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EditProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PointActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ReportActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".screen.LoginActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
