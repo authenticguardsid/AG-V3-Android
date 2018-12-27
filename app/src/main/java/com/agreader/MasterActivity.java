@@ -45,22 +45,15 @@ public class MasterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }*/
         setContentView(R.layout.activity_master);
         pointt = (TextView)findViewById(R.id.point);
-
-
-        ada = getIntent();
-        total = getIntent().getStringExtra("tambahPoint");
-
         loadData();
 
         pointt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MasterActivity.this,PointActivity.class));
+               Intent intent = new Intent(MasterActivity.this,PointActivity.class);
+               startActivity(intent);
             }
         });
 
@@ -191,17 +184,9 @@ public class MasterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-                if (ada.getStringExtra("tambahPoint") != null){
-                    int point = Integer.parseInt(us.getTotalPoint());
-                    int tambahPoint = point + 100;
-                    String points = String.valueOf(tambahPoint);
-                    Toast.makeText(MasterActivity.this, "Selamat Point Anda berhasil ditambahkan", Toast.LENGTH_SHORT).show();
-                    dbf.child("totalPoint").setValue(points);
-                    pointt.setText(points + " pts");
-                }else {
                     pointt.setText(us.getTotalPoint() + " pts");
                 }
-            }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

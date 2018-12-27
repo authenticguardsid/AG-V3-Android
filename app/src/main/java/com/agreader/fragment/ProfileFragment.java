@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
                 }else {
                     phone.setText(us.getNumberPhone());
                 }
-                Picasso.get().load(us.getGambar()).transform(new RoundedCornersTransformation(100,10)).fit().centerInside().into(profilePicture);
+                Picasso.get().load(us.getGambar()).into(profilePicture);
 
             }
 

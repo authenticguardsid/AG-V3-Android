@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.agreader.MasterActivity;
 import com.agreader.R;
+import com.agreader.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -35,24 +37,24 @@ public class RegisterScreen extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     String numberPhone = "";
     String name = "";
+    String emailnya = "";
     String gender = "";
     String age = "";
     String address = "";
-    String gambar;
-    String totalPoint = "0";
+    String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Fuser.png?alt=media&token=a07b3aa8-90d4-4322-8e1d-8f20b91e54b0";
+    String totalPoint = "100";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth=FirebaseAuth.getInstance();
         textName = (EditText) findViewById(R.id.fullname);
         textNumber = (EditText) findViewById(R.id.numberPhone);
         textEmail = (EditText) findViewById(R.id.email);
         textPassword = (EditText) findViewById(R.id.password);
+        totalPoint = "10" ;
         textConfirm = (EditText) findViewById(R.id.confirmationPassword);
-
         btnRegister = (Button) findViewById(R.id.registerAkun);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,15 +92,41 @@ public class RegisterScreen extends AppCompatActivity {
                                     if (!task.isSuccessful()) {
                                         Toast.makeText(RegisterScreen.this, "Authentication failed : Account already exist", Toast.LENGTH_SHORT).show();
                                     } else {
+                                        Log.d("LOL", "onComplete: success");
                                         final FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
                                         final HashMap<String, Object> user= new HashMap<>();
+                                        gambar = currentUser.getPhotoUrl().toString();
+                                        name = currentUser.getDisplayName();
                                         final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
                                         dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                User us = dataSnapshot.getValue(User.class);
+                                                if (dataSnapshot.child("gambar").exists()){
+                                                    gambar = us.getGambar();
+                                                }
 
-                                                name = textName.getText().toString();
-                                                numberPhone = textNumber.getText().toString();
+                                                if (dataSnapshot.child("numberPhone").exists()){
+                                                    numberPhone = us.getNumberPhone();
+                                                }
+
+                                                if (dataSnapshot.child("name").exists()){
+                                                    name = us.getName();
+                                                }
+                                                if (dataSnapshot.child("gender").exists()){
+                                                    gender = us.getGender();
+                                                }
+                                                if (dataSnapshot.child("age").exists()){
+                                                    age = us.getAge();
+                                                }
+                                                if (dataSnapshot.child("address").exists()){
+                                                    address = us.getAddress();
+                                                }
+
+                                                if (dataSnapshot.child("totalPoint").exists()){
+                                                    totalPoint = us.getTotalPoint();
+                                                }
+
                                                 user.put("numberPhone",numberPhone);
                                                 user.put("idEmail",currentUser.getUid());
                                                 user.put("idPhone","");
@@ -111,6 +139,8 @@ public class RegisterScreen extends AppCompatActivity {
                                                 user.put("totalPoint",totalPoint);
 
                                                 dbf.setValue(user);
+                                                Intent pindah = new Intent(RegisterScreen.this,MasterActivity.class);
+                                                startActivity(pindah);
                                             }
 
                                             @Override
@@ -118,9 +148,7 @@ public class RegisterScreen extends AppCompatActivity {
 
                                             }
                                         });
-                                        startActivity(new Intent(RegisterScreen.this, MasterActivity.class));
-                                        finish();
-                                    }
+                                                                    }
                                 }
                             });
                 }

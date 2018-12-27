@@ -45,217 +45,220 @@ import java.util.HashMap;
 public class LoginScreen extends AppCompatActivity {
 
 
-        LinearLayout buttonPhoneLogin,buttonemail;
-        private SlidingUpPanelLayout slidingUpPanelLayout;
-        Button mRegister,buttonLogin;
-        private static final int RC_SIGN=9001;
-        private static final String TAG="Google Sign";
-        private GoogleSignInClient mGoogleSignInClient;
-        private GoogleApiClient googleApiClient;
-        private FirebaseAuth mFirebaseAuth;
-        private ProgressDialog pDialog;
-        TextView tos,privacy;
+    LinearLayout buttonPhoneLogin,buttonemail;
+    private SlidingUpPanelLayout slidingUpPanelLayout;
+    Button mRegister,buttonLogin;
+    private static final int RC_SIGN=9001;
+    private static final String TAG="Google Sign";
+    private GoogleSignInClient mGoogleSignInClient;
+    private GoogleApiClient googleApiClient;
+    private FirebaseAuth mFirebaseAuth;
+    private ProgressDialog pDialog;
+    TextView tos,privacy;
 
-        String numberPhone = "";
-        String name = "";
-        String gender = "";
-        String age = "";
-        String address = "";
-        String gambar;
-        String totalPoint = "0";
+    String numberPhone = "";
+    String name = "";
+    String gender = "";
+    String age = "";
+    String address = "";
+    String gambar;
+    String totalPoint = "100";
 
-        @Override
-        protected void onStart() {
-            super.onStart();
-            FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
-            if (currentUser != null){
-                startActivity(new Intent(LoginScreen.this,MasterActivity.class));
-                finish();
-            }
-        }
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_login_screen);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Window w = getWindow(); // in Activity's onCreate() for instance
-                w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            }
-
-            tos =(TextView) findViewById(R.id.tos);
-            privacy = (TextView) findViewById(R.id.privacy);
-            tos.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getBaseContext(), TermEndService.class);
-                    intent.putExtra("EXTRA_SESSION_ID", "https://www.authenticguards.com/term/");
-                    startActivity(intent);
-                }
-            });
-
-            privacy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getBaseContext(), TermEndService.class);
-                    intent.putExtra("EXTRA_SESSION_ID", "https://www.authenticguards.com/privacy-policy/");
-                    startActivity(intent);
-                }
-            });
-
-            mRegister = (Button) findViewById(R.id.register);
-            buttonLogin = (Button) findViewById(R.id.btnLogin);
-
-            mRegister.setEnabled(false);
-            buttonLogin.setEnabled(false);
-
-            mRegister.setAlpha((float) 0.3);
-            buttonLogin.setAlpha((float)0.3);
-
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build();
-            // [END config_signin]
-            googleApiClient = new GoogleApiClient.Builder(LoginScreen.this)
-                    .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                        @Override
-                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                            Toast.makeText(LoginScreen.this, "You Have An Error", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
-
-            mFirebaseAuth=FirebaseAuth.getInstance();
-
-
-            slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-            slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-                @Override
-                public void onPanelSlide(View panel, float slideOffset) {
-
-                }
-
-                @Override
-                public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-
-                }
-            });
-            slidingUpPanelLayout.setFadeOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                }
-            });
-
-
-            buttonLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-                }
-            });
-
-            buttonPhoneLogin = (LinearLayout) findViewById(R.id.login_hp);
-            buttonPhoneLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(LoginScreen.this, LoginActivity.class);
-                    startActivity(i);
-                }
-            });
-
-            buttonemail = (LinearLayout) findViewById(R.id.login_email);
-            buttonemail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    signInwithGoogle();
-                }
-            });
-
-
-            mRegister.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(LoginScreen.this,RegisterScreen.class);
-                    startActivity(intent);
-                }
-            });
-
-
-
-
-        }
-
-        protected void signInwithGoogle() {
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-            startActivityForResult(signInIntent, RC_SIGN);
-        }
-
-        public void syaratKlik(View view){
-            boolean checked = ((CheckBox)view).isChecked();
-            switch (view.getId()){
-                case R.id.check:
-                    if (checked){
-                        mRegister.setEnabled(true);
-                        buttonLogin.setEnabled(true);
-
-                        mRegister.setAlpha((float) 1);
-                        buttonLogin.setAlpha((float) 1);
-                    }else {
-                        mRegister.setEnabled(false);
-                        buttonLogin.setEnabled(false);
-                        mRegister.setAlpha((float) 0.3);
-                        buttonLogin.setAlpha((float)0.3);
-                    }
-            }
-        }
-
-        @Override
-        public void onBackPressed() {
-            super.onBackPressed();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+        if (currentUser != null){
+            startActivity(new Intent(LoginScreen.this,MasterActivity.class));
             finish();
         }
+    }
 
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode==RC_SIGN){
-                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                if (result.isSuccess()){
-                    GoogleSignInAccount account= result.getSignInAccount();
-                    firebaseAuthWithGoogle(account);
-                }else {
-
-                    mFirebaseAuth.signOut();
-                }
-            }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login_screen);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
+        tos =(TextView) findViewById(R.id.tos);
+        privacy = (TextView) findViewById(R.id.privacy);
+        tos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), TermEndService.class);
+                intent.putExtra("EXTRA_SESSION_ID", "https://www.authenticguards.com/term/");
+                startActivity(intent);
+            }
+        });
+
+        privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), TermEndService.class);
+                intent.putExtra("EXTRA_SESSION_ID", "https://www.authenticguards.com/privacy-policy/");
+                startActivity(intent);
+            }
+        });
+
+        mRegister = (Button) findViewById(R.id.register);
+        buttonLogin = (Button) findViewById(R.id.btnLogin);
+
+        mRegister.setEnabled(false);
+        buttonLogin.setEnabled(false);
+
+        mRegister.setAlpha((float) 0.3);
+        buttonLogin.setAlpha((float)0.3);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // [END config_signin]
+        googleApiClient = new GoogleApiClient.Builder(LoginScreen.this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(LoginScreen.this, "You Have An Error", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        mFirebaseAuth=FirebaseAuth.getInstance();
 
 
-        private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-            Log.d(TAG, "firebaseAuthWithGoogle: "+acct.getId());
-            displayLoader();
-            AuthCredential credential= GoogleAuthProvider.getCredential(acct.getIdToken(),null);
-            mFirebaseAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()){
+        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+
+            }
+        });
+        slidingUpPanelLayout.setFadeOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        });
+
+
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+            }
+        });
+
+        buttonPhoneLogin = (LinearLayout) findViewById(R.id.login_hp);
+        buttonPhoneLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginScreen.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+
+        buttonemail = (LinearLayout) findViewById(R.id.login_email);
+        buttonemail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInwithGoogle();
+            }
+        });
+
+
+        mRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginScreen.this,RegisterScreen.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+    }
+
+    protected void signInwithGoogle() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN);
+    }
+
+    public void syaratKlik(View view){
+        boolean checked = ((CheckBox)view).isChecked();
+        switch (view.getId()){
+            case R.id.check:
+                if (checked){
+                    mRegister.setEnabled(true);
+                    buttonLogin.setEnabled(true);
+
+                    mRegister.setAlpha((float) 1);
+                    buttonLogin.setAlpha((float) 1);
+                }else {
+                    mRegister.setEnabled(false);
+                    buttonLogin.setEnabled(false);
+                    mRegister.setAlpha((float) 0.3);
+                    buttonLogin.setAlpha((float)0.3);
+                }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==RC_SIGN){
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()){
+                GoogleSignInAccount account= result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            }else {
+
+                mFirebaseAuth.signOut();
+            }
+        }
+    }
+
+
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle: "+acct.getId());
+        displayLoader();
+        AuthCredential credential= GoogleAuthProvider.getCredential(acct.getIdToken(),null);
+        mFirebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
 //                            jika sign succes update ui
-                                Log.d(TAG, "onComplete: success");
-                                final FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
-                                final HashMap<String, Object> user= new HashMap<>();
-                                gambar = currentUser.getPhotoUrl().toString();
-                                name = currentUser.getDisplayName();
-                                final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
-                                dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Log.d(TAG, "onComplete: success");
+                            final FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+                            final HashMap<String, Object> user= new HashMap<>();
+                            gambar = currentUser.getPhotoUrl().toString();
+                            name = currentUser.getDisplayName();
+                            final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+                            dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
+                                        startActivity(pindah);
+                                    } else {
                                         User us = dataSnapshot.getValue(User.class);
-
                                         if (dataSnapshot.child("gambar").exists()){
                                             gambar = us.getGambar();
                                         }
@@ -278,7 +281,7 @@ public class LoginScreen extends AppCompatActivity {
                                         }
 
                                         if (dataSnapshot.child("totalPoint").exists()){
-//                                            totalPoint = us.getTotalPoint();
+                                            totalPoint = us.getTotalPoint();
                                         }
 
                                         user.put("numberPhone",numberPhone);
@@ -293,24 +296,24 @@ public class LoginScreen extends AppCompatActivity {
                                         user.put("totalPoint",totalPoint);
 
                                         dbf.setValue(user);
-
+                                        Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
+                                        startActivity(pindah);
                                     }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
 
-                                    }
-                                });
-                                Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
-                                pindah.putExtra("tambahPoint","100");
-                                startActivity(pindah);
-                                //updateUI(user);
-                            }else {
-                                Log.w(TAG, "onFailure: ", task.getException() );
-                            }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }else {
+                            Log.w(TAG, "onFailure: ", task.getException() );
                         }
-                    });
-        }
+                    }
+                });
+    }
     private void displayLoader() {
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Account Verification...");
@@ -319,3 +322,7 @@ public class LoginScreen extends AppCompatActivity {
         pDialog.show();
     }
 }
+
+//    Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
+//                            pindah.putExtra("tambahPoint","100");
+//                                    startActivity(pindah);
