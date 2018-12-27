@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +19,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,6 +41,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
@@ -56,9 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText name,age,address,email,phonenumber;
     Button savEdit;
 
-    final int REQUEST_CODE_GALLERY = 999;
-
-    Intent CropIntent;
+    private static int IMG_CAMERA = 2;
 
     private Uri filepath;
 
@@ -91,19 +95,15 @@ public class EditProfileActivity extends AppCompatActivity {
         ArrayAdapter<String> genderAdapter= new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, genderSpinner);
         spinner.setAdapter(genderAdapter);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_GALLERY);
-        }
-
         getData();
 
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, REQUEST_CODE_GALLERY);
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1, 1)
+                        .start(EditProfileActivity.this);
             }
         });
         savEdit.setOnClickListener(new View.OnClickListener() {
@@ -146,35 +146,28 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == REQUEST_CODE_GALLERY){
-            if(grantResults.length >0 && grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getApplicationContext(), "You don't have permission to access file location!", Toast.LENGTH_SHORT).show();
-            }
-            return;
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && data != null){
-            filepath = data.getData();
-
-            try {
-                InputStream inputStream = getContentResolver().openInputStream(filepath);
-
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(),bitmap);
-                roundedBitmapDrawable.setCircular(true);
-                //roundedBitmapDrawable.setCornerRadius(500f);
-                picture.setImageDrawable(roundedBitmapDrawable);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
         super.onActivityResult(requestCode, resultCode, data);
+        try{
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    filepath = result.getUri();
+                    picture.setImageURI(filepath);
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+
+            }
+            else if (requestCode == IMG_CAMERA) {
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                picture.setImageBitmap(thumbnail);
+            }
+        }catch (Exception e){
+            Log.d("ClaimProduct", "onActivityResult: "+e.toString());
+            Toast.makeText(EditProfileActivity.this, "Silahkan coba lagi", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void saveSetting(){
@@ -248,29 +241,4 @@ public class EditProfileActivity extends AppCompatActivity {
 
         }
     }
-
-
-    private void CropImage() {
-
-        try{
-            CropIntent = new Intent("com.android.camera.action.CROP");
-            CropIntent.setDataAndType(uri,"image/*");
-            CropIntent.putExtra("crop","true");
-            CropIntent.putExtra("outputX",180);
-            CropIntent.putExtra("outputY",180);
-            CropIntent.putExtra("aspectX",3);
-            CropIntent.putExtra("aspectY",4);
-            CropIntent.putExtra("scaleUpIfNeeded",true);
-            CropIntent.putExtra("return-data",true);
-
-            startActivityForResult(CropIntent,2);
-        }
-        catch (ActivityNotFoundException ex)
-        {
-
-        }
-
-    }
-
-
 }
