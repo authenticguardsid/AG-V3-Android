@@ -21,133 +21,133 @@
             android:layout_height="match_parent"
             android:background="#0f0f0f"
             android:fitsSystemWindows="true">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layer_4"
-        android:gravity="center">
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/layer_4"
-        android:gravity="center">
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:padding="10dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1.1">
-
-            <ImageView
-                android:id="@+id/gambar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="47dp"
-                android:src="@drawable/icons_8_change_user_filled" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.9"
-            android:orientation="vertical">
-            <!--<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:gravity="center"
-            android:layout_weight="0.9"
-            android:orientation="vertical">-->
-
-            <Button
-                android:id="@+id/register"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/button_login_email"
-                android:elevation="10dp"
-                android:text="CREATE ACCOUNT"
-                android:textColor="#FFF" />
-
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/register"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/button_login_email"
-                android:text="LOGIN"
-                android:textColor="#FFF" />
-
-            <CheckBox
-                android:id="@+id/check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btnLogin"
-                android:layout_marginLeft="45dp"
-                android:layout_marginTop="10dp"
-                android:buttonTint="@android:color/white"
-                android:onClick="syaratKlik" />
-
             <LinearLayout
-                android:layout_width="230dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/btnLogin"
-                android:layout_marginTop="15dp"
-                android:layout_toRightOf="@+id/check"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="I agree to "
-                    android:textColor="@android:color/white"
-                    android:textSize="9sp" />
-
-                <TextView
-                    android:id="@+id/tos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="term of service "
-                    android:textColor="#9d8348"
-                    android:textSize="9sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="and have read all "
-                    android:textColor="@android:color/white"
-                    android:textSize="9sp" />
-
-                <TextView
-                    android:id="@+id/privacy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Privacy policy "
-                    android:textColor="#9d8348"
-                    android:textSize="9sp" />
-
+                android:background="@drawable/layer_4"
+                android:gravity="center">
             </LinearLayout>
 
-            <!--</LinearLayout>-->
-        </RelativeLayout>
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/layer_4"
+                android:gravity="center">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:padding="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    android:layout_weight="1.1">
+
+                    <ImageView
+                        android:id="@+id/gambar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="47dp"
+                        android:src="@drawable/icons_8_change_user_filled" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.9"
+                    android:orientation="vertical">
+                    <!--<LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center"
+                    android:layout_weight="0.9"
+                    android:orientation="vertical">-->
+
+                    <Button
+                        android:id="@+id/register"
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/button_login_email"
+                        android:elevation="10dp"
+                        android:text="CREATE ACCOUNT"
+                        android:textColor="#FFF" />
+
+                    <Button
+                        android:id="@+id/btnLogin"
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/register"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/button_login_email"
+                        android:text="LOGIN"
+                        android:textColor="#FFF" />
+
+                    <CheckBox
+                        android:id="@+id/check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btnLogin"
+                        android:layout_marginLeft="45dp"
+                        android:layout_marginTop="10dp"
+                        android:buttonTint="@android:color/white"
+                        android:onClick="syaratKlik" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btnLogin"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/check"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="I agree to "
+                            android:textColor="@android:color/white"
+                            android:textSize="9sp" />
+
+                        <TextView
+                            android:id="@+id/tos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="term of service "
+                            android:textColor="#9d8348"
+                            android:textSize="9sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="and have read all "
+                            android:textColor="@android:color/white"
+                            android:textSize="9sp" />
+
+                        <TextView
+                            android:id="@+id/privacy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Privacy policy "
+                            android:textColor="#9d8348"
+                            android:textSize="9sp" />
+
+                    </LinearLayout>
+
+                    <!--</LinearLayout>-->
+                </RelativeLayout>
+
+            </LinearLayout>
         </RelativeLayout>
     </FrameLayout>
 
@@ -204,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="LOGIN WITH PHONE NUMBER"
+                android:text="LOGIN WITH E-MAIL"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold"/>
 

@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -28,12 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MasterActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".QRcodeActivity" />
-
         <activity android:name=".MainActivity" />
         <activity android:name=".screen.LoginScreen" />
         <activity android:name=".screen.RegisterScreen" />
@@ -48,8 +45,8 @@
         <activity android:name=".ShareActivity" />
         <activity android:name=".ClaimProductActivity" />
         <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ReportActivity"></activity>
-
+        <activity android:name=".ReportActivity" />
+        <activity android:name=".screen.LoginActivity"></activity>
     </application>
 
 </manifest>
