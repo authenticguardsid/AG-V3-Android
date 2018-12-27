@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +42,7 @@ public class RegisterScreen extends AppCompatActivity {
     String age = "";
     String address = "";
     String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Fuser.png?alt=media&token=a07b3aa8-90d4-4322-8e1d-8f20b91e54b0";
-    String totalPoint = "10";
+    String totalPoint = "100";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +92,11 @@ public class RegisterScreen extends AppCompatActivity {
                                     if (!task.isSuccessful()) {
                                         Toast.makeText(RegisterScreen.this, "Authentication failed : Account already exist", Toast.LENGTH_SHORT).show();
                                     } else {
+                                        Log.d("LOL", "onComplete: success");
                                         final FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
                                         final HashMap<String, Object> user= new HashMap<>();
-                                        name = textName.getText().toString();
-                                        numberPhone = textNumber.getText().toString();
-                                        emailnya = textEmail.getText().toString();
+                                        gambar = currentUser.getPhotoUrl().toString();
+                                        name = currentUser.getDisplayName();
                                         final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
                                         dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
@@ -130,7 +131,7 @@ public class RegisterScreen extends AppCompatActivity {
                                                 user.put("idEmail",currentUser.getUid());
                                                 user.put("idPhone","");
                                                 user.put("name",name);
-                                                user.put("email",emailnya);
+                                                user.put("email",currentUser.getEmail());
                                                 user.put("gender",gender);
                                                 user.put("age",age);
                                                 user.put("address",address);
@@ -139,7 +140,6 @@ public class RegisterScreen extends AppCompatActivity {
 
                                                 dbf.setValue(user);
                                                 Intent pindah = new Intent(RegisterScreen.this,MasterActivity.class);
-                                                pindah.putExtra("tambahPoint","100");
                                                 startActivity(pindah);
                                             }
 

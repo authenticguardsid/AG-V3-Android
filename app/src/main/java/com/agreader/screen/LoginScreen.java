@@ -62,7 +62,7 @@ public class LoginScreen extends AppCompatActivity {
     String age = "";
     String address = "";
     String gambar;
-    String totalPoint = "0";
+    String totalPoint = "100";
 
     @Override
     protected void onStart() {
@@ -254,47 +254,52 @@ public class LoginScreen extends AppCompatActivity {
                             dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    User us = dataSnapshot.getValue(User.class);
-                                    if (dataSnapshot.child("gambar").exists()){
-                                        gambar = us.getGambar();
-                                    }
+                                    if(dataSnapshot.exists()){
+                                        Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
+                                        startActivity(pindah);
+                                    } else {
+                                        User us = dataSnapshot.getValue(User.class);
+                                        if (dataSnapshot.child("gambar").exists()){
+                                            gambar = us.getGambar();
+                                        }
 
-                                    if (dataSnapshot.child("numberPhone").exists()){
-                                        numberPhone = us.getNumberPhone();
-                                    }
+                                        if (dataSnapshot.child("numberPhone").exists()){
+                                            numberPhone = us.getNumberPhone();
+                                        }
 
-                                    if (dataSnapshot.child("name").exists()){
-                                        name = us.getName();
-                                    }
-                                    if (dataSnapshot.child("gender").exists()){
-                                        gender = us.getGender();
-                                    }
-                                    if (dataSnapshot.child("age").exists()){
-                                        age = us.getAge();
-                                    }
-                                    if (dataSnapshot.child("address").exists()){
-                                        address = us.getAddress();
-                                    }
+                                        if (dataSnapshot.child("name").exists()){
+                                            name = us.getName();
+                                        }
+                                        if (dataSnapshot.child("gender").exists()){
+                                            gender = us.getGender();
+                                        }
+                                        if (dataSnapshot.child("age").exists()){
+                                            age = us.getAge();
+                                        }
+                                        if (dataSnapshot.child("address").exists()){
+                                            address = us.getAddress();
+                                        }
 
-                                    if (dataSnapshot.child("totalPoint").exists()){
+                                        if (dataSnapshot.child("totalPoint").exists()){
                                             totalPoint = us.getTotalPoint();
+                                        }
+
+                                        user.put("numberPhone",numberPhone);
+                                        user.put("idEmail",currentUser.getUid());
+                                        user.put("idPhone","");
+                                        user.put("name",name);
+                                        user.put("email",currentUser.getEmail());
+                                        user.put("gender",gender);
+                                        user.put("age",age);
+                                        user.put("address",address);
+                                        user.put("gambar",gambar);
+                                        user.put("totalPoint",totalPoint);
+
+                                        dbf.setValue(user);
+                                        Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
+                                        startActivity(pindah);
                                     }
 
-                                    user.put("numberPhone",numberPhone);
-                                    user.put("idEmail",currentUser.getUid());
-                                    user.put("idPhone","");
-                                    user.put("name",name);
-                                    user.put("email",currentUser.getEmail());
-                                    user.put("gender",gender);
-                                    user.put("age",age);
-                                    user.put("address",address);
-                                    user.put("gambar",gambar);
-                                    user.put("totalPoint",totalPoint);
-
-                                    dbf.setValue(user);
-                                    Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
-                                    pindah.putExtra("tambahPoint","100");
-                                    startActivity(pindah);
                                 }
 
                                 @Override

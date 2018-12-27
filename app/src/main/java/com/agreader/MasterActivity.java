@@ -191,17 +191,9 @@ public class MasterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-                if (getIntent().getStringExtra("tambahPoint") != null){
-                    int point = Integer.parseInt(us.getTotalPoint());
-                    int tambahPoint = point + 100;
-                    String points = String.valueOf(tambahPoint);
-                    Toast.makeText(MasterActivity.this, "Selamat Point Anda berhasil ditambahkan", Toast.LENGTH_SHORT).show();
-                    dbf.child("totalPoint").setValue(points);
-                    pointt.setText(points + " pts");
-                }else {
                     pointt.setText(us.getTotalPoint() + " pts");
                 }
-            }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
