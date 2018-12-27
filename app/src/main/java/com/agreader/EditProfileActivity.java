@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -72,6 +74,8 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+
+
         picture = (ImageView)findViewById(R.id.fotoProfile);
         name = (EditText)findViewById(R.id.editTextNamaProfile);
         age = (EditText)findViewById(R.id.editTextUmurProfile);
@@ -106,7 +110,8 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveSetting();
-                startActivity(new Intent(EditProfileActivity.this, MasterActivity.class));
+                Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -196,7 +201,6 @@ public class EditProfileActivity extends AppCompatActivity {
                     user.put("email",emaile);
                     user.put("id",currentUser.getUid());
                     user.put("numberPhone",phoneNumbere);
-                    user.put("totalPoint",usr.getTotalPoint());
                     dbf.setValue(user);
 
                 }

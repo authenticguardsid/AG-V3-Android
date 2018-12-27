@@ -144,15 +144,15 @@
     </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>
-    <!--<EditText-->
-    <!--android:id="@+id/editRegisterPhoneNumber"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:hint="e.g 812345678"-->
-    <!--android:inputType="number"-->
-    <!--android:digits="0123456789"-->
+                <!--<EditText-->
+                    <!--android:id="@+id/editRegisterPhoneNumber"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:hint="e.g 812345678"-->
+                    <!--android:inputType="number"-->
+                    <!--android:digits="0123456789"-->
 
-    <!--/>-->
+                    <!--/>-->
 
 
 
