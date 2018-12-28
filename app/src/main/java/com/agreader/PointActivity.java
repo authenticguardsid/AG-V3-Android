@@ -56,8 +56,6 @@ public class PointActivity extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = (RecyclerView)findViewById(R.id.recycleViewPoint);
-        fotoProfile = (ImageView)findViewById(R.id.fotoPoint);
-        namaProfile = (TextView)findViewById(R.id.namaPoint);
         totalPoints = (TextView)findViewById(R.id.totalPoints);
         peringkat = (RelativeLayout)findViewById(R.id.peringkat);
 
@@ -107,9 +105,6 @@ public class PointActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-
-                Picasso.get().load(us.getGambar()).into(fotoProfile);
-                namaProfile.setText(us.getName());
                 String point = us.getTotalPoint();
                 double parsepoint = Double.parseDouble(point);
                 NumberFormat formatter = new DecimalFormat("#,###");

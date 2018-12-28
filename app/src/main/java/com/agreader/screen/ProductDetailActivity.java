@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.agreader.ClaimProductActivity;
 import com.agreader.ImageAdapter;
 import com.agreader.R;
 import com.agreader.ShareActivity;
@@ -47,7 +48,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductDetailActivity.this, ShareActivity.class);
+                Intent intent = new Intent(ProductDetailActivity.this, ClaimProductActivity.class);
                 startActivity(intent);
                 finish();
             }

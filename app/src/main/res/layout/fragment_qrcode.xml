@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
+    android:background="@color/colorWhite"
     tools:context=".fragment.QrcodeFragment">
-
-
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,29 +17,36 @@
         android:paddingLeft="40dp"
         android:paddingRight="40dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Verification"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:textColor="@color/colorGREY"/>
-
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
             android:src="@drawable/qrcode"
-            android:tint="@color/colorPrimary" />
+            android:tint="@color/colorGREY" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="sans-serif-light"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:typeface="sans"
+            android:text="Authenticity Scanner"
+            android:textColor="@color/colorGREY"
+            android:textStyle="bold"
+            android:textSize="17dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:lineSpacingMultiplier="1.5"
             android:text="Scan the QR code on the product to get authenticity "
             android:textColor="@color/colorGREY"
-            android:textSize="16sp" />
+            android:typeface="sans"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="12dp" />
+
     </LinearLayout>
 
     <Button
