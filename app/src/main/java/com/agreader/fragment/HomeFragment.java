@@ -1,15 +1,18 @@
 package com.agreader.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.agreader.EditProfileActivity;
 import com.agreader.R;
 import com.agreader.adapter.brandAdapter;
 import com.agreader.utils.ViewPagerAdapter;
@@ -35,6 +38,7 @@ import java.util.TimerTask;
 public class HomeFragment extends Fragment {
 
     View rootView;
+    CardView toProfile;
 
     CarouselView carouselView;
     int[] sampleImages = {R.drawable.slider1, R.drawable.slider2, R.drawable.slider3, R.drawable.slider4};
@@ -53,6 +57,15 @@ public class HomeFragment extends Fragment {
         carouselView.setPageCount(sampleImages.length);
 
         carouselView.setImageListener(imageListener);
+        toProfile = (CardView)rootView.findViewById(R.id.relative_2);
+        toProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         GridView gridview = rootView.findViewById(R.id.gridview);
         gridview.setAdapter(new brandAdapter(getContext()));

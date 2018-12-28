@@ -7,12 +7,12 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
-    private String idEmail,idPhone,name, email, numberPhone, gender, age, address, gambar,totalPoint;
+    private String idEmail,idPhone,name, email, numberPhone, gender, age, address, gambar,totalPoint,completeProfile;
 
     public User() {
     }
 
-    public User(String idEmail,String idPhone, String name, String email, String numberPhone, String gender, String age, String address, String gambar, String totalPoint) {
+    public User(String idEmail, String idPhone, String name, String email, String numberPhone, String gender, String age, String address, String gambar, String totalPoint, String completeProfile) {
         this.idEmail = idEmail;
         this.idPhone = idPhone;
         this.name = name;
@@ -23,9 +23,10 @@ public class User implements Serializable {
         this.address = address;
         this.gambar = gambar;
         this.totalPoint = totalPoint;
+        this.completeProfile = completeProfile;
     }
 
-    public String getTotalPoint() {
+    public String  getTotalPoint() {
         return totalPoint;
     }
 
@@ -103,5 +104,13 @@ public class User implements Serializable {
 
     public void setGambar(String gambar) {
         this.gambar = gambar;
+    }
+
+    public String getCompleteProfile() {
+        return completeProfile;
+    }
+
+    public void setCompleteProfile(String completeProfile) {
+        this.completeProfile = completeProfile;
     }
 }

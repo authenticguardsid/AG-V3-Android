@@ -294,7 +294,7 @@ public class LoginScreen extends AppCompatActivity {
                                         user.put("address",address);
                                         user.put("gambar",gambar);
                                         user.put("totalPoint",totalPoint);
-
+                                        user.put("completeProfile","false");
                                         dbf.setValue(user);
                                         Intent pindah = new Intent(LoginScreen.this,MasterActivity.class);
                                         startActivity(pindah);

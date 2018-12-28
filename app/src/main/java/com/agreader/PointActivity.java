@@ -24,8 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -54,22 +52,20 @@ public class PointActivity extends AppCompatActivity {
         setContentView(R.layout.activity_point);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        loadData();
         recyclerView = (RecyclerView)findViewById(R.id.recycleViewPoint);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         totalPoints = (TextView)findViewById(R.id.totalPoints);
         peringkat = (RelativeLayout)findViewById(R.id.peringkat);
 
         dbf = FirebaseDatabase.getInstance().getReference("hadiah");
-        loadData();
-
-
         dbf.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 hadiahs = new ArrayList<>();
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    Hadiah hd = ds.getValue(Hadiah.class);
-                    hadiahs.add(hd);
+                for (DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
+                    Hadiah da = postSnapshot.getValue(Hadiah.class);
+                    hadiahs.add(da);
                 }
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setNestedScrollingEnabled(false);
@@ -105,11 +101,11 @@ public class PointActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-                String point = us.getTotalPoint();
-                double parsepoint = Double.parseDouble(point);
-                NumberFormat formatter = new DecimalFormat("#,###");
-                String formattedNumber = formatter.format(parsepoint);
-                totalPoints.setText(formattedNumber + " pts");
+                if(us.getTotalPoint() != null)
+                    totalPoints.setText(us.getTotalPoint() + " pts");
+                else{
+                    totalPoints.setText("0 pts");
+                }
             }
 
             @Override

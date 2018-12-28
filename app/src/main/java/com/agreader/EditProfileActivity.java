@@ -1,12 +1,15 @@
 package com.agreader;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -58,9 +61,11 @@ import static com.soundcloud.android.crop.Crop.REQUEST_PICK;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+    private static final String TAG = "LOL";
     ImageView picture;
     EditText name,age,address,email,phonenumber;
     Button savEdit;
+    String isComplete;
 
     private static int IMG_CAMERA = 2;
 
@@ -110,8 +115,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveSetting();
-                Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
-                startActivity(intent);
+
             }
         });
     }
@@ -187,17 +191,93 @@ public class EditProfileActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User usr = dataSnapshot.getValue(User.class);
+                    isComplete = usr.getCompleteProfile();
                     final HashMap<String, Object> user= new HashMap<>();
-                    user.put("name",namee);
-                    user.put("gender",gendeer);
-                    user.put("age",agee);
-                    user.put("address",addresse);
-                    user.put("email",emaile);
-                    user.put("id",currentUser.getUid());
-                    user.put("numberPhone",phoneNumbere);
-                    user.put("totalPoint", usr.getTotalPoint());
-                    dbf.setValue(user);
-
+                    if(isComplete.equals("false")){
+                        if(name.getText().equals("") || spinner.getText().equals("") || age.getText().equals("")|| phonenumber.equals("") || address.getText().equals(""))
+                        {
+                            Log.d(TAG, "iscomplete : kondisi profil belum lengkap");
+                            user.put("name",namee);
+                            user.put("gender",gendeer);
+                            user.put("age",agee);
+                            user.put("address",addresse);
+                            user.put("email",emaile);
+                            user.put("id",currentUser.getUid());
+                            user.put("numberPhone",phoneNumbere);
+                            user.put("totalPoint", usr.getTotalPoint());
+                            user.put("completeProfile", "false");
+                            dbf.setValue(user);
+                            Toast.makeText(EditProfileActivity.this, "Profile tersimpan ,Lengkapi Profile dengan mendapatkan 5.000 point", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                            startActivity(intent);
+                        }
+                        else{
+                            Log.d("LOL", "iscomplete: " + usr.getCompleteProfile() );
+                            Log.d("LOL", "iscomplete: ini kalau sudah lengkap" );
+                            user.put("name",namee);
+                            user.put("gender",gendeer);
+                            user.put("age",agee);
+                            user.put("address",addresse);
+                            user.put("email",emaile);
+                            user.put("id",currentUser.getUid());
+                            user.put("numberPhone",phoneNumbere);
+                            String pointText = usr.getTotalPoint();
+                            int point = Integer.parseInt(pointText);
+                            int total = point + 5000;
+                            String totalString = Integer.toString(total);
+                            user.put("totalPoint", totalString);
+                            user.put("completeProfile", "true");
+                            dbf.setValue(user);
+                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditProfileActivity.this);
+                            View mView = getLayoutInflater().inflate(R.layout.reward_popup,
+                                    null);
+                            Button reward;
+                            reward = (Button)mView.findViewById(R.id.ok);
+                            mBuilder.setView(mView);
+                            final AlertDialog dialog = mBuilder.create();
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            reward.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(EditProfileActivity.this,MasterActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                            dialog.show();
+                        }
+                    }else {
+                        if(name.getText().equals("") || spinner.getText().equals("") || age.getText().equals("")|| phonenumber.equals("") || address.getText().equals("") ){
+                            Log.d("LOL", "iscomplete: ini profil sudah pernah lengkap tapi tidak lengkap ");
+                            user.put("name",namee);
+                            user.put("gender",gendeer);
+                            user.put("age",agee);
+                            user.put("address",addresse);
+                            user.put("email",emaile);
+                            user.put("id",currentUser.getUid());
+                            user.put("numberPhone",phoneNumbere);
+                            user.put("totalPoint", usr.getTotalPoint());
+                            user.put("completeProfile", "true");
+                            dbf.setValue(user);
+                            Toast.makeText(EditProfileActivity.this, "Profile Tersimpan Lengkapi Profil mu dapatkan hadia menarik !", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                            startActivity(intent);
+                        }else{
+                            Log.d("LOL", "iscomplete: ini kondisi dimana profil telah lengkap tapi sudah dapat reward "  );
+                            user.put("name",namee);
+                            user.put("gender",gendeer);
+                            user.put("age",agee);
+                            user.put("address",addresse);
+                            user.put("email",emaile);
+                            user.put("id",currentUser.getUid());
+                            user.put("numberPhone",phoneNumbere);
+                            user.put("totalPoint", usr.getTotalPoint());
+                            user.put("completeProfile", "true");
+                            dbf.setValue(user);
+                            Toast.makeText(EditProfileActivity.this, "Profile Tersimpan", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                            startActivity(intent);
+                        }
+                    }
                 }
 
                 @Override
@@ -220,16 +300,90 @@ public class EditProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     User usr = dataSnapshot.getValue(User.class);
+                                    isComplete = usr.getCompleteProfile();
                                     final HashMap<String, Object> user= new HashMap<>();
-                                    user.put("name",namee);
-                                    user.put("gender",gendeer);
-                                    user.put("age",agee);
-                                    user.put("address",addresse);
-                                    user.put("email",emaile);
-                                    user.put("numberPhone",phoneNumbere);
-                                    user.put("gambar",urlGambar);
-                                    user.put("totalPoint", usr.getTotalPoint());
-                                    dbf.setValue(user);
+                                    if(isComplete.equals("false")){
+                                        if(name.getText().equals("") || spinner.getText().equals("") || age.getText().equals("")|| phonenumber.equals("") || address.getText().equals(""))
+                                        {
+                                            Log.d("LOL", "iscomplete: ini kondisi dimana profil belum lengkap dan belum dapat reward " );
+                                            user.put("name",namee);
+                                            user.put("gender",gendeer);
+                                            user.put("age",agee);
+                                            user.put("address",addresse);
+                                            user.put("email",emaile);
+                                            user.put("numberPhone",phoneNumbere);
+                                            user.put("gambar",urlGambar);
+                                            user.put("totalPoint", usr.getTotalPoint());
+                                            user.put("completeProfile", "false");
+                                            dbf.setValue(user);
+                                            Toast.makeText(EditProfileActivity.this, "Profile tersimpan ,Lengkapi Profile dengan mendapatkan 5.000 point", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                                            startActivity(intent);
+                                        }else{
+                                            Log.d("LOL", "iscomplete: " + usr.getCompleteProfile() );
+                                            user.put("name",namee);
+                                            user.put("gender",gendeer);
+                                            user.put("age",agee);
+                                            user.put("address",addresse);
+                                            user.put("email",emaile);
+                                            user.put("numberPhone",phoneNumbere);
+                                            user.put("gambar",urlGambar);
+                                            String pointText = usr.getTotalPoint();
+                                            int point = Integer.parseInt(pointText);
+                                            int total = point + 5000;
+                                            String totalString = Integer.toString(total);
+                                            user.put("totalPoint", totalString);
+                                            user.put("completeProfile", "true");
+                                            dbf.setValue(user);
+                                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditProfileActivity.this);
+                                            View mView = getLayoutInflater().inflate(R.layout.reward_popup,
+                                                    null);
+                                            Button reward;
+                                            reward = (Button)mView.findViewById(R.id.ok);
+                                            mBuilder.setView(mView);
+                                            final AlertDialog dialog = mBuilder.create();
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                            reward.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    Intent intent = new Intent(EditProfileActivity.this,MasterActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            });
+                                            dialog.show();
+                                        }
+                                    }else{
+                                        if(name.getText().equals("") || spinner.getText().equals("") || age.getText().equals("")|| phonenumber.equals("") || address.getText().equals("") ){
+                                            user.put("name",namee);
+                                            user.put("gender",gendeer);
+                                            user.put("age",agee);
+                                            user.put("address",addresse);
+                                            user.put("email",emaile);
+                                            user.put("id",currentUser.getUid());
+                                            user.put("numberPhone",phoneNumbere);
+                                            user.put("totalPoint", usr.getTotalPoint());
+                                            user.put("completeProfile", "true");
+                                            dbf.setValue(user);
+                                            Toast.makeText(EditProfileActivity.this, "Profile Tersimpan", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                                            startActivity(intent);
+                                        }else{
+                                            Log.d("LOL", "iscomplete: ini kondisi terakir" );
+                                            user.put("name",namee);
+                                            user.put("gender",gendeer);
+                                            user.put("age",agee);
+                                            user.put("address",addresse);
+                                            user.put("email",emaile);
+                                            user.put("id",currentUser.getUid());
+                                            user.put("numberPhone",phoneNumbere);
+                                            user.put("totalPoint", usr.getTotalPoint());
+                                            user.put("completeProfile", "true");
+                                            dbf.setValue(user);
+                                            Toast.makeText(EditProfileActivity.this, "Profile Tersimpan", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }
                                 }
 
                                 @Override

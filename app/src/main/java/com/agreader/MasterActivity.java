@@ -31,6 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class MasterActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
@@ -184,7 +187,11 @@ public class MasterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-                    pointt.setText(us.getTotalPoint() + " pts");
+                    String point = us.getTotalPoint();
+                    double parsepoint = Double.parseDouble(point);
+                    NumberFormat formatter = new DecimalFormat("#,###");
+                    String formattedNumber = formatter.format(parsepoint);
+                    pointt.setText(formattedNumber + " pts");
                 }
 
 
