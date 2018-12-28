@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -105,6 +107,7 @@ public class PointActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
+
                 Picasso.get().load(us.getGambar()).into(fotoProfile);
                 namaProfile.setText(us.getName());
                 if(us.getTotalPoint() != null)
@@ -112,6 +115,11 @@ public class PointActivity extends AppCompatActivity {
                 else{
                     totalPoints.setText("0 pts");
                 }
+                String point = us.getTotalPoint();
+                double parsepoint = Double.parseDouble(point);
+                NumberFormat formatter = new DecimalFormat("#,###");
+                String formattedNumber = formatter.format(parsepoint);
+                totalPoints.setText(formattedNumber + " pts");
             }
 
             @Override

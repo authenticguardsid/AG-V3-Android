@@ -62,7 +62,7 @@ public class LoginScreen extends AppCompatActivity {
     String age = "";
     String address = "";
     String gambar;
-    String totalPoint = "100";
+    String totalPoint = "10000";
 
     @Override
     protected void onStart() {
