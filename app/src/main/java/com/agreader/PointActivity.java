@@ -56,7 +56,7 @@ public class PointActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.recycleViewPoint);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         totalPoints = (TextView)findViewById(R.id.totalPoints);
-        peringkat = (RelativeLayout)findViewById(R.id.peringkat);
+//        peringkat = (RelativeLayout)findViewById(R.id.peringkat);
 
         dbf = FirebaseDatabase.getInstance().getReference("hadiah");
         dbf.addValueEventListener(new ValueEventListener() {
@@ -86,12 +86,12 @@ public class PointActivity extends AppCompatActivity {
             }
         });
 
-        peringkat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(PointActivity.this, "Dalam Tahap pengembangan", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        peringkat.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(PointActivity.this, "Dalam Tahap pengembangan", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
     }
 
