@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.5"
             android:padding="16dp"
-            android:text="@string/loremIpsum"
+            android:text="lorem"
             android:textSize="14sp" />
 
     </LinearLayout>
