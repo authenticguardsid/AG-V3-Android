@@ -15,13 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.agreader.EditProfileActivity;
+import com.agreader.screen.EditProfileActivity;
 import com.agreader.R;
-import com.agreader.User;
-import com.agreader.screen.Dashboard;
-import com.agreader.screen.LoginScreen;
-import com.agreader.screen.SliderActivity;
-import com.agreader.screen.TermEndService;
+import com.agreader.model.User;
+import com.agreader.screen.LoginScreenActivity;
+import com.agreader.utils.TermEndService;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -36,8 +34,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 
 /**
@@ -204,7 +200,7 @@ public class ProfileFragment extends Fragment {
                         }
                     });
                 }
-                startActivity(new Intent(getActivity(), LoginScreen.class));
+                startActivity(new Intent(getActivity(), LoginScreenActivity.class));
             }
         });
         return v;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,56 +11,127 @@
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="13dp"
+            android:elevation="8dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0.0px"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            app:cardElevation="10dp"
+            app:cardPreventCornerOverlap="false"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp">
 
             <include layout="@layout/home_section_1"/>
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/relative_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0.0px"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            app:cardElevation="1dp"
+            app:cardPreventCornerOverlap="false"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp">
 
             <include layout="@layout/home_section_2"/>
 
         </android.support.v7.widget.CardView>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/colorSecondary"
+            android:textSize="18sp"
+            android:text="This Week's Highlights"/>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="13dp"
+            android:elevation="8dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0.0px"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            app:cardElevation="1dp"
+            app:cardPreventCornerOverlap="false"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp">
 
             <include layout="@layout/home_section_3"/>
 
         </android.support.v7.widget.CardView>
 
         <RelativeLayout
-            android:id="@+id/relative_4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="2dp">
 
             <include layout="@layout/home_section_4"/>
 
         </RelativeLayout>
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/relative_5"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
-            <include layout="@layout/home_section_5"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Featured Brand"
+                android:textColor="@color/colorSecondary"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
-        </android.support.v7.widget.CardView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGold"
+                android:text="See All"
+                android:textSize="13sp"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/home_section_8"/>
+
+        </RelativeLayout>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="13dp"
+            android:elevation="8dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0.0px"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            app:cardElevation="1dp"
+            app:cardPreventCornerOverlap="false"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp">
 
             <include layout="@layout/home_section_6"/>
 
@@ -68,8 +139,19 @@
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="13dp"
+            android:elevation="8dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0.0px"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            app:cardElevation="1dp"
+            app:cardPreventCornerOverlap="false"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp">
 
             <include layout="@layout/home_section_7"/>
 

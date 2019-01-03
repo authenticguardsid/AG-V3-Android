@@ -12,7 +12,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -23,12 +26,11 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/text_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGold"
                 android:text="See All"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
@@ -41,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="4dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -50,7 +52,7 @@
                     android:layout_marginStart="16dp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="140dp"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/test3"
@@ -61,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="11sp"
-                        android:padding="8dp"
+                        android:paddingTop="8dp"
                         android:layout_gravity="center"
                         android:text="SAVOY HOMAN" />
 
@@ -74,7 +76,7 @@
                     android:layout_marginStart="16dp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="140dp"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/test4"
@@ -98,7 +100,7 @@
                     android:layout_marginStart="16dp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="140dp"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/test5"
@@ -122,7 +124,7 @@
                     android:layout_marginStart="16dp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="140dp"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/test3"
@@ -147,7 +149,7 @@
                     android:layout_marginEnd="16dp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="140dp"
+                        android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/test4"

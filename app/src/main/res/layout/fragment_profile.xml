@@ -121,7 +121,6 @@
                             android:src="@drawable/facebook" />
 
                         <TextView
-                            android:id="@+id/textTagPoint"
                             android:layout_toRightOf="@+id/iconTrophy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -327,7 +326,6 @@
                             android:src="@drawable/a_help" />
 
                         <TextView
-                            android:id="@+id/textValuePoint"
                             android:layout_toRightOf="@+id/iconHelp"
                             android:layout_alignParentRight="true"
                             android:layout_width="wrap_content"

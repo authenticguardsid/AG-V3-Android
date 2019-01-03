@@ -9,13 +9,12 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/complete_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="COMPLETE YOUR PROFILE"
@@ -24,36 +23,78 @@
                 android:textColor="@color/colorSecondary"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <ImageView
-                    android:layout_width="40dp"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_margin="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="0.6"
                     android:src="@drawable/test"/>
 
-                <TextView
-                    android:id="@+id/tasty_promo"
-                    android:layout_width="wrap_content"
+                <com.codesgood.views.JustifiedTextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:layout_marginTop="16dp"
-                    android:lineSpacingMultiplier="1.5"
                     android:layout_marginRight="16dp"
-                    android:text="Hanya butuh 1 menit untuk melengkapi profile anda dan dapatkan point 50.000 pts"/>
+                    android:layout_marginTop="12dp"
+                    android:lineSpacingMultiplier="1"
+                    android:typeface="sans"
+                    android:layout_weight="2.4"
+                    android:text="Hanya butuh 1 menit untuk lengkapi profile anda dan dapatkan point 50.000 pts"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end|center"
+                    android:layout_weight="0"
+                    android:background="@drawable/button"
+                    android:gravity="center"
+                    android:text="GO"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
-            <!--<Button-->
+            <!--<LinearLayout-->
                 <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="32dp"-->
-                <!--android:layout_gravity="end"-->
-                <!--android:textSize="10sp"-->
-                <!--android:background="@color/colorGold"-->
-                <!--android:textColor="@color/colorWhite"-->
-                <!--android:text="GO" />-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="3">-->
+
+                <!--<ImageView-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_marginTop="16dp"-->
+                    <!--android:layout_marginRight="16dp"-->
+                    <!--android:layout_weight="0dp"-->
+                    <!--android:src="@drawable/test"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tasty_promo"-->
+                    <!--android:layout_width="200dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="12sp"-->
+                    <!--android:layout_marginTop="16dp"-->
+                    <!--android:lineSpacingMultiplier="1.5"-->
+                    <!--android:layout_marginRight="16dp"-->
+                    <!--android:text="Hanya butuh 1 menit untuk melengkapi profile anda dan dapatkan point 50.000 pts"/>-->
+
+                <!--<Button-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="32dp"-->
+                    <!--android:layout_gravity="end"-->
+                    <!--android:textSize="10sp"-->
+                    <!--android:layout_marginTop="20dp"-->
+                    <!--android:background="@color/colorGold"-->
+                    <!--android:textColor="@color/colorWhite"-->
+                    <!--android:text="GO" />-->
+                <!---->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 

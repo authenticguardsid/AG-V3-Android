@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.agreader.MasterActivity;
 import com.agreader.R;
 import com.agreader.utils.Config;
 import com.google.android.gms.tasks.OnCompleteListener;
