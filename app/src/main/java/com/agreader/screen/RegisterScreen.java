@@ -136,6 +136,7 @@ public class RegisterScreen extends AppCompatActivity {
                                                 user.put("address",address);
                                                 user.put("gambar",gambar);
                                                 user.put("totalPoint",totalPoint);
+                                                user.put("completeProfile","false");
 
                                                 dbf.setValue(user);
                                                 Intent pindah = new Intent(RegisterScreen.this,MasterActivity.class);

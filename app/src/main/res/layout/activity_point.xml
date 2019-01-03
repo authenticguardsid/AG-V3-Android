@@ -7,93 +7,78 @@
     android:orientation="vertical"
     tools:context="com.agreader.screen.PointActivity">
 
+
+
+    <!-- Body -->
+    <RelativeLayout
+        android:id="@+id/rellayout0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/ToolbarHome"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/toolbar">
+
+            <ImageView
+                android:id="@+id/img_logo"
+                android:layout_width="72dp"
+                android:layout_height="42dp"
+                android:adjustViewBounds="false"
+                android:src="@drawable/logo"/>
+
+
+        </android.support.v7.widget.Toolbar>
+
+
+
+        <RelativeLayout
+            android:id="@+id/points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:id="@+id/trophy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_wallet"
+                android:layout_marginRight="8dp"/>
+
+            <TextView
+                android:id="@+id/totalPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/trophy"
+                android:paddingTop="2dp"
+                android:text="0 pts" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="#e7e7e7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="match_parent"
+            android:background="#e7e7e7">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:alpha="0.8"
-                android:background="@drawable/layer_21" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:background="@drawable/layer_4"/>
-//ss
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:background="#e7e7e7"
+                android:orientation="vertical">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/fotoPoint"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="20dp"
-                    android:scaleType="centerCrop"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_user"/>
-
-                <TextView
-                    android:id="@+id/namaPoint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/fotoPoint"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="8dp"
-                    android:layout_below="@+id/namaPoint">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/ic_trophy"
-                        android:tint="@color/colorPrimary"/>
-
-                    <TextView
-                        android:id="@+id/totalPoints"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        android:layout_gravity="center_vertical"/>
-
-                </LinearLayout>
-            </LinearLayout>
-
-        </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#e7e7e7">
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
                         android:id="@+id/peringkat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -143,33 +128,21 @@
 
                     </RelativeLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycleViewPoint"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:background="@android:color/white"
-                            android:paddingRight="15dp"
-                            android:paddingTop="2dp"
-                            android:paddingLeft="5dp">
-
-                        </android.support.v7.widget.RecyclerView>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </ScrollView>
-
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleViewPoint"
+            android:background="#e7e7e7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+            </LinearLayout>
         </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>
