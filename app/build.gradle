@@ -45,13 +45,13 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'me.dm7.barcodescanner:zxing:1.9'
     implementation 'com.synnapps:carouselview:0.1.5'
-    implementation 'com.codesgood:justifiedtextview:1.1.0'
     implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
 
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.codesgood:justifiedtextview:1.1.0'
 
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
 
@@ -73,15 +73,14 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.1.0'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
 
-    //maps
-    implementation 'com.google.maps.android:android-maps-utils:0.5'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    //Map
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-places:16.0.0'
     implementation 'com.firebase:geofire-android:2.1.2'
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -39,6 +39,7 @@ public class hadiahAdapter extends RecyclerView.Adapter<hadiahAdapter.ViewHolder
         this.mContext = mContext;
         this.mData = mData;
         this.mSelected = new ArrayList<>();
+        setHasStableIds(true);
     }
 
     @Override
