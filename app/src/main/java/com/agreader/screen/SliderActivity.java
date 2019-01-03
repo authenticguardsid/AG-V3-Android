@@ -2,7 +2,6 @@ package com.agreader.screen;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -14,24 +13,13 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.agreader.MasterActivity;
 import com.agreader.R;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class SliderActivity extends AppCompatActivity {
 
@@ -124,7 +112,7 @@ public class SliderActivity extends AppCompatActivity {
     }
 
     private void sendToHome(){
-        Intent intent = new Intent(SliderActivity.this, LoginScreen.class);
+        Intent intent = new Intent(SliderActivity.this, LoginScreenActivity.class);
         startActivity(intent);
         finish();
     }
@@ -153,7 +141,7 @@ public class SliderActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-        startActivity(new Intent(SliderActivity.this, LoginScreen.class));
+        startActivity(new Intent(SliderActivity.this, LoginScreenActivity.class));
         finish();
     }
 

@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.agreader.R;
-import com.agreader.ReportActivity;
 
 public class UnverifiedProductActivity extends AppCompatActivity {
 

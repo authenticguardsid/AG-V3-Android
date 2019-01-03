@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screen.TermEndService"
+    tools:context=".utils.TermEndService"
     android:textAlignment="center">
     <WebView
         android:id="@+id/NewsWebview"

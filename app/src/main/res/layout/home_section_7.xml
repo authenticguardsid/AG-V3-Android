@@ -4,95 +4,64 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="16dp">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="AG Stories"-->
-        <!--android:textColor="@color/colorSecondary"-->
-        <!--android:textSize="16sp"-->
-        <!--android:textStyle="bold"/>-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/text_3"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textColor="@color/colorGold"-->
-        <!--android:text="See All"-->
-        <!--android:textSize="16sp"-->
-        <!--android:layout_alignParentEnd="true"/>-->
-
-        <!--</RelativeLayout>-->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/map"
+                app:riv_mutate_background="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:padding="16dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/test10"
-                    app:riv_corner_radius="8dp"
-                    app:riv_mutate_background="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Authentic Store"
+                    android:textColor="@color/colorSecondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_weight="2"
-                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1"
+                    android:typeface="sans"
+                    android:text="Temukan product original dari brand kesayangan anda dan dapatkan informasi Authentic Store terdekat"
+                    android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/text_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorSecondary"
-                        android:text="Looking For Authentic Store"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingMultiplier="1.5"
-                        android:textSize="14sp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="Temukan Authentic Store terdekat dari lokasi anda"/>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:layout_gravity="end"
-                        android:textSize="10sp"
-                        android:background="@drawable/button"
-                        android:textColor="@color/colorWhite"
-                        android:text="READ MORE" />
-
-                </LinearLayout>
+                <Button
+                    android:id="@+id/more_info_authentic_store"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/button"
+                    android:text="MORE INFO"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -8,27 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.CardView
+        <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            android:elevation="8dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0.0px"
-            android:clipToPadding="false"
-            android:clipChildren="false"
-            app:cardPreventCornerOverlap="false"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_height="wrap_content">
 
             <com.synnapps.carouselview.CarouselView
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="220dp"
                 app:fillColor="#FFFFFFFF"
                 app:pageColor="#00000000"
                 app:radius="4dp"
@@ -36,7 +25,7 @@
                 app:strokeColor="#FF777777"
                 app:strokeWidth="1dp"/>
 
-        </android.support.v7.widget.CardView>
+        </RelativeLayout>
 
     </LinearLayout>
 
