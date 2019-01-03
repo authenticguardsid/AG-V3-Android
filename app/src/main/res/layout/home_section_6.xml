@@ -71,6 +71,7 @@
                         android:text="13K"/>
 
                     <Button
+                        android:id="@+id/more_info_ag_stories"
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:layout_gravity="end"

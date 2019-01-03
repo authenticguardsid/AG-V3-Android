@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.agreader.screen.AuthenticeStoreActivity;
+import com.agreader.screen.DetailStoriesActivity;
 import com.agreader.screen.FeaturedDetailActivity;
 import com.agreader.R;
+import com.agreader.screen.SeeAllStoriesActivity;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -23,7 +26,8 @@ import com.synnapps.carouselview.ImageListener;
 public class HomeFragment extends Fragment {
 
     View rootView;
-    Button mButtonAuthenticStore;
+    Button mButtonAuthenticStore, mButtonMoreInfoStories;
+    TextView mButtonSeeAllStories;
 
     CarouselView carouselView;
     int[] sampleImages = {R.drawable.slider1, R.drawable.slider2, R.drawable.slider3, R.drawable.slider4};
@@ -39,10 +43,29 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //fragment home see all AG Stories
+        mButtonSeeAllStories = rootView.findViewById(R.id.see_all_ag_stories);
+        mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SeeAllStoriesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //more info AG Stories
+        mButtonMoreInfoStories = rootView.findViewById(R.id.more_info_ag_stories);
+        mButtonMoreInfoStories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DetailStoriesActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //home_section_1
         carouselView = rootView.findViewById(R.id.slider);
         carouselView.setPageCount(sampleImages.length);
-
         carouselView.setImageListener(imageListener);
 
         //home_section_7

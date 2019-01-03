@@ -33,7 +33,7 @@ public class QRcodeActivity extends AppCompatActivity implements ZXingScannerVie
     FirebaseUser firebaseUser;
     String GENIUNE_CODE = "success";
     String GCODE = "";
-    String token = "";
+    String token = "", token2 = "";
     String rvalid;
 
     String brand, company, address, phone, email, web;
@@ -60,6 +60,19 @@ public class QRcodeActivity extends AppCompatActivity implements ZXingScannerVie
                     @Override
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         token = task.getResult().getToken();
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/getuser?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                token2 = token;
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        });
+                        Volley.newRequestQueue(QRcodeActivity.this).add(jsonObjectRequest);
+                        Log.e("token-firebase", "" + token2);
                     }
                 });
 
@@ -96,7 +109,7 @@ public class QRcodeActivity extends AppCompatActivity implements ZXingScannerVie
     }
 
     public void validation_code(final String scancode){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/check_/"+scancode+"?token="+token+"&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/check_/"+scancode+"?token="+token2+"&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {

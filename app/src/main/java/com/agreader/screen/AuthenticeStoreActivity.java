@@ -41,14 +41,14 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
                     LatLng latLng = new LatLng(currentLatitude, currentLongitude);
                     googleMap.addMarker(new MarkerOptions()
                                     .position(latLng)
-                                    .title("Deenay")
+                                    .title("Authentic Store")
                             //.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
                     );
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
 
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(latLng)
-                            .zoom(10)
+                            .zoom(13)
                             .tilt(0)
                             .build();
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
