@@ -1,15 +1,13 @@
 package com.agreader.screen;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.agreader.R;
 import com.agreader.adapter.hadiahAdapter;
@@ -22,7 +20,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -42,7 +39,6 @@ public class PointActivity extends AppCompatActivity {
     private DatabaseReference dbf;
 
 
-
     private boolean kosong = false;
 
     @Override
@@ -51,24 +47,20 @@ public class PointActivity extends AppCompatActivity {
         setContentView(R.layout.activity_point);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        recyclerView = (RecyclerView)findViewById(R.id.recycleViewPoint);
-        fotoProfile = (ImageView)findViewById(R.id.fotoPoint);
-        namaProfile = (TextView)findViewById(R.id.namaPoint);
-        totalPoints = (TextView)findViewById(R.id.totalPoints);
-        peringkat = (RelativeLayout)findViewById(R.id.peringkat);
+        loadData();
+        recyclerView = (RecyclerView) findViewById(R.id.recycleViewPoint);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        totalPoints = (TextView) findViewById(R.id.totalPoints);
+//        peringkat = (RelativeLayout)findViewById(R.id.peringkat);
 
         dbf = FirebaseDatabase.getInstance().getReference("hadiah");
-        loadData();
-
-
         dbf.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 hadiahs = new ArrayList<>();
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    Hadiah hd = ds.getValue(Hadiah.class);
-                    hadiahs.add(hd);
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Hadiah da = postSnapshot.getValue(Hadiah.class);
+                    hadiahs.add(da);
                 }
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setNestedScrollingEnabled(false);
@@ -76,7 +68,7 @@ public class PointActivity extends AppCompatActivity {
                 layoutManager.setStackFromEnd(true);
                 recyclerView.setLayoutManager(layoutManager);
 
-                adapter = new hadiahAdapter(PointActivity.this,hadiahs);
+                adapter = new hadiahAdapter(PointActivity.this, hadiahs);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
@@ -89,34 +81,30 @@ public class PointActivity extends AppCompatActivity {
             }
         });
 
-        peringkat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(PointActivity.this, "Dalam Tahap pengembangan", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        peringkat.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(PointActivity.this, "Dalam Tahap pengembangan", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
     }
 
-    private void loadData(){
+    private void loadData() {
         final DatabaseReference dbs = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
         dbs.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-
-                Picasso.get().load(us.getGambar()).into(fotoProfile);
-                namaProfile.setText(us.getName());
                 String point = us.getTotalPoint();
                 double parsepoint = Double.parseDouble(point);
                 NumberFormat formatter = new DecimalFormat("#,###");
                 String formattedNumber = formatter.format(parsepoint);
-                if(point != null)
+                if (us.getTotalPoint() != null)
                     totalPoints.setText(formattedNumber + " pts");
-                else{
+                else {
                     totalPoints.setText("0 pts");
                 }
-
             }
 
             @Override

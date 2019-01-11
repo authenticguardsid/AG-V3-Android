@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.agreader.model.Hadiah;
 import com.agreader.R;
+import com.agreader.model.Hadiah;
 import com.agreader.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,7 +44,7 @@ public class hadiahAdapter extends RecyclerView.Adapter<hadiahAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.list_item_hadiah,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.list_item_hadiah, parent, false);
         return new hadiahAdapter.ViewHolder(view);
     }
 
@@ -52,7 +52,7 @@ public class hadiahAdapter extends RecyclerView.Adapter<hadiahAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final Hadiah hadiah = mData.get(position);
-        if (!hadiah.getGambar().isEmpty()){
+        if (!hadiah.getGambar().isEmpty()) {
             Picasso.get().load(hadiah.getGambar()).fit().centerInside().into(holder.gambarHadiah);
         }
 
@@ -73,9 +73,9 @@ public class hadiahAdapter extends RecyclerView.Adapter<hadiahAdapter.ViewHolder
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User us = dataSnapshot.getValue(User.class);
                         int pts = Integer.parseInt(us.getTotalPoint());
-                        if (pts < points){
+                        if (pts < points) {
                             Toast.makeText(mContext, "Point Anda tidak mencukupi", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             int total = pts - points;
                             String jmlh = String.valueOf(total);
                             dbf.child("totalPoint").setValue(jmlh);
@@ -117,7 +117,7 @@ public class hadiahAdapter extends RecyclerView.Adapter<hadiahAdapter.ViewHolder
         return mSelected;
     }
 
-    private int selectionCount(){
+    private int selectionCount() {
         return mSelected.size();
     }
 
@@ -143,7 +143,7 @@ public class hadiahAdapter extends RecyclerView.Adapter<hadiahAdapter.ViewHolder
                 itemView.setBackgroundColor(Color.LTGRAY);
             else itemView.setBackgroundColor(android.R.attr.selectableItemBackground);
         }
+
+
     }
-
-
 }

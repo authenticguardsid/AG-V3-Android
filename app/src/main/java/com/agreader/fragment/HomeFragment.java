@@ -11,10 +11,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.agreader.R;
 import com.agreader.screen.AuthenticeStoreActivity;
 import com.agreader.screen.DetailStoriesActivity;
+import com.agreader.screen.EditProfileActivity;
 import com.agreader.screen.FeaturedDetailActivity;
-import com.agreader.R;
+import com.agreader.screen.HighLightScreen;
 import com.agreader.screen.SeeAllStoriesActivity;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -26,7 +28,7 @@ import com.synnapps.carouselview.ImageListener;
 public class HomeFragment extends Fragment {
 
     View rootView;
-    Button mButtonAuthenticStore, mButtonMoreInfoStories;
+    Button mButtonAuthenticStore, mButtonMoreInfoStories, mButtonGoProfile, mButtonHighlight;
     TextView mButtonSeeAllStories;
 
     CarouselView carouselView;
@@ -44,7 +46,26 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         //fragment home see all AG Stories
-        mButtonSeeAllStories = rootView.findViewById(R.id.see_all_ag_stories);
+
+        mButtonGoProfile = rootView.findViewById(R.id.goProfile);
+        mButtonGoProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mButtonHighlight = (Button) rootView.findViewById(R.id.more_info_highlight);
+        mButtonHighlight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), HighLightScreen.class);
+                startActivity(intent);
+            }
+        });
+
+        mButtonSeeAllStories = rootView.findViewById(R.id.more_info_ag_stories);
         mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -45,11 +45,12 @@
                     android:lineSpacingMultiplier="1"
                     android:typeface="sans"
                     android:layout_weight="2.4"
-                    android:text="Hanya butuh 1 menit untuk lengkapi profile anda dan dapatkan point 50.000 pts"/>
+                    android:text="Hanya butuh 1 menit untuk lengkapi profile anda dan dapatkan point 5.000 pts" />
 
                 <Button
+                    android:id="@+id/goProfile"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="end|center"
                     android:layout_weight="0"
                     android:background="@drawable/button"

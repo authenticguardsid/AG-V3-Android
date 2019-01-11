@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e7e7e7"
+    tools:context=".screen.HighLightScreen">
+
+
+    <LinearLayout
+        android:id="@+id/lol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/ToolbarHome"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/toolbar"
+            android:elevation="2dp">
+
+            <ImageView
+                android:id="@+id/backPress"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="false"
+                android:src="@drawable/ic_left_arrow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="HIGHTLIGHT"
+                android:textColor="#000"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listNews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/lol" />
+
+
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/ic_newspaper"
+            android:tint="@color/colorGREY" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="No Highlight Yet"
+            android:textColor="@color/colorGREY"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
+            android:text="Highlights will appear here"
+            android:textColor="@color/colorGREY"
+            android:textSize="12dp"
+            android:typeface="sans"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

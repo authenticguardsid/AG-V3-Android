@@ -93,7 +93,9 @@
         <activity android:name=".screen.FeaturedDetailActivity" />
         <activity android:name=".screen.AuthenticeStoreActivity" />
         <activity android:name=".screen.SeeAllStoriesActivity" />
-        <activity android:name=".screen.DetailStoriesActivity"></activity>
+        <activity android:name=".screen.DetailStoriesActivity" />
+        <activity android:name=".screen.HighLightScreen" />
+        <activity android:name=".screen.DetailHighlightScreen"></activity>
     </application>
 
 </manifest>

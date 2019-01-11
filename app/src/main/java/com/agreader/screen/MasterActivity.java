@@ -3,20 +3,21 @@ package com.agreader.screen;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.agreader.R;
-import com.agreader.model.User;
 import com.agreader.adapter.SectionPagesAdapter;
+import com.agreader.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,7 @@ public class MasterActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MenuItem prevMenuItem;
     private TextView pointt;
+    private RelativeLayout goPoint;
     private Intent ada;
 
     String total = "";
@@ -42,9 +44,10 @@ public class MasterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master);
         pointt = (TextView)findViewById(R.id.point);
+        goPoint = (RelativeLayout) findViewById(R.id.toPoint);
         loadData();
 
-        pointt.setOnClickListener(new View.OnClickListener() {
+        goPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                Intent intent = new Intent(MasterActivity.this,PointActivity.class);
