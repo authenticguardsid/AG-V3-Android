@@ -3,7 +3,9 @@ package com.agreader.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +21,24 @@ import com.agreader.screen.FeaturedDetailActivity;
 import com.agreader.screen.HighLightScreen;
 import com.agreader.screen.PointActivity;
 import com.agreader.screen.SeeAllStoriesActivity;
+import com.agreader.utils.DataRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
+import com.synnapps.carouselview.ViewListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.agreader.utils.DataRequest.getResultJSON;
 
 
 /**
@@ -31,14 +49,28 @@ public class HomeFragment extends Fragment {
     View rootView;
     Button mButtonAuthenticStore, mButtonMoreInfoStories, mButtonGoProfile, mButtonHighlight;
     TextView mButtonSeeAllStories, mButtonSeeAllPromo;
+    FirebaseUser firebaseUser;
+    String token;
+    String finalImage;
+    List<String> imageUrls = new ArrayList<String>();
 
     CarouselView carouselView;
-    int[] sampleImages = {R.drawable.slider1, R.drawable.slider2, R.drawable.slider3, R.drawable.slider4};
     private ImageView gambar1, gambar2, gambar3, gambar4, gambar5, gambar6;
 
     public HomeFragment() {
         // Required empty public constructor
     }
+
+    ViewListener viewListener = new ViewListener() {
+
+        @Override
+        public View setViewForPosition(int position) {
+            View customView = getActivity().getLayoutInflater().inflate(R.layout.view_custom, null);
+            ImageView myImageView = customView.findViewById(R.id.myImage);
+            Picasso.get().load(imageUrls.get(position)).into(myImageView);
+            return customView;
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +80,18 @@ public class HomeFragment extends Fragment {
 
         //fragment home see all AG Stories
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        token = task.getResult().getToken();
+                        Log.d("lol", "onComplete: " + token);
+                        String result = "";
+
+                    }
+                });
+        slider();
         mButtonGoProfile = rootView.findViewById(R.id.goProfile);
         mButtonGoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +140,8 @@ public class HomeFragment extends Fragment {
 
         //home_section_1
         carouselView = rootView.findViewById(R.id.slider);
-        carouselView.setPageCount(sampleImages.length);
-        carouselView.setImageListener(imageListener);
+        carouselView.setPageCount(imageUrls.size());
+        carouselView.setViewListener(viewListener);
 
         //home_section_7
         mButtonAuthenticStore = rootView.findViewById(R.id.more_info_authentic_store);
@@ -181,11 +225,44 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            imageView.setImageResource(sampleImages[position]);
-        }
-    };
+    private void slider() {
+        DataRequest.getData(getContext(), "slider_", token);
+        String jsonResult = getResultJSON(getContext());
+        try {
 
+            JSONObject json = new JSONObject(jsonResult);
+            JSONObject jsonObject = json.getJSONObject("result");
+            JSONArray results = (JSONArray) jsonObject.get("data");
+            imageUrls = new ArrayList<>();
+            Log.d("lol", "result0" + results);
+            Log.d("lol", "result1" + imageUrls);
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject data = results.getJSONObject(i);
+                String image = data.getString("image");
+                finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                imageUrls.add(finalImage);
+            }
+            Log.d("lol", "result3 " + imageUrls);
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+            Log.d("lol", "Error: " + e);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        slider();
+        carouselView.setPageCount(imageUrls.size());
+        carouselView.setViewListener(viewListener);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        slider();
+        carouselView.setPageCount(imageUrls.size());
+        carouselView.setViewListener(viewListener);
+    }
 }
