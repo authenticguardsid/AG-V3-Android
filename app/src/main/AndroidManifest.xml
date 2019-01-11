@@ -95,7 +95,8 @@
         <activity android:name=".screen.SeeAllStoriesActivity" />
         <activity android:name=".screen.DetailStoriesActivity" />
         <activity android:name=".screen.HighLightScreen" />
-        <activity android:name=".screen.DetailHighlightScreen"></activity>
+        <activity android:name=".screen.DetailHighlightScreen" />
+        <activity android:name=".screen.MyProductDetail"></activity>
     </application>
 
 </manifest>

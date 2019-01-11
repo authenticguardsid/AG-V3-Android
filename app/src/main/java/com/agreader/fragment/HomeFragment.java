@@ -17,6 +17,7 @@ import com.agreader.screen.DetailStoriesActivity;
 import com.agreader.screen.EditProfileActivity;
 import com.agreader.screen.FeaturedDetailActivity;
 import com.agreader.screen.HighLightScreen;
+import com.agreader.screen.PointActivity;
 import com.agreader.screen.SeeAllStoriesActivity;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -29,7 +30,7 @@ public class HomeFragment extends Fragment {
 
     View rootView;
     Button mButtonAuthenticStore, mButtonMoreInfoStories, mButtonGoProfile, mButtonHighlight;
-    TextView mButtonSeeAllStories;
+    TextView mButtonSeeAllStories, mButtonSeeAllPromo;
 
     CarouselView carouselView;
     int[] sampleImages = {R.drawable.slider1, R.drawable.slider2, R.drawable.slider3, R.drawable.slider4};
@@ -61,6 +62,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), HighLightScreen.class);
+                startActivity(intent);
+            }
+        });
+
+        mButtonSeeAllPromo = (TextView) rootView.findViewById(R.id.seeAllPromo);
+        mButtonSeeAllPromo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), PointActivity.class);
                 startActivity(intent);
             }
         });
