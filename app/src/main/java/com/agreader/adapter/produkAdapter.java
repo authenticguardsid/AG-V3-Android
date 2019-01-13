@@ -21,12 +21,12 @@ public class produkAdapter extends BaseAdapter {
     public produkAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
 
-        mItems.add(new Item("Produk 1", R.drawable.noimage));
-        mItems.add(new Item("Produk 2", R.drawable.noimage));
-        mItems.add(new Item("Produk 3", R.drawable.noimage));
-        mItems.add(new Item("Produk 4", R.drawable.noimage));
-        mItems.add(new Item("Produk 5", R.drawable.noimage));
-        mItems.add(new Item("Produk 6", R.drawable.noimage));
+        mItems.add(new Item("Lorem Ipsum 1", R.drawable.noimage));
+        mItems.add(new Item("Lorem Ipsum 2", R.drawable.noimage));
+        mItems.add(new Item("Lorem Ipsum 3", R.drawable.noimage));
+        mItems.add(new Item("Lorem Ipsum 4", R.drawable.noimage));
+        mItems.add(new Item("Lorem Ipsum 5", R.drawable.noimage));
+        mItems.add(new Item("Lorem Ipsum 6", R.drawable.noimage));
     }
 
     @Override

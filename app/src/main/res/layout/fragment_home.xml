@@ -117,21 +117,35 @@
 
         </RelativeLayout>
 
-        <android.support.v7.widget.CardView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="13dp"
-            android:elevation="8dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0.0px"
-            android:clipToPadding="false"
-            android:clipChildren="false"
-            app:cardElevation="1dp"
-            app:cardPreventCornerOverlap="false"
-            android:layout_marginBottom="6dp"
             android:layout_marginTop="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp">
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AG Stories"
+                android:textColor="@color/colorSecondary"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGold"
+                android:text="See All"
+                android:textSize="13sp"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <include layout="@layout/home_section_6"/>
 

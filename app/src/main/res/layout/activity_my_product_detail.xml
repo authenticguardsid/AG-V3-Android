@@ -71,7 +71,6 @@
                 android:orientation="vertical">
 
                 <com.synnapps.carouselview.CarouselView
-                    android:id="@+id/slider_product"
                     android:layout_width="match_parent"
                     android:layout_height="260dp"
                     app:fillColor="#FFFFFFFF"
