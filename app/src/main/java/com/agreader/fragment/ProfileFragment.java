@@ -1,7 +1,10 @@
 package com.agreader.fragment;
 
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,6 +37,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.net.URLEncoder;
 
 
 /**
@@ -154,7 +159,26 @@ public class ProfileFragment extends Fragment {
         pmenu5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Tahap Pengembangan", Toast.LENGTH_SHORT).show();
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(inflater.inflate(R.layout.confirm,null));
+                TextView customer = (TextView)dialog.findViewById(R.id.customer);
+                TextView merchants = (TextView)dialog.findViewById(R.id.merchants);
+
+                customer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openWhatsappContact(getActivity(),"+6281717174112","");
+                    }
+                });
+
+                merchants.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openWhatsappContact(getActivity(),"+6281717174113","");
+                    }
+                });
+                dialog.show();
             }
         });
 
@@ -204,6 +228,27 @@ public class ProfileFragment extends Fragment {
             }
         });
         return v;
+    }
+
+    private void openWhatsappContact(Context context, String number, String message) {
+       /* Uri uri = Uri.parse("smsto:" + number);
+        Intent i = new Intent(Intent.ACTION_SENDTO, uri);
+        i.setPackage("com.whatsapp");
+        startActivity(i);*/
+        PackageManager packageManager = context.getPackageManager();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        try {
+            String url = "https://api.whatsapp.com/send?phone="+ number +"&text=" + URLEncoder.encode(message, "UTF-8");
+            i.setPackage("com.whatsapp");
+            i.setData(Uri.parse(url));
+            if (i.resolveActivity(packageManager)!= null){
+                context.startActivity(i);
+            }else {
+                Toast.makeText(context, "Anda belum menginstall aplikasi whatsapp", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 
