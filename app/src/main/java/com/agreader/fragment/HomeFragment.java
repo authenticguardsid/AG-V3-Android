@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
 import com.synnapps.carouselview.ViewListener;
 
 import org.json.JSONArray;
@@ -55,22 +56,23 @@ public class HomeFragment extends Fragment {
     List<String> imageUrls = new ArrayList<String>();
 
     CarouselView carouselView;
+    int[] sampleImages = {R.drawable.slider1, R.drawable.slider2, R.drawable.slider3, R.drawable.slider4};
     private ImageView gambar1, gambar2, gambar3, gambar4, gambar5, gambar6;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    ViewListener viewListener = new ViewListener() {
-
-        @Override
-        public View setViewForPosition(int position) {
-            View customView = getActivity().getLayoutInflater().inflate(R.layout.view_custom, null);
-            ImageView myImageView = customView.findViewById(R.id.myImage);
-            Picasso.get().load(imageUrls.get(position)).into(myImageView);
-            return customView;
-        }
-    };
+//    ViewListener viewListener = new ViewListener() {
+//
+//        @Override
+//        public View setViewForPosition(int position) {
+//            View customView = getActivity().getLayoutInflater().inflate(R.layout.view_custom, null);
+//            ImageView myImageView = customView.findViewById(R.id.myImage);
+//            Picasso.get().load(imageUrls.get(position)).into(myImageView);
+//            return customView;
+//        }
+//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +93,7 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-        slider();
+        //slider();
         mButtonGoProfile = rootView.findViewById(R.id.goProfile);
         mButtonGoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +121,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mButtonSeeAllStories = rootView.findViewById(R.id.more_info_ag_stories);
+        mButtonSeeAllStories = rootView.findViewById(R.id.see_all_ag_stories);
         mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,8 +142,8 @@ public class HomeFragment extends Fragment {
 
         //home_section_1
         carouselView = rootView.findViewById(R.id.slider);
-        carouselView.setPageCount(imageUrls.size());
-        carouselView.setViewListener(viewListener);
+        carouselView.setPageCount(sampleImages.length);
+        carouselView.setImageListener(imageListener);
 
         //home_section_7
         mButtonAuthenticStore = rootView.findViewById(R.id.more_info_authentic_store);
@@ -250,19 +252,11 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        slider();
-        carouselView.setPageCount(imageUrls.size());
-        carouselView.setViewListener(viewListener);
-    }
+    ImageListener imageListener = new ImageListener() {
+        @Override
+        public void setImageForPosition(int position, ImageView imageView) {
+            imageView.setImageResource(sampleImages[position]);
+        }
+    };
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        slider();
-        carouselView.setPageCount(imageUrls.size());
-        carouselView.setViewListener(viewListener);
-    }
 }
