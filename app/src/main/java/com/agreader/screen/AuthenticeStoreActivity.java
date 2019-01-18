@@ -1,14 +1,21 @@
 package com.agreader.screen;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.agreader.R;
+import com.agreader.model.ListStore;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,16 +28,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.net.sip.SipErrorCode.TIME_OUT;
 
 public class AuthenticeStoreActivity extends FragmentActivity  {
 
@@ -38,12 +50,21 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
     FirebaseUser firebaseUser;
     String token = "", token2 = "";
 
+    Button bCallClinic, bDirectionsClinic;
+
+    private SlidingUpPanelLayout mLayout;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int CALL_PHONE_PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentice_store);
+
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        bDirectionsClinic = (Button) findViewById(R.id.bDirectionsClinic);
+        bCallClinic = (Button) findViewById(R.id.bCallClinic);
+
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUser.getIdToken(true)
@@ -74,11 +95,67 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
             @Override
             public void onMapReady(final GoogleMap googleMap) {
                 mMap = googleMap;
-                if (ActivityCompat.checkSelfPermission(AuthenticeStoreActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(AuthenticeStoreActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(AuthenticeStoreActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(AuthenticeStoreActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(AuthenticeStoreActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(AuthenticeStoreActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+                    ActivityCompat.requestPermissions(AuthenticeStoreActivity.this, new String[]{Manifest.permission.CALL_PHONE}, CALL_PHONE_PERMISSION_REQUEST_CODE);
                     return;
                 } else {
-                    list_store();
+                    //list_store();
+                    try{
+                        boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(AuthenticeStoreActivity.this, R.raw.style_maps));
+                        if(!success){
+                            Log.e("ERROR", "Style Parsing Failed");
+                        }
+                    }catch (Resources.NotFoundException e){
+                        Log.e("ERROR", "Can't find style, error : "+e);
+                    }
+                    double currentLatitude = -6.943330;
+                    double currentLongitude = 107.613670;
+                    LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+                    googleMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .title("Lorem Ipsum")
+                            //.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+                    );
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(latLng)      // Sets the center of the map to location user
+                            .zoom(10)                   // Sets the zoom
+                            .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                            .build();                   // Creates a CameraPosition from the builder
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            final String CliniNameStreet = "Deenay";
+                            final double vlat = -6.943330;
+                            final double vlong = 107.613670;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                                }
+                            }, TIME_OUT);
+                            bCallClinic.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "+6287825936365", null)));
+                                }
+                            });
+                            bDirectionsClinic.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Uri gmmIntentUri = Uri.parse("geo:"+vlat+","+vlong+"?q="+CliniNameStreet);
+                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                    startActivity(mapIntent);
+                                }
+                            });
+
+                            return true;
+                        }
+                    });
                 }
             }
         });

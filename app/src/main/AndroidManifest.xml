@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -96,7 +98,9 @@
         <activity android:name=".screen.DetailStoriesActivity" />
         <activity android:name=".screen.HighLightScreen" />
         <activity android:name=".screen.DetailHighlightScreen" />
-        <activity android:name=".screen.MyProductDetail"></activity>
+        <activity android:name=".screen.MyProductDetail" />
+        <activity android:name=".screen.ListAuthenticStoreActivity" />
+        <activity android:name=".QRCodeBaruActivity"></activity>
     </application>
 
 </manifest>

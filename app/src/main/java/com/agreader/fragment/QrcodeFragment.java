@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.agreader.QRCodeBaruActivity;
 import com.agreader.screen.QRcodeActivity;
 import com.agreader.R;
 
@@ -34,7 +35,7 @@ public class QrcodeFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), QRcodeActivity.class);
+                Intent intent = new Intent(getContext(), QRCodeBaruActivity.class);
                 startActivity(intent);
             }
         });

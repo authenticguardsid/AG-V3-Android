@@ -19,6 +19,7 @@ import com.agreader.screen.DetailStoriesActivity;
 import com.agreader.screen.EditProfileActivity;
 import com.agreader.screen.FeaturedDetailActivity;
 import com.agreader.screen.HighLightScreen;
+import com.agreader.screen.ListAuthenticStoreActivity;
 import com.agreader.screen.PointActivity;
 import com.agreader.screen.SeeAllStoriesActivity;
 import com.agreader.utils.DataRequest;
@@ -150,7 +151,7 @@ public class HomeFragment extends Fragment {
         mButtonAuthenticStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AuthenticeStoreActivity.class);
+                Intent intent = new Intent(getContext(), ListAuthenticStoreActivity.class);
                 startActivity(intent);
             }
         });
