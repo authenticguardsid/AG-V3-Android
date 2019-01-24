@@ -93,6 +93,8 @@
             android:name=".screen.LoginActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".screen.FeaturedDetailActivity" />
+        <activity android:name=".screen.HighLightPromo"
+            />
         <activity android:name=".screen.AuthenticeStoreActivity" />
         <activity android:name=".screen.SeeAllStoriesActivity" />
         <activity android:name=".screen.DetailStoriesActivity" />
