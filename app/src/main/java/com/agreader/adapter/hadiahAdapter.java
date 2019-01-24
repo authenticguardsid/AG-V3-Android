@@ -1,6 +1,7 @@
 package com.agreader.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.agreader.R;
 import com.agreader.model.Hadiah;
 import com.agreader.model.User;
+import com.agreader.screen.DetailPointActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -67,42 +69,15 @@ public class hadiahAdapter extends RecyclerView.Adapter<hadiahAdapter.ViewHolder
         holder.tukarPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
-                dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User us = dataSnapshot.getValue(User.class);
-                        int pts = Integer.parseInt(us.getTotalPoint());
-                        if (pts < points) {
-                            Toast.makeText(mContext, "Point Anda tidak mencukupi", Toast.LENGTH_SHORT).show();
-                        } else {
-                            int total = pts - points;
-                            String jmlh = String.valueOf(total);
-                            dbf.child("totalPoint").setValue(jmlh);
-
-                            final DatabaseReference dbs = FirebaseDatabase.getInstance().getReference("hadiah").child(hadiah.getIdHadiah());
-                            dbs.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    int jumlah = jumlahTersisa - 1;
-                                    String jmlhh = String.valueOf(jumlah);
-                                    dbs.child("tersisa").setValue(jmlhh);
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-                            Toast.makeText(mContext, "Hadiah anda berhasil ditukarkan", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                Intent intentDetailPoint = new Intent(mContext, DetailPointActivity.class);
+                intentDetailPoint.putExtra("postId", hadiah.getIdHadiah());
+                intentDetailPoint.putExtra("title",hadiah.getJudul());
+                intentDetailPoint.putExtra("gambar",hadiah.getGambar());
+                intentDetailPoint.putExtra("price",hadiah.getTotalPoint());
+                intentDetailPoint.putExtra("availablePoint",hadiah.getExpired());
+                intentDetailPoint.putExtra("descriptionPoint",hadiah.getDesc());
+                intentDetailPoint.putExtra("termC",hadiah.getTermC());
+                mContext.startActivity(intentDetailPoint);
             }
         });
     }
@@ -146,4 +121,5 @@ public class hadiahAdapter extends RecyclerView.Adapter<hadiahAdapter.ViewHolder
 
 
     }
+
 }

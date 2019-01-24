@@ -279,7 +279,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            final  String urlGambar = uri.toString();
+                            final String urlGambar = uri.toString();
                             final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                             final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
                             dbf.addListenerForSingleValueEvent(new ValueEventListener() {

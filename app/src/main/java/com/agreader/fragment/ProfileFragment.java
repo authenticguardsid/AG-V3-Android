@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,21 @@ import com.agreader.R;
 import com.agreader.model.User;
 import com.agreader.screen.LoginScreenActivity;
 import com.agreader.utils.TermEndService;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +48,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+
+
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.concurrent.Executor;
 
 
 /**
@@ -57,7 +75,9 @@ public class ProfileFragment extends Fragment {
     private GoogleApiClient googleApiClient;
     private GoogleApiClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
+    FirebaseUser currentUser;
 
+    private CallbackManager mCallbackManager;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -80,7 +100,6 @@ public class ProfileFragment extends Fragment {
         pmenu3 = v.findViewById(R.id.pmenu3);
         pmenu4 = v.findViewById(R.id.pmenu4);
         pmenu5 = v.findViewById(R.id.pmenu5);
-
 
         profilePicture = v.findViewById(R.id.imageProfile);
 
@@ -227,14 +246,86 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getActivity(), LoginScreenActivity.class));
             }
         });
+
+
+        //Facebook
+        mCallbackManager = CallbackManager.Factory.create();
+
+        final AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        final LoginButton loginButton = (LoginButton) v.findViewById(R.id.login_button);
+        loginButton.setReadPermissions("email", "public_profile");
+        // If using in a fragment
+        loginButton.setFragment(this);
+
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (accessToken != null){
+                    FacebookSdk.sdkInitialize(getContext());
+                    LoginManager.getInstance().logOut();
+                    AccessToken.setCurrentAccessToken(null);
+                    loginButton.unregisterCallback(mCallbackManager);
+                }else {
+                    loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            // App code
+                            handleFacebookAccessToken(loginResult.getAccessToken());
+
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            FacebookSdk.sdkInitialize(getContext());
+                            LoginManager.getInstance().logOut();
+                            AccessToken.setCurrentAccessToken(null);
+                            loginButton.unregisterCallback(mCallbackManager);
+                        }
+
+                        @Override
+                        public void onError(FacebookException exception) {
+                            // App code
+                        }
+                    });
+                }
+            }
+        });
+
         return v;
     }
 
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener( getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("FBLogin", "signInWithCredential:success");
+                            FirebaseUser user = task.getResult().getUser();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("GagalFB", "signInWithCredential:failure", task.getException());
+
+                        }
+                    }
+
+                });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
     private void openWhatsappContact(Context context, String number, String message) {
-       /* Uri uri = Uri.parse("smsto:" + number);
-        Intent i = new Intent(Intent.ACTION_SENDTO, uri);
-        i.setPackage("com.whatsapp");
-        startActivity(i);*/
         PackageManager packageManager = context.getPackageManager();
         Intent i = new Intent(Intent.ACTION_VIEW);
         try {
@@ -250,5 +341,6 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 }
 

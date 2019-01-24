@@ -2,6 +2,7 @@ package com.agreader;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
@@ -48,6 +49,8 @@ public class QRCodeBaruActivity extends AppCompatActivity {
     String GCODE = "";
     String rvalid;
 
+    private ProgressDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +64,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                 QRCodeBaruActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //validation_code(result.getText());
+                        validation_code(result.getText());
                     }
                 });
             }
@@ -126,54 +129,63 @@ public class QRCodeBaruActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-//    public void validation_code(final String scancode){
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/check_/"+scancode+"?token="+token2+"&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                if (response.length() > 0) {
-//                    for (int i = 0; i < response.length(); i++) {
-//                        try {
-//                            rvalid = response.getString("status");
-//                            JSONObject jsonObject = response.getJSONObject("result");
-//                            GCODE = jsonObject.getString("code");
-//                            JSONObject dataclient = jsonObject.getJSONObject("client");
-//                            JSONObject data = jsonObject.getJSONObject("brand");
-//                            brand = data.getString("Name");
-//                            company = dataclient.getString("name");
-//                            address = data.getString("addressOfficeOrStore");
-//                            phone = data.getString("csPhone");
-//                            email = data.getString("csEmail");
-//                            web = data.getString("web");
-//                        } catch (JSONException e) {
-//
-//                        }
-//                        Log.e("scancode", ""+scancode);
-//                        Log.e("token-firebase", ""+token);
-//                    }
-//                    if (rvalid.equals(GENIUNE_CODE)) {
-//                        Intent intent_geniune = new Intent(QRCodeBaruActivity.this, VerifiedProductActivity.class);
-//                        intent_geniune.putExtra("key", scancode);
-//                        intent_geniune.putExtra("brand", brand);
-//                        intent_geniune.putExtra("company", company);
-//                        intent_geniune.putExtra("address", address);
-//                        intent_geniune.putExtra("phone", phone);
-//                        intent_geniune.putExtra("email", email);
-//                        intent_geniune.putExtra("web", web);
-//                        startActivity(intent_geniune);
-//                    }else {
-//                        Intent intent_fake = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
-//                        startActivity(intent_fake);
-//                    }
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        Volley.newRequestQueue(this).add(jsonObjectRequest);
-//
-//    }
+    public void validation_code(final String scancode){
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/check_/"+scancode+"?token="+token2+"&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response.length() > 0) {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            rvalid = response.getString("status");
+                            JSONObject jsonObject = response.getJSONObject("result");
+                            GCODE = jsonObject.getString("code");
+                            JSONObject dataclient = jsonObject.getJSONObject("client");
+                            JSONObject data = jsonObject.getJSONObject("brand");
+                            brand = data.getString("Name");
+                            company = dataclient.getString("name");
+                            address = data.getString("addressOfficeOrStore");
+                            phone = data.getString("csPhone");
+                            email = data.getString("csEmail");
+                            web = data.getString("web");
+                        } catch (JSONException e) {
+
+                        }
+                        Log.e("scancode", ""+scancode);
+                        Log.e("token-firebase", ""+token);
+                    }
+                    if (rvalid.equals(GENIUNE_CODE)) {
+                        Intent intent_geniune = new Intent(QRCodeBaruActivity.this, VerifiedProductActivity.class);
+                        intent_geniune.putExtra("key", scancode);
+                        intent_geniune.putExtra("brand", brand);
+                        intent_geniune.putExtra("company", company);
+                        intent_geniune.putExtra("address", address);
+                        intent_geniune.putExtra("phone", phone);
+                        intent_geniune.putExtra("email", email);
+                        intent_geniune.putExtra("web", web);
+                        startActivity(intent_geniune);
+                    }else {
+                        Intent intent_fake = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
+                        startActivity(intent_fake);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+
+    }
+
+    private void displayLoader() {
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Account Verification...");
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+        pDialog.show();
+    }
 
 }

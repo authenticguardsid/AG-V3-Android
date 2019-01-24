@@ -15,8 +15,10 @@ import org.json.JSONObject;
 
 public class DataRequest {
     static final String RESULT_JSON = "resultJSON";
+    static final String RESULT_TOKEN = "resultTOKEN";
     public static JSONObject result;
     public static String resultJSON;
+    public static String token_new = "";
     static String rvalid;
     static String GCODE;
     String brand;
@@ -30,28 +32,24 @@ public class DataRequest {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static void setResultJSON(Context context, String json) {
+
+    public static void setResultToken(Context context, String json) {
         SharedPreferences.Editor editor = getSharedPreference(context).edit();
         editor.putString(RESULT_JSON, json);
         editor.apply();
     }
 
-    public static String getResultJSON(Context context) {
-        return getSharedPreference(context).getString(RESULT_JSON, resultJSON);
+    public static String getResultToken(Context context) {
+        return getSharedPreference(context).getString(RESULT_JSON, token_new);
     }
 
-    public static void getData(final Context context, String link, String token) {
-        Log.d("lol", "getData: masuk 0" + link + token);
-        Log.d("lol", "getData: masuk 1");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/" + link + "?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+    public static void setUser(final Context context, final String token) {
+        Log.d("lol", "setUser: " + token);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/getuser?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("lol", "getData: masuk 2");
-                if (response.length() > 0) {
-                    Log.d("lol", "getData: masuk 3");
-                    resultJSON = response.toString();
-                    setResultJSON(context, resultJSON);
-                }
+                token_new = token;
+                setResultToken(context, token_new);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -60,7 +58,7 @@ public class DataRequest {
             }
         });
         Volley.newRequestQueue(context).add(jsonObjectRequest);
-
     }
-}
 
+
+}

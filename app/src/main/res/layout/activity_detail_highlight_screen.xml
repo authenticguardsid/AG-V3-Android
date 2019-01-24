@@ -11,7 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="146dp"
+        tools:layout_editor_absoluteY="103dp">
 
 
         <android.support.v7.widget.Toolbar
@@ -20,15 +22,43 @@
             android:background="@drawable/toolbar"
             android:elevation="2dp">
 
-            <ImageView
-                android:id="@+id/backPress"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="10dp"
-                android:adjustViewBounds="false"
-                android:src="@drawable/ic_left_arrow" />
+                android:layout_height="wrap_content">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="AG"
+                        android:textColor="#000"
+                        android:textSize="24dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="News"
+                        android:textColor="#000"
+                        android:textSize="24dp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/backPress"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/ic_home"
+                    android:tint="#000" />
+
+            </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
 
@@ -44,12 +74,31 @@
                 android:padding="20dp">
 
                 <TextView
+                    android:id="@+id/titleText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="SEORANG SATPOL PP TERCIDUK MAIN TIKTOK"
                     android:textColor="#000"
                     android:textSize="20dp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Kompas.com"
+                    android:textColor="#000"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dateTexe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="2017-12-07 07:47:43"
+                    android:textSize="14dp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/image_news"
@@ -58,24 +107,12 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/slider2" />
 
+
                 <TextView
+                    android:id="@+id/detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Kompas.com"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2017-12-07 07:47:43"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:text="Jakarta,Kompas.Com. Menteri Riset,Teknologi,dan pendidikan tinggi, M Nasir mengaku geram dengan masih maraknya pemalsuan ijazah yang dilakukan oleh oknum-oknum yang tidak bertanggung jawab. \r\n\r\nHal itu ia ungkapkan menanggapi aksi kepolisian yang kembali membongkar praktik pemalsuan setifikat dan ijazah palsu di Tambora, Jakarta Barat, Selasa (8/8/2017). \r\n\r\n\ Orang yang namanya mau berbuat jahat, semua cara dilakukan, makanya harus ditangkap habis,\ ungkap Nasir di kantor Wakil Presiden RI, Jakarta, Jumat (11/82017). \r\n\r\nNasir mengakui, celah untuk melakukan pemalsuan ijazah tersebut selalu ada, meskipun berbagai upaya telah dilakukan pemerintah untuk mencegah pemalsuan. \ Makanya kami harus bentengi itu, dengan sistem. \r\n\r\nMemang, ijazah sudah pakai Hologram, toh tetap ada yang memalsukan. Jangan sampai beredarnya ijazah palsu ini membuat masyarakat tak percaya lagi dengan ijazah,\ ungkap Nasir. \r\n\r\nSebelumnya, Polda Jakarta Barat menggrebek rumah di Siaga 1, jalan Tubagus Angke, Tambora, Jakarta Barat yang menjadi markas pembuatan berbagai macam surat maupun dokumen palsu. \r\n\r\nDi tempat ini ditemukan berbagai perlengkapan pembuatan surat-surat palsu seperti surat sertifikasi guru, KTP, SKCK, ijazah dari SD hingga perguruan tinggi, surat tanah dan berbagai stempel dari berbagai macam instansi. \r\n\r\nSampai saat ini, polisi masih melakukan penelusuran lebih lanjut untuk mengetahui sejak kapan kegiatan pencetakan surat palsu ini dan kemana saja distribusinya."
                     android:textColor="#000"
                     android:textSize="16dp" />

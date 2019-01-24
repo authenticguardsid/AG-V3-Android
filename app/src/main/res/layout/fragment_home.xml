@@ -30,6 +30,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/cardProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@android:color/transparent"
@@ -38,7 +39,6 @@
             android:clipChildren="false"
             app:cardElevation="1dp"
             app:cardPreventCornerOverlap="false"
-            android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp">
 
             <include layout="@layout/home_section_2"/>
@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:gravity="center"
+            android:layout_marginTop="12dp"
             android:textColor="@color/colorSecondary"
             android:textSize="18sp"
             android:text="This Week's Highlights"/>
@@ -134,7 +135,6 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/see_all_ag_stories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGold"

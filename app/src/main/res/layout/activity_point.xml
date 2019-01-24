@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -42,8 +41,8 @@
                 android:id="@+id/trophy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_wallet"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_wallet" />
 
             <TextView
                 android:id="@+id/totalPoints"
@@ -55,9 +54,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:background="#e7e7e7"
         android:layout_width="match_parent"
@@ -75,69 +72,69 @@
                 android:orientation="vertical">
 
 
-        <RelativeLayout
-                        android:id="@+id/peringkat"
-                        android:layout_width="match_parent"
+                <RelativeLayout
+                    android:id="@+id/peringkat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorWhite"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/iconLanguange"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignTop="@+id/imageView2"
+                        android:clickable="true"
+                        android:src="@drawable/ic_three_star_hotel" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_toRightOf="@+id/iconLanguange"
+                        android:text="Peringkat"
+                        android:textColor="@color/colorGREY"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="normal" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_right_arrow"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/imageView2" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1px"
+                        android:layout_below="@+id/iconLanguange"
+                        android:layout_marginLeft="55dp"
                         android:layout_marginTop="10dp"
-                        android:background="@color/colorWhite"
-                        android:padding="10dp">
+                        android:background="@color/colorGREY" />
 
-                        <ImageView
-                            android:id="@+id/iconLanguange"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignTop="@+id/imageView2"
-                            android:clickable="true"
-                            android:src="@drawable/ic_three_star_hotel" />
+                </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="6dp"
-                            android:layout_toRightOf="@+id/iconLanguange"
-                            android:text="Peringkat"
-                            android:textColor="@color/colorGREY"
-                            android:textSize="14sp"
-                            android:textStyle="normal"
-                            android:typeface="normal" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@drawable/ic_right_arrow"
-                            android:layout_marginTop="5dp"
-                            android:id="@+id/imageView2" />
-
-                        <View
-                            android:layout_width="fill_parent"
-                            android:layout_height="1px"
-                            android:layout_below="@+id/iconLanguange"
-                            android:layout_marginLeft="55dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/colorGREY" />
-
-                    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="20dp"
-        android:gravity="center">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycleViewPoint"
-            android:background="#e7e7e7"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycleViewPoint"
+                        android:background="#e7e7e7"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

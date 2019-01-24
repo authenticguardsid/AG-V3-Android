@@ -1,5 +1,6 @@
 package com.agreader.screen;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,18 +16,30 @@ import com.agreader.R;
 import com.agreader.adapter.hadiahAdapter;
 import com.agreader.model.Hadiah;
 import com.agreader.model.User;
+import com.agreader.utils.DataRequest;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PointActivity extends AppCompatActivity {
 
@@ -42,6 +55,10 @@ public class PointActivity extends AppCompatActivity {
     private DatabaseReference dbf;
 
 
+    String token = "";
+    String finalImage;
+    String completee = "yes";
+    List<String> imageUrls = new ArrayList<String>();
 
     private boolean kosong = false;
 
@@ -50,7 +67,9 @@ public class PointActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_point);
 
+
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        hadiahs = new ArrayList<>();
 
         recyclerView = (RecyclerView)findViewById(R.id.recycleViewPoint);
 //        fotoProfile = (ImageView)findViewById(R.id.fotoPoint);
@@ -58,36 +77,19 @@ public class PointActivity extends AppCompatActivity {
         totalPoints = (TextView)findViewById(R.id.totalPoints);
         peringkat = (RelativeLayout)findViewById(R.id.peringkat);
 
-        dbf = FirebaseDatabase.getInstance().getReference("hadiah");
+
+        currentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                @Override
+                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                    token = task.getResult().getToken();
+                    DataRequest.setUser(getApplicationContext(),token);
+                }
+            });
+
+        getDataPromo(token);
+
         loadData();
 
-
-        dbf.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                hadiahs = new ArrayList<>();
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    Hadiah hd = ds.getValue(Hadiah.class);
-                    hadiahs.add(hd);
-                }
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setNestedScrollingEnabled(false);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(PointActivity.this, LinearLayoutManager.VERTICAL, true);
-                layoutManager.setStackFromEnd(true);
-                recyclerView.setLayoutManager(layoutManager);
-
-                adapter = new hadiahAdapter(PointActivity.this,hadiahs);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         peringkat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +98,54 @@ public class PointActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void getDataPromo(String token){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://admin.authenticguards.com/api/promo_?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response.length() > 0) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject("result");
+                        JSONArray results = (JSONArray) jsonObject.get("data");
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject data = results.getJSONObject(i);
+                            int id = data.getInt("id");
+                            String idx = String.valueOf(id);
+                            String image = data.getString("image");
+                            final String title = data.getString("title");
+                            final String price = data.getString("price");
+                            final String time = data.getString("time");
+                            final String desc = data.getString("description");
+                            final String termC = data.getString("termCondition");
+                            final String tanggal = time.substring(0,10);
+                            final String harga = price.substring(6,9);
+                            finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                            hadiahs.add(new Hadiah(idx,finalImage,title,harga,"5",tanggal,desc,termC));
+
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setNestedScrollingEnabled(false);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(PointActivity.this, LinearLayoutManager.VERTICAL, true);
+                            layoutManager.setStackFromEnd(true);
+                            recyclerView.setLayoutManager(layoutManager);
+
+                            adapter = new hadiahAdapter(PointActivity.this, hadiahs);
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
+                        completee = "no";
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.newRequestQueue(PointActivity.this).add(jsonObjectRequest);
     }
 
     private void loadData(){

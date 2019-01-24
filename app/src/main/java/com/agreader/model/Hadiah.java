@@ -5,17 +5,20 @@ package com.agreader.model;
  */
 
 public class Hadiah {
-    private String idHadiah,gambar,judul,totalPoint,tersisa;
+    private String idHadiah,gambar,judul,totalPoint,tersisa,expired,desc,termC;
 
     public Hadiah() {
     }
 
-    public Hadiah(String idHadiah,String gambar, String judul, String totalPoint, String tersisa) {
+    public Hadiah(String idHadiah,String gambar, String judul, String totalPoint, String tersisa,String expired,String desc,String termC) {
         this.idHadiah = idHadiah;
         this.gambar = gambar;
         this.judul = judul;
         this.totalPoint = totalPoint;
         this.tersisa = tersisa;
+        this.expired = expired;
+        this.desc = desc;
+        this.termC = termC;
     }
 
     public String getIdHadiah() {
@@ -56,5 +59,29 @@ public class Hadiah {
 
     public void setTersisa(String tersisa) {
         this.tersisa = tersisa;
+    }
+
+    public String getExpired() {
+        return expired;
+    }
+
+    public void setExpired(String expired) {
+        this.expired = expired;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getTermC() {
+        return termC;
+    }
+
+    public void setTermC(String termC) {
+        this.termC = termC;
     }
 }
