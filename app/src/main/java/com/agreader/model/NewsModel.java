@@ -1,7 +1,7 @@
 package com.agreader.model;
 
 public class NewsModel {
-    String id, image, title, price, time, description, termCondition, agClientBrand_id, type, url;
+    String id, image, title, price, time, description, termCondition, agClientBrand_id, type, url, brand, client;
 
     public NewsModel() {
     }
@@ -17,6 +17,38 @@ public class NewsModel {
         this.agClientBrand_id = agClientBrand_id;
         this.type = type;
         this.url = url;
+
+    }
+
+    public NewsModel(String id, String image, String title, String price, String time, String description, String termCondition, String agClientBrand_id, String type, String url, String brand, String client) {
+        this.id = id;
+        this.image = image;
+        this.title = title;
+        this.price = price;
+        this.time = time;
+        this.description = description;
+        this.termCondition = termCondition;
+        this.agClientBrand_id = agClientBrand_id;
+        this.type = type;
+        this.url = url;
+        this.brand = brand;
+        this.client = client;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
     }
 
     public String getId() {

@@ -36,7 +36,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         mProgressbar = progresView;
         mClickHandler = handler;
         mSelectedId = new ArrayList<>();
-        setHasStableIds(true);
+//        setHasStableIds(true);
     }
 
     public void updateEmptyView() {
@@ -76,7 +76,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         Picasso.get().load(pet.getImage()).fit()
                 .transform(transformation).into(holder.mImg);
         holder.title_news.setText(pet.getTitle());
-        holder.date_news.setText(pet.getTime());
+        holder.date_news.setText(pet.getUrl());
     }
 
     @Override
