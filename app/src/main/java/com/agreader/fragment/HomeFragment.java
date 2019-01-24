@@ -19,10 +19,14 @@ import com.agreader.screen.DetailStoriesActivity;
 import com.agreader.screen.EditProfileActivity;
 import com.agreader.screen.FeaturedDetailActivity;
 import com.agreader.screen.HighLightScreen;
-import com.agreader.screen.ListAuthenticStoreActivity;
 import com.agreader.screen.PointActivity;
 import com.agreader.screen.SeeAllStoriesActivity;
 import com.agreader.utils.DataRequest;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +34,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
 import com.synnapps.carouselview.ViewListener;
 
 import org.json.JSONArray;
@@ -40,7 +43,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.agreader.utils.DataRequest.getResultJSON;
+/**
+ * A simple {@link Fragment} subclass.
+ */
+
 
 
 /**
@@ -64,21 +70,22 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-//    ViewListener viewListener = new ViewListener() {
+    ViewListener viewListener = new ViewListener() {
 //
-//        @Override
-//        public View setViewForPosition(int position) {
-//            View customView = getActivity().getLayoutInflater().inflate(R.layout.view_custom, null);
-//            ImageView myImageView = customView.findViewById(R.id.myImage);
-//            Picasso.get().load(imageUrls.get(position)).into(myImageView);
-//            return customView;
-//        }
-//    };
+        @Override
+        public View setViewForPosition(int position) {
+            View customView = getActivity().getLayoutInflater().inflate(R.layout.view_custom, null);
+            ImageView myImageView = customView.findViewById(R.id.myImage);
+            Log.d("lol", "arraylist: " + imageUrls);
+            Picasso.get().load(imageUrls.get(position)).into(myImageView);
+            return customView;
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layoutarraylist: for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         //fragment home see all AG Stories
@@ -89,12 +96,14 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         token = task.getResult().getToken();
-                        Log.d("lol", "onComplete: " + token);
+                        Log.d("lol", "onCompleteBaru: " + token);
                         String result = "";
-
+                        DataRequest.setUser(getContext(),token);
                     }
                 });
-        //slider();
+
+        carouselView = rootView.findViewById(R.id.slider);
+        getDataSlider(token);
         mButtonGoProfile = rootView.findViewById(R.id.goProfile);
         mButtonGoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,16 +151,15 @@ public class HomeFragment extends Fragment {
         });
 
         //home_section_1
-        carouselView = rootView.findViewById(R.id.slider);
-        carouselView.setPageCount(sampleImages.length);
-        carouselView.setImageListener(imageListener);
+
+
 
         //home_section_7
         mButtonAuthenticStore = rootView.findViewById(R.id.more_info_authentic_store);
         mButtonAuthenticStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ListAuthenticStoreActivity.class);
+                Intent intent = new Intent(getContext(), AuthenticeStoreActivity.class);
                 startActivity(intent);
             }
         });
@@ -228,36 +236,49 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    private void slider() {
-        DataRequest.getData(getContext(), "slider_", token);
-        String jsonResult = getResultJSON(getContext());
-        try {
+    private void getDataSlider(String token){
+        Log.d("1", "getDataSlider: ");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/slider_?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject jsonObject = response.getJSONObject("result");
+                    JSONArray results = (JSONArray) jsonObject.get("data");
+                    imageUrls = new ArrayList<>();
+                    Log.d("lol", "result0" + results);
+                    Log.d("lol", "result1" + imageUrls);
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject data = results.getJSONObject(i);
+                        String image = data.getString("image");
+                        finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                        imageUrls.add(finalImage);
+                    }
+                    carouselView.setViewListener(viewListener);
+                    carouselView.setPageCount(imageUrls.size());
 
-            JSONObject json = new JSONObject(jsonResult);
-            JSONObject jsonObject = json.getJSONObject("result");
-            JSONArray results = (JSONArray) jsonObject.get("data");
-            imageUrls = new ArrayList<>();
-            Log.d("lol", "result0" + results);
-            Log.d("lol", "result1" + imageUrls);
-            for (int i = 0; i < results.length(); i++) {
-                JSONObject data = results.getJSONObject(i);
-                String image = data.getString("image");
-                finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
-                imageUrls.add(finalImage);
+                    Log.d("lol", "result3 " + imageUrls);
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    Log.d("lol", "Error: " + e);
+                }
             }
-            Log.d("lol", "result3 " + imageUrls);
-        } catch (JSONException e) {
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-            e.printStackTrace();
-            Log.d("lol", "Error: " + e);
+            }
+        });
+        Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
         }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDataSlider(token);
+        carouselView.setViewListener(viewListener);
+        carouselView.setPageCount(imageUrls.size());
     }
 
-    ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            imageView.setImageResource(sampleImages[position]);
-        }
-    };
 
 }
