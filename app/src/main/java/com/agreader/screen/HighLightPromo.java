@@ -46,19 +46,12 @@ public class HighLightPromo extends AppCompatActivity {
         termTextView = (TextView) findViewById(R.id.term_promo);
         imageView = (ImageView) findViewById(R.id.image_promo);
 
-        Transformation transformation = new RoundedTransformationBuilder()
-                .borderColor(Color.TRANSPARENT)
-                .borderWidthDp(0)
-                .cornerRadiusDp(10)
-                .oval(false)
-                .build();
 
 
-        Picasso.get().load(image).fit()
-                .transform(transformation).into(imageView);
+        Picasso.get().load(image).into(imageView);
 
         titleTextView.setText(title);
-        priceTextView.setText(price + "Point");
+        priceTextView.setText(price  + "Point");
         dateTextView.setText(date);
         descriptionTextView.setText(description);
         termTextView.setText(termReferences);
