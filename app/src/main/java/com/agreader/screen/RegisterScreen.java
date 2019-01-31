@@ -77,12 +77,12 @@ public class RegisterScreen extends AppCompatActivity {
                     return;
                 }
 
-                displayLoader();
 
                 if(!confirm_password.equals(password)){
                     Toast.makeText(getApplicationContext(), "Password and Confirmation Password does'nt match!", Toast.LENGTH_SHORT).show();
                     pDialog.dismiss();
                 }else{
+                    displayLoader();
                     mFirebaseAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -94,48 +94,25 @@ public class RegisterScreen extends AppCompatActivity {
                                         Log.d("LOL", "onComplete: success");
                                         final FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
                                         final HashMap<String, Object> user= new HashMap<>();
-                                        gambar = currentUser.getPhotoUrl().toString();
                                         name = currentUser.getDisplayName();
                                         final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
                                         dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                 User us = dataSnapshot.getValue(User.class);
-                                                if (dataSnapshot.child("gambar").exists()){
-                                                    gambar = us.getGambar();
-                                                }
 
-                                                if (dataSnapshot.child("numberPhone").exists()){
-                                                    numberPhone = us.getNumberPhone();
-                                                }
+                                                gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/hadiah%2Fuser.png?alt=media&token=178bff40-3a10-4d6f-8544-c93d7fc2dcc1";
 
-                                                if (dataSnapshot.child("name").exists()){
-                                                    name = us.getName();
-                                                }
-                                                if (dataSnapshot.child("gender").exists()){
-                                                    gender = us.getGender();
-                                                }
-                                                if (dataSnapshot.child("age").exists()){
-                                                    age = us.getAge();
-                                                }
-                                                if (dataSnapshot.child("address").exists()){
-                                                    address = us.getAddress();
-                                                }
-
-                                                if (dataSnapshot.child("totalPoint").exists()){
-                                                    totalPoint = us.getTotalPoint();
-                                                }
-
-                                                user.put("numberPhone",numberPhone);
+                                                user.put("numberPhone",textNumber.getText().toString());
                                                 user.put("idEmail",currentUser.getUid());
-                                                user.put("idPhone","");
-                                                user.put("name",name);
+                                                user.put("idPhone", textNumber.getText().toString());
+                                                user.put("name", textName.getText().toString());
                                                 user.put("email",currentUser.getEmail());
-                                                user.put("gender",gender);
-                                                user.put("age",age);
-                                                user.put("address",address);
+                                                user.put("gender","");
+                                                user.put("age","");
+                                                user.put("address","");
                                                 user.put("gambar",gambar);
-                                                user.put("totalPoint",totalPoint);
+                                                user.put("totalPoint","10000");
                                                 user.put("completeProfile","false");
 
                                                 dbf.setValue(user);

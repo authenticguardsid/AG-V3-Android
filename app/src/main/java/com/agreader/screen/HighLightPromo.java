@@ -6,18 +6,21 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agreader.R;
+import com.agreader.fragment.HomeFragment;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 public class HighLightPromo extends AppCompatActivity {
 
-    ImageView askImage,imageView;
+    ImageView askImage,imageView,back,home;
 
     String title = "",
             price = "",
@@ -25,6 +28,8 @@ public class HighLightPromo extends AppCompatActivity {
             image = "",
             description = "",
             termReferences;
+
+    CardView redeem;
 
     TextView titleTextView, priceTextView, dateTextView, descriptionTextView, termTextView;
     @Override
@@ -71,7 +76,31 @@ public class HighLightPromo extends AppCompatActivity {
             }
         });
 
+        redeem = (CardView) findViewById(R.id.redeem_promo);
+        redeem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HighLightPromo.this, "Fitur masih dalam pengembangan", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HighLightPromo.this,HighLightScreen.class);
+                startActivity(intent);
+            }
+        });
+
+        home = (ImageView) findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HighLightPromo.this,MasterActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

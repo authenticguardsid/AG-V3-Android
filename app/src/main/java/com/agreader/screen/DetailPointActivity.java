@@ -15,7 +15,7 @@ public class DetailPointActivity extends AppCompatActivity {
 
     private String idHadiah,gambar,judul,totalPoint,expired,desc,termC;
 
-    ImageView back;
+    ImageView back,home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +44,23 @@ public class DetailPointActivity extends AppCompatActivity {
         desc_point.setText(desc);
         termC_point.setText(termC);
 
-        back = (ImageView) findViewById(R.id.backPressPoint);
+        back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PointActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        home = (ImageView) findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MasterActivity.class);
                 startActivity(intent);
             }
         });
-
 
     }
 }

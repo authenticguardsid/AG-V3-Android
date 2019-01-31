@@ -30,8 +30,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.5"
                     android:textSize="20sp"
-                    android:background="@color/colorGold"
-                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorWhite"
+                    android:textColor="#000"
                     android:text="PRODUCT DETAIL"
                     android:textStyle="bold"
                     android:gravity="center"/>
@@ -65,10 +65,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:weightSum="8">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"

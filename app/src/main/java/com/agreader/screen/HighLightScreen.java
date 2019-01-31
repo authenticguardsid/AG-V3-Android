@@ -73,7 +73,6 @@ public class HighLightScreen extends AppCompatActivity {
         });
         mDataId = new ArrayList<>();
         database = FirebaseDatabase.getInstance().getReference("news");
-
         recyclerView = (RecyclerView) findViewById(R.id.listNews);
         recyclerView.setHasFixedSize(false);
 
@@ -114,6 +113,16 @@ public class HighLightScreen extends AppCompatActivity {
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(getApplicationContext(), HighLightPromo.class);
+                            intent.putExtra("id", pet.getId());
+                            intent.putExtra("image", pet.getImage());
+                            intent.putExtra("title", pet.getTitle());
+                            intent.putExtra("price", pet.getPrice());
+                            intent.putExtra("time", pet.getTime());
+                            intent.putExtra("description", pet.getDescription());
+                            intent.putExtra("termCondition", pet.getTermCondition());
+                            intent.putExtra("agClientBrand_id", pet.getAgClientBrand_id());
+                            intent.putExtra("type", pet.getType());
+                            intent.putExtra("url", pet.getUrl());
                             startActivity(intent);
                         }
                     }

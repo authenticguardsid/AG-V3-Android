@@ -15,7 +15,7 @@ import com.squareup.picasso.Transformation;
 
 public class DetailHighlightScreen extends AppCompatActivity {
 
-    ImageView back, imageView;
+    ImageView back,home, imageView;
     String title = "",
             url = "",
             date = "",
@@ -59,8 +59,17 @@ public class DetailHighlightScreen extends AppCompatActivity {
 
 
 
-        back = (ImageView) findViewById(R.id.backPress);
+        back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), HighLightScreen.class);
+                startActivity(intent);
+            }
+        });
+
+        home = (ImageView) findViewById(R.id.toHome);
+        home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MasterActivity.class);

@@ -1,6 +1,7 @@
 package com.agreader.screen;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.agreader.R;
 import com.agreader.model.User;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -191,6 +194,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             user.put("email", emaile);
                             user.put("id", currentUser.getUid());
                             user.put("numberPhone", phoneNumbere);
+                            user.put("gambar", usr.getGambar());
                             user.put("totalPoint", usr.getTotalPoint());
                             user.put("completeProfile", "false");
                             dbf.setValue(user);
@@ -207,6 +211,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             user.put("email", emaile);
                             user.put("id", currentUser.getUid());
                             user.put("numberPhone", phoneNumbere);
+                            user.put("gambar", usr.getGambar());
                             String pointText = usr.getTotalPoint();
                             int point = Integer.parseInt(pointText);
                             int total = point + 5000;
@@ -242,6 +247,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             user.put("id", currentUser.getUid());
                             user.put("numberPhone", phoneNumbere);
                             user.put("totalPoint", usr.getTotalPoint());
+                            user.put("gambar", usr.getGambar());
                             user.put("completeProfile", "true");
                             dbf.setValue(user);
                             Toast.makeText(EditProfileActivity.this, "Profile Tersimpan Lengkapi Profil mu dapatkan hadia menarik !", Toast.LENGTH_SHORT).show();
@@ -256,6 +262,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             user.put("email", emaile);
                             user.put("id", currentUser.getUid());
                             user.put("numberPhone", phoneNumbere);
+                            user.put("gambar", usr.getGambar());
                             user.put("totalPoint", usr.getTotalPoint());
                             user.put("completeProfile", "true");
                             dbf.setValue(user);
@@ -272,6 +279,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             });
         }else {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
             UploadTask uploadTask = ref.putFile(filepath);
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -347,6 +357,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                             user.put("id", currentUser.getUid());
                                             user.put("numberPhone", phoneNumbere);
                                             user.put("totalPoint", usr.getTotalPoint());
+                                            user.put("gambar", urlGambar);
                                             user.put("completeProfile", "true");
                                             dbf.setValue(user);
                                             Toast.makeText(EditProfileActivity.this, "Profile Tersimpan", Toast.LENGTH_SHORT).show();
@@ -361,6 +372,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                             user.put("email", emaile);
                                             user.put("id", currentUser.getUid());
                                             user.put("numberPhone", phoneNumbere);
+                                            user.put("gambar", urlGambar);
                                             user.put("totalPoint", usr.getTotalPoint());
                                             user.put("completeProfile", "true");
                                             dbf.setValue(user);
@@ -379,6 +391,19 @@ public class EditProfileActivity extends AppCompatActivity {
 
                         }
                     });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditProfileActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                            .getTotalByteCount());
+                    progressDialog.setMessage("Uploaded "+(int)progress+"%");
                 }
             });
 
