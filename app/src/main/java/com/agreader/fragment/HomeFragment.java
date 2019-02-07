@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +18,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agreader.R;
+import com.agreader.adapter.BrandAdapter;
+import com.agreader.adapter.NewsAdapter;
+import com.agreader.model.Brand;
+import com.agreader.model.NewsModel;
 import com.agreader.screen.AuthenticeStoreActivity;
+import com.agreader.screen.DetailHighlightScreen;
 import com.agreader.screen.DetailStoriesActivity;
 import com.agreader.screen.EditProfileActivity;
 import com.agreader.screen.FeaturedDetailActivity;
+import com.agreader.screen.HighLightPromo;
 import com.agreader.screen.HighLightScreen;
+import com.agreader.screen.ListAuthenticStoreActivity;
 import com.agreader.screen.PointActivity;
+import com.agreader.screen.SeeAllBrand;
 import com.agreader.screen.SeeAllStoriesActivity;
 import com.agreader.utils.DataRequest;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -49,6 +62,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -62,13 +77,21 @@ public class HomeFragment extends Fragment {
 
     View rootView;
     Button mButtonAuthenticStore, mButtonMoreInfoStories, mButtonGoProfile, mButtonHighlight;
-    TextView mButtonSeeAllStories, mButtonSeeAllPromo;
+    TextView mButtonSeeAllStories, mButtonSeeAllPromo ,mButtonSeeAllBrand;
     FirebaseUser firebaseUser;
     String token;
     String finalImage;
     List<String> imageUrls = new ArrayList<String>();
+    List<String> imagePromo = new ArrayList<String>();
     CardView aa;
     FirebaseUser currentUser;
+    private ArrayList<String> mDataId;
+    private BrandAdapter mAdapter;
+    private ActionMode mActionMode;
+    RecyclerView recyclerView;
+    private ArrayList<Brand> mData = new ArrayList<>();
+    String  JSON;
+
 
     CarouselView carouselView;
     int[] sampleImages = {R.drawable.slider1, R.drawable.slider2, R.drawable.slider3, R.drawable.slider4};
@@ -114,7 +137,7 @@ public class HomeFragment extends Fragment {
                 });
 
         carouselView = rootView.findViewById(R.id.slider);
-        getDataSlider(token);
+//        getDataSlider(token);
         mButtonGoProfile = rootView.findViewById(R.id.goProfile);
         mButtonGoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,79 +193,47 @@ public class HomeFragment extends Fragment {
         mButtonAuthenticStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AuthenticeStoreActivity.class);
+                Intent intent = new Intent(getContext(), ListAuthenticStoreActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mButtonSeeAllBrand = rootView.findViewById(R.id.seeAllBrand);
+        mButtonSeeAllBrand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SeeAllBrand.class);
                 startActivity(intent);
             }
         });
 
         //home_section_8
-        final Intent intent = new Intent(getContext(), FeaturedDetailActivity.class);
-        gambar1 = rootView.findViewById(R.id.merz_photo);
-        gambar1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent.putExtra("name", "Merz");
-                intent.putExtra("rating", "Rating : 8 / 10");
-                intent.putExtra("desc", "Merz Aesthetic merupakan produk kecantikan yang merupakan perawatan dengan memanfaatkan teknologi ultrasound non-invasif yang meningkatkan sistem regeneratif tubuh untuk merangsang pertumbuhan kolagen dengan lembut dan alami, dan telah membawa perubahan besar dalam dunia kecantikan di seluruh dunia. ");
-                intent.putExtra("image", R.drawable.test7);
-                startActivity(intent);
-            }
-        });
-        gambar2 = rootView.findViewById(R.id.deenay_photo);
-        gambar2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent.putExtra("name", "Deenay");
-                intent.putExtra("rating", "Rating : 8 / 10");
-                intent.putExtra("desc", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
-                intent.putExtra("image", R.drawable.test12);
-                startActivity(intent);
-            }
-        });
-        gambar3 = rootView.findViewById(R.id.doa_photo);
-        gambar3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent.putExtra("name", "Doa");
-                intent.putExtra("rating", "Rating : 8 / 10");
-                intent.putExtra("desc", "DOA merupakan karya terbaru dari Dewi Sandra sebagai brand Fashion Muslim di Indonesia. Melalui DOA, Dewi Sandra ingin menciptakan sebuah karya yang bukan hanya mengutamakan sisi keindahan di mata sesama manusia melainkan juga dimata sang Pencipta Allah SWT.");
-                intent.putExtra("image", R.drawable.test6);
-                startActivity(intent);
-            }
-        });
-        gambar4 = rootView.findViewById(R.id.sandbox_photo);
-        gambar4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent.putExtra("name", "Sandbox");
-                intent.putExtra("rating", "Rating : 8 / 10");
-                intent.putExtra("desc", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
-                intent.putExtra("image", R.drawable.test17);
-                startActivity(intent);
-            }
-        });
-        gambar5 = rootView.findViewById(R.id.sabichi_photo);
-        gambar5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent.putExtra("name", "Sabichi");
-                intent.putExtra("rating", "Rating : 8 / 10");
-                intent.putExtra("desc", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
-                intent.putExtra("image", R.drawable.test8);
-                startActivity(intent);
-            }
-        });
-        gambar6 = rootView.findViewById(R.id.moruka_photo);
-        gambar6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent.putExtra("name", "Moruka");
-                intent.putExtra("rating", "Rating : 8 / 10");
-                intent.putExtra("desc", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
-                intent.putExtra("image", R.drawable.test11);
-                startActivity(intent);
-            }
-        });
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.list_brand);
+        recyclerView.setHasFixedSize(false);
+
+        getBrand(JSON);
+
+        mAdapter = new BrandAdapter(getContext(), mData, mDataId,
+                new BrandAdapter.ClickHandler() {
+                    @Override
+                    public void onItemClick(int position) {
+                        if (mActionMode != null) {
+                            mAdapter.toggleSelection(mDataId.get(position));
+                            if (mAdapter.selectionCount() == 0)
+                                mActionMode.finish();
+                            else
+                                mActionMode.invalidate();
+                            return;
+                        }
+                        Brand pet = mData.get(position);
+                        Intent intent = new Intent(getApplicationContext(), FeaturedDetailActivity.class);
+                        intent.putExtra("id", pet.getId());
+                        intent.putExtra("name", pet.getName());
+                        intent.putExtra("image", pet.getImage());
+                        startActivity(intent);
+                    }
+                });
+        recyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
@@ -312,6 +303,45 @@ public class HomeFragment extends Fragment {
         carouselView.setViewListener(viewListener);
         carouselView.setPageCount(imageUrls.size());
     }
+     private void getBrand(String tes){
+         String url = "http://admin.authenticguards.com/api/feature?appid=003";
+         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+             @Override
+             public void onResponse(String response) {
+                 try {
+                     JSONObject jsonObject = new JSONObject(response);
+                     JSONObject json= jsonObject.getJSONObject("result");
+                     JSONArray jsonArray = json.getJSONArray("data");
+                     Log.d("twtw", "onResponse: " + jsonArray);
+                     for (int i = 0; i < 5 ; i++) {
+                         JSONObject data = jsonArray.getJSONObject(i);
+                         Log.d("lol", "ini data json" + data);
+                         int id = data.getInt("id");
+                         String idString = String.valueOf(id);
+                         String image = data.getString("image");
+                         String name = data.getString("Name");
+                         Log.d("twtw", "onResponse: " +image);
+                         JSONObject brand = data.getJSONObject("client");
+                         Log.d("tolil", "onResponse: " + brand.getString("name"));
+//                         String client = brand.getString("name");
+                         mData.add(new Brand(idString,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
+                     }
+                     mAdapter.notifyDataSetChanged();
+                 } catch (JSONException e) {
+                     e.printStackTrace();
+                 }
+             }
+         }, new Response.ErrorListener() {
+             @Override
+             public void onErrorResponse(VolleyError error) {
+                 Log.d("twtw", "onErrorResponse: " + error);
+             }
+         });
+         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+         requestQueue.add(stringRequest);
+     }
+
+
 
 
 }

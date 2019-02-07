@@ -54,7 +54,7 @@ public class DataRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
         Volley.newRequestQueue(context).add(jsonObjectRequest);

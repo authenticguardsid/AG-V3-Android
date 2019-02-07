@@ -1,306 +1,317 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    tools:context=".fragment.HomeFragment">
+    android:fillViewport="true">
 
-    <RelativeLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical">
 
-        <!-- Top -->
-        <RelativeLayout
-            android:id="@+id/rellayout0"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/colorGold"
-            android:gravity="center">
+            android:layout_height="340dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/iconCertified"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:clickable="true"
+                android:src="@drawable/ic_verified_new"
+                 />
+
+            <TextView
+                android:id="@+id/textCongratulation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iconCertified"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
+                android:text="Congratulations !"
+                android:textColor="#fff"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textCongratulation"
+                android:paddingLeft="15dp"
+                android:paddingTop="0dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="10dp"
+                android:text="Your Product is valid"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                android:typeface="sans" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="16dp"
-                android:weightSum="3">
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="2.3"
-                    android:paddingTop="48dp"
-                    android:tint="@color/colorWhite"
-                    android:src="@drawable/icons_8_verified_account"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:padding="8dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/dtext1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:text="CONGRATULATIONS"
-                    android:textAlignment="center"
-                    android:textColor="#FFF"
+                    android:layout_margin="16dp"
+                    android:text="Your certified authentic product provider is :"
+                    android:textColor="@color/cardview_dark_background"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:typeface="sans"/>
+                    android:typeface="sans" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/dtext2"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="Your Product is Genuine"
-                    android:textAlignment="center"
-                    android:textColor="#FFF"
-                    android:textSize="12sp"
+                    android:layout_below="@+id/dtext1"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Code "
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
                     android:textStyle="bold"
-                    android:typeface="sans"/>
+                    android:typeface="sans" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/dtext2content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext1"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toRightOf="@+id/dtext2"
+                    android:text="Code"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/dtext3"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext2"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Store "
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
 
-        <!-- Body -->
-        <RelativeLayout
+                <TextView
+                    android:id="@+id/dtext3content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext2"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toRightOf="@+id/dtext3"
+                    android:text="Store"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext4"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext3"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Company "
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext4content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext3"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toRightOf="@+id/dtext4"
+                    android:text="Address"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext5"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext4content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Address"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext5content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext4content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toRightOf="@+id/dtext4"
+                    android:text="Phone"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext6"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext5"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Phone "
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext6content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext5content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toRightOf="@+id/dtext4"
+                    android:text="Email"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext8"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext6"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Email "
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext7content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext6content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toRightOf="@+id/dtext8"
+                    android:text="Website"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext9"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext8"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Website "
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/dtext8content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dtext7content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toRightOf="@+id/dtext9"
+                    android:text="Website"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_above="@+id/rellayout2"
-            android:layout_below="@+id/rellayout0">
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/dtext7"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:weightSum="7">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Apakah product diatas tidak sesuai dengan yang ada ?"
+                android:textColor="@color/colorGREY"
+                android:textSize="11sp"
+                android:textStyle="italic"
+                android:typeface="sans" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:paddingLeft="24dp"
-                        android:text="Code "
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:typeface="sans"/>
-
-                    <TextView
-                        android:id="@+id/dtext2content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:paddingLeft="24dp"
-                        android:text="Code"
-                        android:textColor="#000000"
-                        android:typeface="sans"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:paddingLeft="24dp"
-                        android:text="Brand "
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:typeface="sans"/>
-
-                    <TextView
-                        android:id="@+id/dtext3content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:paddingLeft="24dp"
-                        android:text="Brand"
-                        android:textColor="#000000"
-                        android:typeface="sans"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:paddingLeft="24dp"
-                        android:text="Company "
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:typeface="sans"/>
-
-                    <TextView
-                        android:id="@+id/dtext4content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:paddingLeft="24dp"
-                        android:text="Company"
-                        android:textColor="#000000"
-                        android:typeface="sans"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:paddingLeft="24dp"
-                        android:text="Address "
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:typeface="sans"/>
-
-                    <TextView
-                        android:id="@+id/dtext5content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:paddingLeft="24dp"
-                        android:text="Address"
-                        android:textColor="#000000"
-                        android:typeface="sans"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:paddingLeft="24dp"
-                        android:text="Phone "
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:typeface="sans"/>
-
-                    <TextView
-                        android:id="@+id/dtext6content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:paddingLeft="24dp"
-                        android:text="Phone"
-                        android:textColor="#000000"
-                        android:typeface="sans"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:paddingLeft="24dp"
-                        android:text="Email "
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:typeface="sans"/>
-
-                    <TextView
-                        android:id="@+id/dtext7content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:paddingLeft="24dp"
-                        android:text="Email"
-                        android:textColor="#000000"
-                        android:typeface="sans"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:paddingLeft="24dp"
-                        android:text="Web "
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:typeface="sans"/>
-
-                    <TextView
-                        android:id="@+id/dtext8content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
-                        android:paddingLeft="24dp"
-                        android:text="Web"
-                        android:textColor="#000000"
-                        android:typeface="sans"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <!-- Bottom-->
-        <RelativeLayout
-            android:id="@+id/rellayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dtext7"
+                android:gravity="center"
+                android:text="Jika ya, laporkan di sini"
+                android:textSize="11sp"
+                android:textStyle="normal"
+                android:typeface="sans" />
 
             <Button
                 android:id="@+id/product_detail"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_margin="24dp"
-                android:background="@drawable/button"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@color/colorAccent"
                 android:text="PRODUCT DETAIL"
-                android:textColor="@color/colorWhite"/>
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-</android.support.constraint.ConstraintLayout>
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".screen.DetailStoriesActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,14 +22,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/test9"
+                android:src="@drawable/stories"
                 app:riv_mutate_background="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="Lorem Ipsum"
+                android:text="AG Stories"
                 android:textColor="@color/colorWhite"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -44,15 +47,78 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <com.codesgood.views.JustifiedTextView
+        <TextView
             android:id="@+id/detail_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.5"
             android:padding="16dp"
-            android:text="@string/loremIpsum"
+            android:text="Mengenal Authentic Guards, Startup Lokal yang Siap Basmi Barang KW \n \n
+Pernah kesal karena tertipu barang bajakan ketika hendak membeli barang orisinalnya? Atau suka nggak habis kenapa
+bisa-bisanya ada orang yang tega menjual makanan palsu meski harganya dipatok lebih murah? \n
+Masalah yang sering ditemui sehari-hari ini bukan mustahil diberantas lho, gaes. \n \n
+
+Startup digital bernama Authentic Guards ini memiliki bisnis yang unik, namun juga inovatif. \n
+Mereka mengembangkan aplikasi mobile yang dapat diunduh secara gratis untuk mengecek suatu barang apakah dia barang KW atau asli.
+Gimana cara mengeceknya? \n \n
+
+“Semua berawal ketika teman saya yang punya brand sendiri, namun produknya itu dipalsuin oleh oknum yang nggak bertanggung jawab.
+Harganya dijual ke publik lima kali lebih murah. Usaha teman saya ini bangkrut dan harus tutup.  \n
+Dari sini, saya kepikiran untuk bikin aplikasi yang mudah dipakai untuk mendeteksi barang orisinal agar terhindar dari produk KW,” jelas Founder dan Managing Direktur Ryan Othink.
+\n \n
+
+Dia melanjutkan, “melalui aplikasi mobile ini, pihak brand dan masyarakat sebagai user dapat memindai atau scanning QR Code yang kita tempelkan di tiap produk yang dijual.
+Nah, ketika sudah scanning, nanti pada layar ponsel kamu keluar keterangan bahwa produk ini orisinal, lengkap dengan rinciannya.”
+\n \n
+Jadi, model bisnis Authentic Guards ini adalah menjalin kemitraan dengan para brand untuk menggunakan QR Code yang siap ditempelkan di tiap produk.
+Tentu saja QR Code yang konsepnya seperti tag ini dikembangkan sendiri oleh Authentic Guards. Tag tersebut menjadi penanda bahwa produk itu orisinal, bukan KW.
+\n \n
+Dari penjelasan Ryan Othink, tiap brand harus memberikan informasi menyeluruh mengenai jenis produknya agar dimasukkan ke dalam sistem mereka.
+Setelah itu, mereka bisa mengajukan jumlah produk yang ingin diberi tag Authentic Guards.
+\n \n
+“Biasanya sih per bulan banyak yang request 1.000 unit. Untuk angka segitu, kita kenakan biaya Rp3,5 juta. Ada juga yang meminta kontrak selama satu tahun.
+Sejauh ini kami sudah memegang 60 brand lokal Bandung, beberapa juga brand ternama,” sambung Ryan Othink yang mengagumi Elon Musk ini.
+\n \n
+Authentic Guards pertama kali dibentuk pada Maret 2017. Tim ini merupakan salah satu lulusan inkubator Indigo Creative Nation dari PT Telkom.
+Dengan tim berisi 8 orang dan mayoritas tinggal di Bandung, operasi pemasaran mereka ada di Bandung dan Jakarta.
+\n \n
+Dari riset yang dilakukan tim Authentic Guards per 2017 lalu, secara global konsumsi barang tiruan mencapai US$456 miliar,
+sementara 30 persennya itu berasal dari produk palsu farmasi.
+\n \n
+“Secara global, setiap tahunnya ada sekitar 1 juta orang meninggal dunia gara-gara mengonsumsi makanan atau obat-obatan palsu,” tambah Ryan Othink lagi.
+\n \n
+Ia kemudian menyambung, “dari para brand dan tim kami ramai-ramai memberi informasi dan imbauan di media sosial,
+bahwa sebenarnya sindikat barang KW atau tiruan seperti tas, pakaian, dan lain sebagainya itu sama jahatnya dengan produk makanan dan obat-obatan palsu.”
+\n \n
+Saat ini pengguna aplikasi Authentic Guards sudah mencapai angka 2.500 user yang tersebar di Indonesia dan Vietnam.
+Yup, Authentic Guards juga sudah aktif di Ho Chin Minh, Vietnam karena ada beberapa brand di sana yang telah menjalin kemitraan.
+\n \n
+Pede metodenya aman
+\n \n
+Metode yang digunakan adalah memindai QR Code yang ditempelkan di tiap produk orisinal.
+Lantas, apakah ada kemungkinan QR Code tersebut (lagi-lagi) ditiru oleh oknum jahat?
+\n \n
+“Rasanya sulit, ya. Karena tiap QR Code ini sifatnya unik, sulit untuk ditiru.
+Kami juga kalau produksi tiap QR Code ini selalu massal, jadi rasanya mustahil aja tiap kode ini dipalsukan satu-satu,” jelas Ryan Othink.
+\n \n
+Dia juga menambahkan, apabila kebetulan ada barang KW yang menggunakan QR Code ala-ala Authentic Guards namun sudah dijamin itu palsu,
+maka ketika kita ingin memindainya pakai aplikasi, yang keluar adalah tulisan “the product may be fake”.
+\n \n
+Uniknya lagi, aplikasi Authentic Guards ini nggak hanya berfungsi sebagai alat pemindai QR Code barang orisinal saja,
+tapi masyarakat sebagai user juga bisa melihat informasi menarik seputar brand, produsen, distributor, hingga promo menggiurkan.
+\n \n
+Selain itu, pendapatan mereka juga didapatkan dari metode reward yang diterapkan kepada pengguna aplikasi. \n
+Jadi, setiap orang yang menggunakan aplikasi Authentic Guards untuk memindai QR Code, mereka akan mendapatkan jumlah poin tertentu.
+Poin-poin tersebut dapat dikumpulkan dan ditukarkan dengan promo-promo menarik dari e-commerce yang menjadi mitranya.
+\n \n
+Ke depannya, Authentic Guards siap dirangkul Badan Ekonomi Kreatif (Bekraf) sebagai penyedia teknologi otentikasi bagi produk dari UKM.
+\n \n
+Sejauh ini, aplikasi Authentic Guards baru tersedia di platform Google PlayStore pada perangkat berbasis Android.
+\n \n
+So, say no to counterfeit products!"
             android:textSize="14sp" />
 
     </LinearLayout>
 
+    </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

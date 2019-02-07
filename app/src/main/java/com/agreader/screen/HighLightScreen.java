@@ -140,7 +140,7 @@ public class HighLightScreen extends AppCompatActivity {
 
     private void getDataHighlight(String token) {
         Log.d("1", "HERE!!! ");
-        recyclerView.getRecycledViewPool().clear();
+//        recyclerView.getRecycledViewPool().clear();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/newspromo_?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

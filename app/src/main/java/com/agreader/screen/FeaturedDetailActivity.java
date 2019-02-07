@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.agreader.R;
 import com.agreader.tabhost.ProdukFragment;
 import com.agreader.tabhost.TokoFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,8 @@ public class FeaturedDetailActivity extends AppCompatActivity {
         ratingText.setText(getIntent().getStringExtra("rating"));
 
         clientImage = (ImageView) findViewById(R.id.id_client);
-        clientImage.setImageResource(getIntent().getIntExtra("image", 0));
+        Picasso.get().load(getIntent().getStringExtra("image")).into(clientImage);
+
     }
 
     private void setupViewPager(ViewPager viewPager) {

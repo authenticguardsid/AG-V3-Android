@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/test9"
+                android:src="@drawable/stories"
                 app:riv_mutate_background="true" />
 
             <LinearLayout
@@ -45,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:lineSpacingMultiplier="1"
                     android:typeface="sans"
+                    android:maxLines="2"
                     android:text="Peningkatan penjualan setelah bekerja sama dengan Authentic Guards mencapai lebih dari 500%."
                     android:textSize="12sp" />
 

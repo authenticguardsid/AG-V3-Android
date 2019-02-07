@@ -26,7 +26,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        changeStatusBarColor();
+//        changeStatusBarColor();
 
         carouselView = (CarouselView)findViewById(R.id.slider);
         carouselView.setPageCount(sampleImages.length);
