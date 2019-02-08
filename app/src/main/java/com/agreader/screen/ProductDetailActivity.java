@@ -10,10 +10,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.agreader.R;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
+
+import java.text.DecimalFormat;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -21,6 +24,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     int[] sampleImages = {R.drawable.test13, R.drawable.test15, R.drawable.test16};
 
     private Button button;
+
+    private TextView size,color,material,price,distributor,city,expiredDate;
+    String harga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,27 @@ public class ProductDetailActivity extends AppCompatActivity {
         carouselView.setPageCount(sampleImages.length);
 
         carouselView.setImageListener(imageListener);
+
+        size = (TextView)findViewById(R.id.sizeDetail);
+        color = (TextView)findViewById(R.id.colorDetail);
+        material = (TextView)findViewById(R.id.materialDetail);
+        price = (TextView)findViewById(R.id.priceDetail);
+        distributor = (TextView)findViewById(R.id.distributorDetail);
+
+        expiredDate = (TextView)findViewById(R.id.expiredDateDetail);
+
+        size.setText(getIntent().getStringExtra("size"));
+        color.setText(getIntent().getStringExtra("color"));
+        material.setText(getIntent().getStringExtra("material"));
+        harga = getIntent().getStringExtra("price");
+
+        double total = Double.parseDouble(harga.substring(3));
+        DecimalFormat df = new DecimalFormat("#.##");
+        String hargaFormat = df.format(total);
+
+        price.setText("Rp"+hargaFormat);
+        distributor.setText(getIntent().getStringExtra("distributor"));
+        expiredDate.setText("-");
 
         button = (Button) findViewById(R.id.claim_product);
         button.setOnClickListener(new View.OnClickListener() {

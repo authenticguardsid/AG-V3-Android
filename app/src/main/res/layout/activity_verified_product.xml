@@ -99,8 +99,9 @@
                     android:id="@+id/dtext2content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dtext1"
+                    android:layout_alignTop="@+id/dtext2"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="8dp"
                     android:layout_toRightOf="@+id/dtext2"
                     android:text="Code"
@@ -126,8 +127,10 @@
                     android:id="@+id/dtext3content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dtext2"
+                    android:layout_above="@+id/dtext4"
+                    android:layout_alignTop="@+id/dtext3"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="8dp"
                     android:layout_toRightOf="@+id/dtext3"
                     android:text="Store"
@@ -150,7 +153,7 @@
                     android:typeface="sans" />
 
                 <TextView
-                    android:id="@+id/dtext4content"
+                    android:id="@+id/colorDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dtext3"
@@ -167,7 +170,7 @@
                     android:id="@+id/dtext5"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dtext4content"
+                    android:layout_below="@+id/colorDetail"
                     android:layout_marginLeft="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="Address"
@@ -177,10 +180,10 @@
                     android:typeface="sans" />
 
                 <TextView
-                    android:id="@+id/dtext5content"
+                    android:id="@+id/materialDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dtext4content"
+                    android:layout_below="@+id/colorDetail"
                     android:layout_marginLeft="16dp"
                     android:layout_marginBottom="8dp"
                     android:layout_toRightOf="@+id/dtext4"
@@ -204,10 +207,10 @@
                     android:typeface="sans" />
 
                 <TextView
-                    android:id="@+id/dtext6content"
+                    android:id="@+id/priceDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dtext5content"
+                    android:layout_below="@+id/materialDetail"
                     android:layout_marginLeft="16dp"
                     android:layout_marginBottom="8dp"
                     android:layout_toRightOf="@+id/dtext4"
@@ -231,10 +234,10 @@
                     android:typeface="sans" />
 
                 <TextView
-                    android:id="@+id/dtext7content"
+                    android:id="@+id/distributorDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dtext6content"
+                    android:layout_below="@+id/priceDetail"
                     android:layout_marginLeft="16dp"
                     android:layout_marginBottom="8dp"
                     android:layout_toRightOf="@+id/dtext8"
@@ -261,7 +264,7 @@
                     android:id="@+id/dtext8content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dtext7content"
+                    android:layout_below="@+id/distributorDetail"
                     android:layout_marginLeft="16dp"
                     android:layout_marginBottom="8dp"
                     android:layout_toRightOf="@+id/dtext9"
@@ -309,7 +312,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:background="@color/colorAccent"
+                android:background="@drawable/button"
                 android:text="PRODUCT DETAIL"
                 android:textColor="@color/colorWhite" />
         </LinearLayout>

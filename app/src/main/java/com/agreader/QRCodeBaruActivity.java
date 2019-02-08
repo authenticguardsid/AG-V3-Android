@@ -49,6 +49,8 @@ public class QRCodeBaruActivity extends AppCompatActivity {
     String GCODE = "";
     String rvalid;
 
+    String size,color,material,price,distributor,expiredDate;
+
     private ProgressDialog pDialog;
 
     @Override
@@ -139,7 +141,18 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         try {
                             rvalid = response.getString("status");
                             JSONObject jsonObject = response.getJSONObject("result");
+                            JSONObject resultObject = jsonObject.getJSONObject("product");
+
+                            size = resultObject.getString("size");
+                            color = resultObject.getString("color");
+                            price = resultObject.getString("price");
+                            material = resultObject.getString("material");
+                            distributor = resultObject.getString("distributedOn");
+                            expiredDate = resultObject.getString("expireDate");
+
                             GCODE = jsonObject.getString("code");
+                            Log.i("scancode",scancode);
+                            Log.i("tokenFirebase",token2);
                             JSONObject dataclient = jsonObject.getJSONObject("client");
                             JSONObject data = jsonObject.getJSONObject("brand");
                             brand = data.getString("Name");
@@ -148,6 +161,8 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                             phone = data.getString("csPhone");
                             email = data.getString("csEmail");
                             web = data.getString("web");
+
+
                         } catch (JSONException e) {
 
                         }
@@ -163,6 +178,13 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         intent_geniune.putExtra("phone", phone);
                         intent_geniune.putExtra("email", email);
                         intent_geniune.putExtra("web", web);
+
+                        intent_geniune.putExtra("size",size);
+                        intent_geniune.putExtra("color",color);
+                        intent_geniune.putExtra("material",material);
+                        intent_geniune.putExtra("price",price);
+                        intent_geniune.putExtra("distributor",distributor);
+                        intent_geniune.putExtra("expiredDate",expiredDate);
                         startActivity(intent_geniune);
                     }else {
                         Intent intent_fake = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);

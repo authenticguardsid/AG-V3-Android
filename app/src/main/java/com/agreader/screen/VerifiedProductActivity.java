@@ -34,10 +34,10 @@ public class VerifiedProductActivity extends AppCompatActivity {
 
         result_code = (TextView) findViewById(R.id.dtext2content);
         result_brand = (TextView) findViewById(R.id.dtext3content);
-        result_company = (TextView) findViewById(R.id.dtext4content);
-        result_address = (TextView) findViewById(R.id.dtext5content);
-        result_phone = (TextView) findViewById(R.id.dtext6content);
-        result_email = (TextView) findViewById(R.id.dtext7content);
+        result_company = (TextView) findViewById(R.id.colorDetail);
+        result_address = (TextView) findViewById(R.id.materialDetail);
+        result_phone = (TextView) findViewById(R.id.priceDetail);
+        result_email = (TextView) findViewById(R.id.distributorDetail);
         result_web = (TextView) findViewById(R.id.dtext8content);
 
         result_code.setText(getIntent().getStringExtra("key"));
@@ -53,6 +53,12 @@ public class VerifiedProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(VerifiedProductActivity.this, ProductDetailActivity.class);
+                intent.putExtra("size",getIntent().getStringExtra("size"));
+                intent.putExtra("color",getIntent().getStringExtra("color"));
+                intent.putExtra("material",getIntent().getStringExtra("material"));
+                intent.putExtra("price",getIntent().getStringExtra("price"));
+                intent.putExtra("distributor",getIntent().getStringExtra("distributor"));
+                intent.putExtra("expiredDate",getIntent().getStringExtra("expiredDate"));
                 startActivity(intent);
                 finish();
             }
