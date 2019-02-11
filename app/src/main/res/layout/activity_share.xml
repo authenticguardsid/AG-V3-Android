@@ -101,48 +101,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:gravity="center"
                     android:weightSum="4">
 
-                    <ImageView
+                    <TextView
+                        android:id="@+id/share"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="16dp"
-                        android:paddingTop="36dp"
-                        android:tint="@color/colorWhite"
-                        android:src="@drawable/icons_8_instagram_new"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingTop="33dp"
-                        android:tint="@color/colorWhite"
-                        android:src="@drawable/icons_8_whatsapp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingTop="40dp"
-                        android:tint="@color/colorWhite"
-                        android:src="@drawable/icons_8_twitter"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:tint="@color/colorWhite"
-                        android:paddingTop="37dp"
-                        android:paddingRight="16dp"
-                        android:src="@drawable/icons_8_facebook"/>
-
+                        android:layout_marginTop="20dp"
+                        android:text="SHARE"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="40dp" />
 
                 </LinearLayout>
+
 
             </LinearLayout>
 
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/go_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:background="@color/colorWhite"
+            android:text="GO TO HOME"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
