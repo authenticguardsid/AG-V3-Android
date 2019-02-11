@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,8 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull BrandAdapter.ViewHolder holder, int position) {
         Brand pet = mData.get(position);
 
+
+        Log.d("tololoool", "onBindViewHolder: " + pet.getImage());
         Transformation transformation = new RoundedTransformationBuilder()
                 .borderColor(Color.TRANSPARENT)
                 .borderWidthDp(0)

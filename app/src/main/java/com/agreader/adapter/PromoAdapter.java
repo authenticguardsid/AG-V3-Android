@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agreader.R;
-import com.agreader.model.Brand;
 import com.agreader.model.Promo;
+import com.agreader.screen.DetailPointActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
@@ -39,6 +42,7 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
         mSelectedId = new ArrayList<>();
     }
 
+
     public void updateEmptyView() {
         if (mData.size() == 0)
             mEmptyView.setVisibility(View.VISIBLE);
@@ -56,14 +60,18 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
     @NonNull
     @Override
     public PromoAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(mContext).inflate(
                 R.layout.list_item_promo, parent, false);
+
         return new PromoAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PromoAdapter.ViewHolder holder, int position) {
-        Promo pet = mData.get(position);
+
+        Promo pet = mData.get(position % mData.size());
+        Log.d("tolong", "onBindViewHolder: " + pet.getImage());
 
         Transformation transformation = new RoundedTransformationBuilder()
                 .borderColor(Color.TRANSPARENT)
@@ -79,7 +87,7 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData == null ? 0 : mData.size() * 2;
     }
 
     public void toggleSelection(String dataId) {
@@ -114,7 +122,7 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
         ViewHolder(View itemView) {
             super(itemView);
 
-            mImg = itemView.findViewById(R.id.logo_brand);
+            mImg = itemView.findViewById(R.id.gambarPromo);
 
             itemView.setFocusable(true);
             itemView.setOnClickListener(this);

@@ -2,11 +2,14 @@ package com.agreader.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ActionMode;
@@ -20,8 +23,12 @@ import android.widget.TextView;
 import com.agreader.R;
 import com.agreader.adapter.BrandAdapter;
 import com.agreader.adapter.NewsAdapter;
+import com.agreader.adapter.PromoAdapter;
+import com.agreader.adapter.hadiahAdapter;
 import com.agreader.model.Brand;
+import com.agreader.model.Hadiah;
 import com.agreader.model.NewsModel;
+import com.agreader.model.Promo;
 import com.agreader.screen.AuthenticeStoreActivity;
 import com.agreader.screen.DetailHighlightScreen;
 import com.agreader.screen.DetailStoriesActivity;
@@ -34,6 +41,7 @@ import com.agreader.screen.PointActivity;
 import com.agreader.screen.SeeAllBrand;
 import com.agreader.screen.SeeAllStoriesActivity;
 import com.agreader.utils.DataRequest;
+import com.agreader.utils.LinePagerIndicatorDecoration;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -82,14 +90,17 @@ public class HomeFragment extends Fragment {
     String token;
     String finalImage;
     List<String> imageUrls = new ArrayList<String>();
-    List<String> imagePromo = new ArrayList<String>();
     CardView aa;
     FirebaseUser currentUser;
     private ArrayList<String> mDataId;
+    private ArrayList<String> mDataIdPromo;
     private BrandAdapter mAdapter;
+    private PromoAdapter mAdapterPromo;
     private ActionMode mActionMode;
-    RecyclerView recyclerView;
+    private ActionMode mActionPromo;
+    RecyclerView recyclerView,recylerPromo;
     private ArrayList<Brand> mData = new ArrayList<>();
+    private ArrayList<Promo> mDataPromo = new ArrayList<>();
     String  JSON;
 
 
@@ -118,7 +129,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layoutarraylist: for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
         //fragment home see all AG Stories
 
         aa = rootView.findViewById(R.id.cardProfile);
@@ -156,14 +166,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mButtonSeeAllPromo = (TextView) rootView.findViewById(R.id.seeAllPromo);
-        mButtonSeeAllPromo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), PointActivity.class);
-                startActivity(intent);
-            }
-        });
+//        mButtonSeeAllPromo = (TextView) rootView.findViewById(R.id.seeAllPromo);
+//        mButtonSeeAllPromo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), PointActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         mButtonSeeAllStories = rootView.findViewById(R.id.more_info_ag_stories);
         mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
@@ -206,13 +216,38 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        //homoesection4
+        recylerPromo = (RecyclerView) rootView.findViewById(R.id.listPromo);
+        recylerPromo.setHasFixedSize(false);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false);
+        recylerPromo.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstItemVisible = linearLayoutManager.findFirstVisibleItemPosition();
+                if (firstItemVisible != 0 && firstItemVisible % mDataPromo.size() == 0) {
+                    recyclerView.getLayoutManager().scrollToPosition(0);
+                }
+            }
+        });
+        recylerPromo.setLayoutManager(linearLayoutManager);
+
+        recylerPromo.setBackgroundColor(Color.parseColor("#ffffff"));
+        PagerSnapHelper snapHelper = new PagerSnapHelper();
+
+        snapHelper.attachToRecyclerView(recylerPromo);
+//        recylerPromo.addItemDecoration(new LinePagerIndicatorDecoration());
+//        autoScroll();
+        getPromo(token);
+
 
         //home_section_8
         recyclerView = (RecyclerView) rootView.findViewById(R.id.list_brand);
         recyclerView.setHasFixedSize(false);
 
-        getBrand(JSON);
 
+        getBrand(JSON);
         mAdapter = new BrandAdapter(getContext(), mData, mDataId,
                 new BrandAdapter.ClickHandler() {
                     @Override
@@ -233,8 +268,24 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
-        recyclerView.setAdapter(mAdapter);
 
+        mAdapterPromo = new PromoAdapter(getContext(), mDataPromo, mDataId,
+                new PromoAdapter.ClickHandler() {
+                    @Override
+                    public void onItemClick(int position) {
+                        if (mActionMode != null) {
+                            mAdapterPromo.toggleSelection(mDataId.get(position));
+                            if (mAdapterPromo.selectionCount() == 0)
+                                mActionMode.finish();
+                            else
+                                mActionMode.invalidate();
+                            return;
+                        }
+                    }
+                });
+        recyclerView.setAdapter(mAdapter);
+        recylerPromo.setAdapter(mAdapterPromo);
+//        autoScroll();
         return rootView;
     }
 
@@ -341,7 +392,49 @@ public class HomeFragment extends Fragment {
          requestQueue.add(stringRequest);
      }
 
-
-
-
+    private void getPromo(String token){
+        String url = "http://admin.authenticguards.com/api/promo_?token="+ token +"&appid=003";
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject json= jsonObject.getJSONObject("result");
+                    JSONArray jsonArray = json.getJSONArray("data");
+                    Log.d("twtw", "onResponse: " + jsonArray);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        int id = data.getInt("id");
+                        String idx = String.valueOf(id);
+                        String image = data.getString("image");
+                        String name = data.getString("title");
+                        Log.d("tescoyy", "onResponse: " + idx + image);
+                        mDataPromo.add(new Promo(idx,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
+                        Log.d("plisss", "onResponse: "+ String.valueOf(mDataPromo.toString()));
+                    }
+                    mAdapterPromo.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("twtw", "onErrorResponse: " + error);
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+    public void autoScroll() {
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                recylerPromo.scrollBy(2, 0);
+                handler.postDelayed(this, 0);
+            }
+        };
+        handler.postDelayed(runnable, 0);
+    }
 }
