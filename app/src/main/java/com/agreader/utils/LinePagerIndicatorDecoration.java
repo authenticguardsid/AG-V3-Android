@@ -1,5 +1,6 @@
 package com.agreader.utils;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 
 import android.content.res.Resources;
@@ -14,8 +15,8 @@ import android.view.animation.Interpolator;
 
 public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
 
-    private int colorActive = 0xFFFFFFFF;
-    private int colorInactive = 0x66FFFFFF;
+    private int colorActive = 0x727272;
+    private int colorInactive = 0xF44336;
 
     private static final float DP = Resources.getSystem().getDisplayMetrics().density;
 
@@ -48,7 +49,7 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
     public LinePagerIndicatorDecoration() {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(mIndicatorStrokeWidth);
-        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
     }
 
@@ -62,10 +63,10 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
         float totalLength = mIndicatorItemLength * itemCount;
         float paddingBetweenItems = Math.max(0, itemCount - 1) * mIndicatorItemPadding;
         float indicatorTotalWidth = totalLength + paddingBetweenItems;
-        float indicatorStartX = (parent.getWidth() - indicatorTotalWidth) / 7F;
+        float indicatorStartX = (parent.getWidth() - indicatorTotalWidth) / 2F;
 
         // center vertically in the allotted space
-        float indicatorPosY = parent.getHeight() - mIndicatorHeight / 0.7F;
+        float indicatorPosY = parent.getHeight() - mIndicatorHeight / 2F;
 
         drawInactiveIndicators(c, indicatorStartX, indicatorPosY, itemCount);
 
@@ -90,22 +91,23 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
     }
 
     private void drawInactiveIndicators(Canvas c, float indicatorStartX, float indicatorPosY, int itemCount) {
-        mPaint.setColor(colorInactive);
+        mPaint.setColor(Color.GRAY);
 
         // width of item indicator including padding
         final float itemWidth = mIndicatorItemLength + mIndicatorItemPadding;
 
         float start = indicatorStartX;
-        for (int i = 0; i < itemCount /2; i++) {
+        for (int i = 0; i < itemCount / 2; i++) {
             // draw the line for every item
-            c.drawLine(start, indicatorPosY, start + mIndicatorItemLength, indicatorPosY, mPaint);
+            c.drawCircle(start + mIndicatorItemLength, indicatorPosY, itemWidth / 6, mPaint);
+            //  c.drawLine(start, indicatorPosY, start + mIndicatorItemLength, indicatorPosY, mPaint);
             start += itemWidth;
         }
     }
 
     private void drawHighlights(Canvas c, float indicatorStartX, float indicatorPosY,
                                 int highlightPosition, float progress, int itemCount) {
-        mPaint.setColor(colorActive);
+        mPaint.setColor(Color.RED);
 
         // width of item indicator including padding
         final float itemWidth = mIndicatorItemLength + mIndicatorItemPadding;
@@ -113,23 +115,29 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
         if (progress == 0F) {
             // no swipe, draw a normal indicator
             float highlightStart = indicatorStartX + itemWidth * highlightPosition;
-            c.drawLine(highlightStart, indicatorPosY,
+         /*   c.drawLine(highlightStart, indicatorPosY,
                     highlightStart + mIndicatorItemLength, indicatorPosY, mPaint);
+        */
+            c.drawCircle(highlightStart, indicatorPosY, itemWidth / 6, mPaint);
+
         } else {
             float highlightStart = indicatorStartX + itemWidth * highlightPosition;
             // calculate partial highlight
             float partialLength = mIndicatorItemLength * progress;
+            c.drawCircle(highlightStart + mIndicatorItemLength, indicatorPosY, itemWidth / 6, mPaint);
 
             // draw the cut off highlight
-            c.drawLine(highlightStart + partialLength, indicatorPosY,
+           /* c.drawLine(highlightStart + partialLength, indicatorPosY,
                     highlightStart + mIndicatorItemLength, indicatorPosY, mPaint);
-
+*/
             // draw the highlight overlapping to the next item as well
-            if (highlightPosition < itemCount - 1) {
+           /* if (highlightPosition < itemCount - 1) {
                 highlightStart += itemWidth;
-                c.drawLine(highlightStart, indicatorPosY,
-                        highlightStart + partialLength, indicatorPosY, mPaint);
-            }
+                *//*c.drawLine(highlightStart, indicatorPosY,
+                        highlightStart + partialLength, indicatorPosY, mPaint);*//*
+                c.drawCircle(highlightStart ,indicatorPosY,itemWidth/4,mPaint);
+
+            }*/
         }
     }
 

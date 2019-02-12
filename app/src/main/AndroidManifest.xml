@@ -124,7 +124,9 @@
         <activity android:name=".QRCodeBaruActivity" />
         <activity android:name=".screen.HighLightPromo" />
         <activity android:name=".screen.DetailPointActivity" />
-        <activity android:name=".screen.SeeAllBrand"></activity>
+        <activity android:name=".screen.SeeAllBrand" />
+        <activity android:name=".screen.StoryDetail" />
+        <activity android:name=".screen.LeaderBoard"></activity>
     </application>
 
 </manifest>

@@ -78,6 +78,7 @@ public class PointActivity extends AppCompatActivity {
         peringkat = (RelativeLayout)findViewById(R.id.peringkat);
 
 
+
         currentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                 @Override
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
@@ -94,7 +95,8 @@ public class PointActivity extends AppCompatActivity {
         peringkat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PointActivity.this, "Dalam Tahap pengembangan", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PointActivity.this, LeaderBoard.class);
+                startActivity(intent);
             }
         });
 

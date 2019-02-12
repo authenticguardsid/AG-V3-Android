@@ -71,7 +71,7 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull PromoAdapter.ViewHolder holder, int position) {
 
         Promo pet = mData.get(position % mData.size());
-        Log.d("tolong", "onBindViewHolder: " + pet.getImage());
+        Log.d("tolong", "onBindViewHolder: " + pet.getGambar());
 
         Transformation transformation = new RoundedTransformationBuilder()
                 .borderColor(Color.TRANSPARENT)
@@ -81,7 +81,7 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
                 .build();
 
 
-        Picasso.get().load(pet.getImage()).fit()
+        Picasso.get().load(pet.getGambar()).fit()
                 .transform(transformation).into(holder.mImg);
     }
 

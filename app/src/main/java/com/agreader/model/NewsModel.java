@@ -1,9 +1,27 @@
 package com.agreader.model;
 
 public class NewsModel {
-    String id, image, title, price, time, description, termCondition, agClientBrand_id, type, url, brand, client;
+    String id, image, title, price, time, description, termCondition, agClientBrand_id, type, url, brand, client, artikel;
 
     public NewsModel() {
+    }
+
+    public String getArtikel() {
+        return artikel;
+    }
+
+    public void setArtikel(String artikel) {
+        this.artikel = artikel;
+    }
+
+    public NewsModel(String id, String image, String title, String artikel, String time, String url, String type) {
+        this.id = id;
+        this.image = image;
+        this.title = title;
+        this.artikel = artikel;
+        this.time = time;
+        this.url = url;
+        this.type = type;
     }
 
     public NewsModel(String id, String image, String title, String price, String time, String description, String termCondition, String agClientBrand_id, String type, String url) {

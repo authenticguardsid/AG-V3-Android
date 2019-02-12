@@ -31,6 +31,7 @@ import com.agreader.model.NewsModel;
 import com.agreader.model.Promo;
 import com.agreader.screen.AuthenticeStoreActivity;
 import com.agreader.screen.DetailHighlightScreen;
+import com.agreader.screen.DetailPointActivity;
 import com.agreader.screen.DetailStoriesActivity;
 import com.agreader.screen.EditProfileActivity;
 import com.agreader.screen.FeaturedDetailActivity;
@@ -162,24 +163,26 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), HighLightScreen.class);
+                intent.putExtra("hasil", "0");
                 startActivity(intent);
             }
         });
 
-//        mButtonSeeAllPromo = (TextView) rootView.findViewById(R.id.seeAllPromo);
-//        mButtonSeeAllPromo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), PointActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        mButtonSeeAllPromo = (TextView) rootView.findViewById(R.id.seeAllPromo);
+        mButtonSeeAllPromo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), PointActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        mButtonSeeAllStories = rootView.findViewById(R.id.seAllStory);
+        mButtonSeeAllStories = rootView.findViewById(R.id.seeAllStorirs);
         mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SeeAllStoriesActivity.class);
+                Intent intent = new Intent(getContext(), HighLightScreen.class);
+                intent.putExtra("hasil", "1");
                 startActivity(intent);
             }
         });
@@ -281,6 +284,16 @@ public class HomeFragment extends Fragment {
                                 mActionMode.invalidate();
                             return;
                         }
+                        Promo hadiah = mDataPromo.get(position);
+                        Intent intentDetailPoint = new Intent(getContext(), DetailPointActivity.class);
+                        intentDetailPoint.putExtra("postId", hadiah.getIdHadiah());
+                        intentDetailPoint.putExtra("title", hadiah.getJudul());
+                        intentDetailPoint.putExtra("gambar", hadiah.getGambar());
+                        intentDetailPoint.putExtra("price", hadiah.getTotalPoint());
+                        intentDetailPoint.putExtra("availablePoint", hadiah.getExpired());
+                        intentDetailPoint.putExtra("descriptionPoint", hadiah.getDesc());
+                        intentDetailPoint.putExtra("termC", hadiah.getTermC());
+                        startActivity(intentDetailPoint);
                     }
                 });
         recyclerView.setAdapter(mAdapter);
@@ -354,43 +367,43 @@ public class HomeFragment extends Fragment {
         carouselView.setViewListener(viewListener);
         carouselView.setPageCount(imageUrls.size());
     }
-    private void getBrand(String tes){
-        String url = "http://admin.authenticguards.com/api/feature?appid=003";
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONObject json= jsonObject.getJSONObject("result");
-                    JSONArray jsonArray = json.getJSONArray("data");
-                    Log.d("twtw", "onResponse: " + jsonArray);
-                    for (int i = 0; i < 5 ; i++) {
-                        JSONObject data = jsonArray.getJSONObject(i);
-                        Log.d("lol", "ini data json" + data);
-                        int id = data.getInt("id");
-                        String idString = String.valueOf(id);
-                        String image = data.getString("image");
-                        String name = data.getString("Name");
-                        Log.d("twtw", "onResponse: " +image);
-                        JSONObject brand = data.getJSONObject("client");
-                        Log.d("tolil", "onResponse: " + brand.getString("name"));
+     private void getBrand(String tes){
+         String url = "http://admin.authenticguards.com/api/feature?appid=003";
+         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+             @Override
+             public void onResponse(String response) {
+                 try {
+                     JSONObject jsonObject = new JSONObject(response);
+                     JSONObject json= jsonObject.getJSONObject("result");
+                     JSONArray jsonArray = json.getJSONArray("data");
+                     Log.d("twtw", "onResponse: " + jsonArray);
+                     for (int i = 0; i < 5 ; i++) {
+                         JSONObject data = jsonArray.getJSONObject(i);
+                         Log.d("lol", "ini data json" + data);
+                         int id = data.getInt("id");
+                         String idString = String.valueOf(id);
+                         String image = data.getString("image");
+                         String name = data.getString("Name");
+                         Log.d("twtw", "onResponse: " +image);
+                         JSONObject brand = data.getJSONObject("client");
+                         Log.d("tolil", "onResponse: " + brand.getString("name"));
 //                         String client = brand.getString("name");
-                        mData.add(new Brand(idString,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
-                    }
-                    mAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("twtw", "onErrorResponse: " + error);
-            }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
-    }
+                         mData.add(new Brand(idString,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
+                     }
+                     mAdapter.notifyDataSetChanged();
+                 } catch (JSONException e) {
+                     e.printStackTrace();
+                 }
+             }
+         }, new Response.ErrorListener() {
+             @Override
+             public void onErrorResponse(VolleyError error) {
+                 Log.d("twtw", "onErrorResponse: " + error);
+             }
+         });
+         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+         requestQueue.add(stringRequest);
+     }
 
     private void getPromo(String token){
         String url = "http://admin.authenticguards.com/api/promo_?token="+ token +"&appid=003";
@@ -407,10 +420,15 @@ public class HomeFragment extends Fragment {
                         int id = data.getInt("id");
                         String idx = String.valueOf(id);
                         String image = data.getString("image");
-                        String name = data.getString("title");
-                        Log.d("tescoyy", "onResponse: " + idx + image);
-                        mDataPromo.add(new Promo(idx,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
-                        Log.d("plisss", "onResponse: "+ String.valueOf(mDataPromo.toString()));
+                        final String title = data.getString("title");
+                        final String price = data.getString("price");
+                        final String time = data.getString("time");
+                        final String desc = data.getString("description");
+                        final String termC = data.getString("termCondition");
+                        final String tanggal = time.substring(0, 10);
+                        final String harga = price.substring(6, 9);
+                        finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                        mDataPromo.add(new Promo(idx, finalImage, title, harga, "5", tanggal, desc, termC));
                     }
                     mAdapterPromo.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -429,12 +447,16 @@ public class HomeFragment extends Fragment {
     public void autoScroll() {
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
+            int count = 0;
             @Override
             public void run() {
-                recylerPromo.scrollBy(2, 0);
-                handler.postDelayed(this, 0);
+                recylerPromo.smoothScrollToPosition(++count);
+                if (count == mData.size() - 1) {
+                    count = 0;
+                }
+                handler.postDelayed(this, 1000);
             }
         };
-        handler.postDelayed(runnable, 0);
+        handler.postDelayed(runnable, 1000);
     }
 }

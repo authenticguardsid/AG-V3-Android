@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.agreader.R;
 import com.agreader.adapter.NewsAdapter;
@@ -38,6 +39,7 @@ public class HighLightScreen extends AppCompatActivity {
     View progress, emptyView;
     RecyclerView recyclerView;
     ImageView back;
+    TextView titleBar;
     private DatabaseReference database;
     String token, JSON;
     ;
@@ -71,6 +73,7 @@ public class HighLightScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        titleBar = (TextView) findViewById(R.id.titleBar);
         mDataId = new ArrayList<>();
         database = FirebaseDatabase.getInstance().getReference("news");
         recyclerView = (RecyclerView) findViewById(R.id.listNews);
@@ -83,7 +86,14 @@ public class HighLightScreen extends AppCompatActivity {
 
 
         emptyView = (View) findViewById(R.id.emptyView);
-        getDataHighlight(token);
+        String news = getIntent().getStringExtra("hasil");
+        if (news.equals("1")) {
+            getDataStories(token);
+            titleBar.setText("AG STORIES");
+        } else if (news.equals("0")) {
+            titleBar.setText("HIGHLIGHT");
+            getDataHighlight(token);
+        }
 
         mAdapter = new NewsAdapter(getApplicationContext(), mData, mDataId, emptyView, progress,
                 new NewsAdapter.ClickHandler() {
@@ -111,7 +121,7 @@ public class HighLightScreen extends AppCompatActivity {
                             intent.putExtra("type", pet.getType());
                             intent.putExtra("url", pet.getUrl());
                             startActivity(intent);
-                        } else {
+                        } else if (pet.getType().equals("promo")) {
                             Intent intent = new Intent(getApplicationContext(), HighLightPromo.class);
                             intent.putExtra("id", pet.getId());
                             intent.putExtra("image", pet.getImage());
@@ -124,6 +134,14 @@ public class HighLightScreen extends AppCompatActivity {
                             intent.putExtra("type", pet.getType());
                             intent.putExtra("url", pet.getUrl());
                             startActivity(intent);
+                        } else {
+                            Intent intentstory = new Intent(getApplicationContext(), StoryDetail.class);
+                            intentstory.putExtra("title", pet.getTitle());
+                            intentstory.putExtra("time", pet.getTime());
+                            intentstory.putExtra("article", pet.getArtikel());
+                            intentstory.putExtra("image", pet.getImage());
+                            intentstory.putExtra("url", pet.getUrl());
+                            startActivity(intentstory);
                         }
                     }
 
@@ -192,9 +210,49 @@ public class HighLightScreen extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
         Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
     }
+
+    private void getDataStories(String token) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/news_?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject jsonObject = response.getJSONObject("result");
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        Log.d("lol", "ini data json" + data);
+                        int id = data.getInt("id");
+                        String idString = String.valueOf(id);
+                        String image = data.getString("image");
+                        String title = data.getString("title");
+                        String article = data.getString("article");
+                        String time = data.getString("time");
+                        String url = data.getString("url");
+                        mData.add(new NewsModel(idString, "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg", title, article, time, url, "jvc"));
+                        Log.d("lol", "mData : " + mData);
+                        Log.d("lol", "dataArray: " + data);
+                    }
+                    Log.d("lol", "hasilresponse" + jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("lol", "Error: " + e);
+                }
+                mAdapter.notifyDataSetChanged();
+                mAdapter.updateEmptyView();
+                mAdapter.updateEmptyView();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+    }
+
 }

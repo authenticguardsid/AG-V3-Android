@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screen.StoryDetail">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="146dp"
+        tools:layout_editor_absoluteY="103dp"
+        tools:ignore="MissingConstraints">
+
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/toolbar"
+            android:elevation="2dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="42dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_back" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="AG"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#000"
+                        android:textSize="24dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stories"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#000"
+                        android:textSize="24dp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/toHome"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/ic_home"
+                    android:tint="#000" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SEORANG SATPOL PP TERCIDUK MAIN TIKTOK"
+                    android:textColor="#000"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Kompas.com"
+                    android:textColor="#000"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dateTexe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="2017-12-07 07:47:43"
+                    android:textSize="14dp" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/image_story"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/slider2" />
+
+
+                <TextView
+                    android:id="@+id/detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Jakarta,Kompas.Com. Menteri Riset,Teknologi,dan pendidikan tinggi, M Nasir mengaku geram dengan masih maraknya pemalsuan ijazah yang dilakukan oleh oknum-oknum yang tidak bertanggung jawab. \r\n\r\nHal itu ia ungkapkan menanggapi aksi kepolisian yang kembali membongkar praktik pemalsuan setifikat dan ijazah palsu di Tambora, Jakarta Barat, Selasa (8/8/2017). \r\n\r\n\ Orang yang namanya mau berbuat jahat, semua cara dilakukan, makanya harus ditangkap habis,\ ungkap Nasir di kantor Wakil Presiden RI, Jakarta, Jumat (11/82017). \r\n\r\nNasir mengakui, celah untuk melakukan pemalsuan ijazah tersebut selalu ada, meskipun berbagai upaya telah dilakukan pemerintah untuk mencegah pemalsuan. \ Makanya kami harus bentengi itu, dengan sistem. \r\n\r\nMemang, ijazah sudah pakai Hologram, toh tetap ada yang memalsukan. Jangan sampai beredarnya ijazah palsu ini membuat masyarakat tak percaya lagi dengan ijazah,\ ungkap Nasir. \r\n\r\nSebelumnya, Polda Jakarta Barat menggrebek rumah di Siaga 1, jalan Tubagus Angke, Tambora, Jakarta Barat yang menjadi markas pembuatan berbagai macam surat maupun dokumen palsu. \r\n\r\nDi tempat ini ditemukan berbagai perlengkapan pembuatan surat-surat palsu seperti surat sertifikasi guru, KTP, SKCK, ijazah dari SD hingga perguruan tinggi, surat tanah dan berbagai stempel dari berbagai macam instansi. \r\n\r\nSampai saat ini, polisi masih melakukan penelusuran lebih lanjut untuk mengetahui sejak kapan kegiatan pencetakan surat palsu ini dan kemana saja distribusinya."
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
