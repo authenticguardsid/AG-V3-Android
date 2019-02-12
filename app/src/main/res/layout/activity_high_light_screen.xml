@@ -41,10 +41,10 @@
                         android:src="@drawable/ic_back" />
 
                     <TextView
+                        android:id="@+id/titleBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
-                        android:text="HIGHTLIGHT"
                         android:textColor="#000"
                         android:textSize="18dp"
                         android:textStyle="bold" />

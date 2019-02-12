@@ -14,7 +14,7 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/gambarPromo"
-            android:layout_width="350dp"
+            android:layout_width="320dp"
             android:layout_height="170dp"
             android:scaleType="centerCrop"
             android:src="@drawable/logo_ag"

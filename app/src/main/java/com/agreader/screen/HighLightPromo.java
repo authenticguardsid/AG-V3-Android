@@ -89,6 +89,7 @@ public class HighLightPromo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HighLightPromo.this,HighLightScreen.class);
+                intent.putExtra("hasil", "0 ");
                 startActivity(intent);
             }
         });
