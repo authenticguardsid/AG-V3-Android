@@ -2,11 +2,14 @@ package com.agreader.screen;
 
 import android.content.Intent;
 import android.speech.RecognizerIntent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,10 +18,26 @@ import android.widget.GridView;
 
 import com.agreader.R;
 import com.agreader.adapter.StoriesAdapter;
+import com.agreader.adapter.hadiahAdapter;
 import com.agreader.adapter.produkAdapter;
+import com.agreader.model.Hadiah;
 import com.agreader.model.Stories;
 import com.agreader.utils.CustomItemClickListener;
+import com.agreader.utils.DataRequest;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,28 +45,35 @@ import java.util.Objects;
 
 public class SeeAllStoriesActivity extends AppCompatActivity {
 
-    private List<Stories> storiesList = new ArrayList<>();
+    private ArrayList<Stories> storiesList;
     private MaterialSearchView searchView;
+    private String finalImage = "";
+    private StoriesAdapter storiesAdapter;
+    private RecyclerView recyclerView;
+
+    private FirebaseUser firebaseUser;
+    private String token = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_all_stories);
 
-//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_ag_stories);
-//
-//        StoriesAdapter mAdapter = new StoriesAdapter(SeeAllStoriesActivity.this, storiesList, new CustomItemClickListener() {
-//            @Override
-//            public void onItemClick(View v, int position) {
-//                Intent intent = new Intent(SeeAllStoriesActivity.this, DetailStoriesActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.setAdapter(mAdapter);
-//
-//        dataRecycler();
+
+        storiesList = new ArrayList<>();
+        recyclerView = (RecyclerView)findViewById(R.id.recycler_stories);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        token = task.getResult().getToken();
+                        Log.d("lol", "onCompleteBaru: " + token);
+                        String result = "";
+                        DataRequest.setUser(getApplicationContext(),token);
+                    }
+                });
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -76,22 +102,57 @@ public class SeeAllStoriesActivity extends AppCompatActivity {
             }
         });
 
-        GridView gridView = (GridView) findViewById(R.id.gridview);
-        gridView.setAdapter(new produkAdapter(this));
+        dataRecycler();
 
     }
 
     private void dataRecycler(){
-        Stories stories1 = new Stories("Lorem Ipsum 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        storiesList.add(stories1);
-        Stories stories2 = new Stories("Lorem Ipsum 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        storiesList.add(stories2);
-        Stories stories3 = new Stories("Lorem Ipsum 3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        storiesList.add(stories3);
-        Stories stories4 = new Stories("Lorem Ipsum 4", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        storiesList.add(stories4);
-        Stories stories5 = new Stories("Lorem Ipsum 5", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        storiesList.add(stories5);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://admin.authenticguards.com/api/news_?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    if (response.length() > 0) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject("result");
+                            JSONArray results = (JSONArray) jsonObject.get("data");
+                            for (int i = 0; i < results.length(); i++) {
+                                JSONObject data = results.getJSONObject(i);
+                                String image = data.getString("image");
+                                final String title = data.getString("title");
+                                final String article = data.getString("article");
+                                final String url = data.getString("url");
+
+                                finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                                storiesList.add(new Stories(title,article,finalImage,url));
+
+                                recyclerView.setHasFixedSize(true);
+                                recyclerView.setNestedScrollingEnabled(false);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(SeeAllStoriesActivity.this,2);
+                                /*LinearLayoutManager layoutManager = new LinearLayoutManager(SeeAllStoriesActivity.this, LinearLayoutManager.VERTICAL, true);
+                                layoutManager.setStackFromEnd(true);*/
+                                recyclerView.setLayoutManager(gridLayoutManager);
+
+                                storiesAdapter = new StoriesAdapter(SeeAllStoriesActivity.this, storiesList, new CustomItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View v, int position) {
+
+                                    }
+                                });
+                                recyclerView.setAdapter(storiesAdapter);
+                                storiesAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+        Volley.newRequestQueue(SeeAllStoriesActivity.this).add(jsonObjectRequest);
+
     }
 
     @Override

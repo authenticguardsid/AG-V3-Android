@@ -175,7 +175,7 @@ public class HomeFragment extends Fragment {
 //            }
 //        });
 
-        mButtonSeeAllStories = rootView.findViewById(R.id.more_info_ag_stories);
+        mButtonSeeAllStories = rootView.findViewById(R.id.seAllStory);
         mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -354,43 +354,43 @@ public class HomeFragment extends Fragment {
         carouselView.setViewListener(viewListener);
         carouselView.setPageCount(imageUrls.size());
     }
-     private void getBrand(String tes){
-         String url = "http://admin.authenticguards.com/api/feature?appid=003";
-         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-             @Override
-             public void onResponse(String response) {
-                 try {
-                     JSONObject jsonObject = new JSONObject(response);
-                     JSONObject json= jsonObject.getJSONObject("result");
-                     JSONArray jsonArray = json.getJSONArray("data");
-                     Log.d("twtw", "onResponse: " + jsonArray);
-                     for (int i = 0; i < 5 ; i++) {
-                         JSONObject data = jsonArray.getJSONObject(i);
-                         Log.d("lol", "ini data json" + data);
-                         int id = data.getInt("id");
-                         String idString = String.valueOf(id);
-                         String image = data.getString("image");
-                         String name = data.getString("Name");
-                         Log.d("twtw", "onResponse: " +image);
-                         JSONObject brand = data.getJSONObject("client");
-                         Log.d("tolil", "onResponse: " + brand.getString("name"));
+    private void getBrand(String tes){
+        String url = "http://admin.authenticguards.com/api/feature?appid=003";
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject json= jsonObject.getJSONObject("result");
+                    JSONArray jsonArray = json.getJSONArray("data");
+                    Log.d("twtw", "onResponse: " + jsonArray);
+                    for (int i = 0; i < 5 ; i++) {
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        Log.d("lol", "ini data json" + data);
+                        int id = data.getInt("id");
+                        String idString = String.valueOf(id);
+                        String image = data.getString("image");
+                        String name = data.getString("Name");
+                        Log.d("twtw", "onResponse: " +image);
+                        JSONObject brand = data.getJSONObject("client");
+                        Log.d("tolil", "onResponse: " + brand.getString("name"));
 //                         String client = brand.getString("name");
-                         mData.add(new Brand(idString,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
-                     }
-                     mAdapter.notifyDataSetChanged();
-                 } catch (JSONException e) {
-                     e.printStackTrace();
-                 }
-             }
-         }, new Response.ErrorListener() {
-             @Override
-             public void onErrorResponse(VolleyError error) {
-                 Log.d("twtw", "onErrorResponse: " + error);
-             }
-         });
-         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-         requestQueue.add(stringRequest);
-     }
+                        mData.add(new Brand(idString,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
+                    }
+                    mAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("twtw", "onErrorResponse: " + error);
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
 
     private void getPromo(String token){
         String url = "http://admin.authenticguards.com/api/promo_?token="+ token +"&appid=003";
