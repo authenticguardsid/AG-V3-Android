@@ -3,19 +3,28 @@ package com.agreader.model;
 public class ListStore {
 
     private int image;
-    private String brand_name;
+    private String brand_name,brand_address;
     private Double latitude;
     private Double longitude;
 
-    public ListStore(int image, String brand_name, Double latitude, Double longitude) {
+    public ListStore(int image, String brand_name,String brand_address, Double latitude, Double longitude) {
         this.image = image;
         this.brand_name = brand_name;
+        this.brand_address = brand_address;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     public ListStore() {
 
+    }
+
+    public String getBrand_address() {
+        return brand_address;
+    }
+
+    public void setBrand_address(String brand_address) {
+        this.brand_address = brand_address;
     }
 
     public int getImage() {

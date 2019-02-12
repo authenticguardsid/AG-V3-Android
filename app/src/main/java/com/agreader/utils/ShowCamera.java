@@ -35,8 +35,8 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback{
 
         for (Camera.Size size : sizes){
             mSize = size;
-
         }
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 
         if (this.getResources().getConfiguration().orientation!= Configuration.ORIENTATION_LANDSCAPE){
             params.set("orientation","portrait");

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,20 +13,35 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.agreader.QRCodeBaruActivity;
 import com.agreader.R;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
     CarouselView carouselView;
-    int[] sampleImages = {R.drawable.test13, R.drawable.test15, R.drawable.test16};
+    String [] sampleImage;
 
     private Button button;
 
-    private TextView size,color,material,price,distributor,city,expiredDate;
+    String img="";
+    String urlImage = "";
+    List<String> imageUrls = new ArrayList<String>();
+
+    private TextView size,color,material,price,distributor,city,expiredDate,reportText;
     String harga;
 
     @Override
@@ -33,9 +49,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 //        changeStatusBarColor();
+        img = getIntent().getStringExtra("image");
+
+        urlImage = "http://admin.authenticguards.com/product/"+ img +".jpg";
+        imageUrls.add(urlImage);
 
         carouselView = (CarouselView)findViewById(R.id.slider);
-        carouselView.setPageCount(sampleImages.length);
+        carouselView.setPageCount(imageUrls.size());
 
         carouselView.setImageListener(imageListener);
 
@@ -70,6 +90,14 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+        reportText = (TextView)findViewById(R.id.textView20);
+        reportText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductDetailActivity.this,ReportActivity.class));
+            }
+        });
+
     }
 
     private void changeStatusBarColor() {
@@ -83,7 +111,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     ImageListener imageListener = new ImageListener() {
         @Override
         public void setImageForPosition(int position, ImageView imageView) {
-            imageView.setImageResource(sampleImages[position]);
+            Picasso.get().load(imageUrls.get(position)).into(imageView);
         }
     };
 

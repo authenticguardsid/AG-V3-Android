@@ -49,7 +49,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
     String GCODE = "";
     String rvalid;
 
-    String size,color,material,price,distributor,expiredDate;
+    String size,color,material,price,distributor,expiredDate,img;
 
     private ProgressDialog pDialog;
 
@@ -82,6 +82,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
         }
+
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUser.getIdToken(true)
@@ -149,6 +150,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                             material = resultObject.getString("material");
                             distributor = resultObject.getString("distributedOn");
                             expiredDate = resultObject.getString("expireDate");
+                            img = resultObject.getString("image");
 
                             GCODE = jsonObject.getString("code");
                             Log.i("scancode",scancode);
@@ -185,6 +187,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         intent_geniune.putExtra("price",price);
                         intent_geniune.putExtra("distributor",distributor);
                         intent_geniune.putExtra("expiredDate",expiredDate);
+                        intent_geniune.putExtra("image",img);
                         startActivity(intent_geniune);
                     }else {
                         Intent intent_fake = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);

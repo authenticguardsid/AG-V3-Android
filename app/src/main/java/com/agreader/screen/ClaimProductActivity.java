@@ -105,10 +105,12 @@ public class ClaimProductActivity extends AppCompatActivity {
     }
 
     public void foto(View view) {
+
         if (camera!= null){
             camera.takePicture(null,null,mPictureCallBack);
             btnShare.setVisibility(View.VISIBLE);
             imageKlik.setVisibility(View.GONE);
+
         }
     }
 

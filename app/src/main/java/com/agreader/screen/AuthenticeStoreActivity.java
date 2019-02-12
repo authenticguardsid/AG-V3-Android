@@ -56,6 +56,9 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int CALL_PHONE_PERMISSION_REQUEST_CODE = 1;
 
+    String brand_name ="";
+    double currentLatitude,currentLongitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
         bDirectionsClinic = (Button) findViewById(R.id.bDirectionsClinic);
         bCallClinic = (Button) findViewById(R.id.bCallClinic);
 
+        brand_name = getIntent().getStringExtra("brand_name");
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUser.getIdToken(true)
@@ -109,8 +113,23 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
                     }catch (Resources.NotFoundException e){
                         Log.e("ERROR", "Can't find style, error : "+e);
                     }
-                    double currentLatitude = -6.943330;
-                    double currentLongitude = 107.613670;
+
+                    if (brand_name.equals("SABICHI")){
+                        currentLatitude = -6.6867070;
+                        currentLongitude = 107.02222;
+                    }else if (brand_name.equals("Doa Indonesia")){
+                        currentLatitude = -6.943330;
+                        currentLongitude = 107.613670;
+                    }else if (brand_name.equals("DEENAY")){
+                        currentLatitude = -6.943320;
+                        currentLongitude = 107.613904;
+                    }else if (brand_name.equals("MERZ")){
+                        currentLatitude = 1.169968;
+                        currentLongitude = 104.003014;
+                    }
+
+                   /* double currentLatitude = -6.943330;
+                    double currentLongitude = 107.613670;*/
                     LatLng latLng = new LatLng(currentLatitude, currentLongitude);
                     googleMap.addMarker(new MarkerOptions()
                                     .position(latLng)
@@ -121,7 +140,7 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
 
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(latLng)      // Sets the center of the map to location user
-                            .zoom(10)                   // Sets the zoom
+                            .zoom(17)                   // Sets the zoom
                             .tilt(0)                   // Sets the tilt of the camera to 30 degrees
                             .build();                   // Creates a CameraPosition from the builder
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

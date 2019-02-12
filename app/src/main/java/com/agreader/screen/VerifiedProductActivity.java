@@ -20,7 +20,7 @@ public class VerifiedProductActivity extends AppCompatActivity {
     public String GCODE = "";
     String token;
 
-    private static TextView result_code, result_brand, result_company, result_address, result_phone, result_email, result_web;
+    private static TextView result_code, result_brand, result_company, result_address, result_phone, result_email, result_web,report;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +32,13 @@ public class VerifiedProductActivity extends AppCompatActivity {
 //        }
 //        changeStatusBarColor();
 
-        result_code = (TextView) findViewById(R.id.dtext2content);
-        result_brand = (TextView) findViewById(R.id.dtext3content);
-        result_company = (TextView) findViewById(R.id.colorDetail);
-        result_address = (TextView) findViewById(R.id.materialDetail);
-        result_phone = (TextView) findViewById(R.id.priceDetail);
-        result_email = (TextView) findViewById(R.id.distributorDetail);
-        result_web = (TextView) findViewById(R.id.dtext8content);
+        result_code = (TextView) findViewById(R.id.textView21);
+        result_brand = (TextView) findViewById(R.id.textView23);
+        result_company = (TextView) findViewById(R.id.textView25);
+        result_address = (TextView) findViewById(R.id.textView27);
+        result_phone = (TextView) findViewById(R.id.textView31);
+        result_email = (TextView) findViewById(R.id.textView32);
+        result_web = (TextView) findViewById(R.id.textView33);
 
         result_code.setText(getIntent().getStringExtra("key"));
         result_brand.setText(getIntent().getStringExtra("brand"));
@@ -59,8 +59,17 @@ public class VerifiedProductActivity extends AppCompatActivity {
                 intent.putExtra("price",getIntent().getStringExtra("price"));
                 intent.putExtra("distributor",getIntent().getStringExtra("distributor"));
                 intent.putExtra("expiredDate",getIntent().getStringExtra("expiredDate"));
+                intent.putExtra("image",getIntent().getStringExtra("image"));
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        report = (TextView)findViewById(R.id.textView37);
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(VerifiedProductActivity.this,ReportActivity.class));
             }
         });
 

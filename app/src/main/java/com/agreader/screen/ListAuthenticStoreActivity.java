@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -107,21 +108,33 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
 
         carouselView.setImageListener(imageListener);
 
-        modelArrayList.add(new ListStore(R.drawable.test8, "SABICHI", -6.6867070, 107.02222));
-        modelArrayList.add(new ListStore(R.drawable.test6, "Doa Indonesia", -6.943330, 107.613670));
-        modelArrayList.add(new ListStore(R.drawable.test12, "DEENAY", -6.943320, 107.613904));
-        modelArrayList.add(new ListStore(R.drawable.test7, "MERZ", 1.169968, 104.003014));
+        modelArrayList.add(new ListStore(R.drawable.test8, "SABICHI","Jl. Pasirluyu VII No. 7 Bandung 40254", -6.6867070, 107.02222));
+        modelArrayList.add(new ListStore(R.drawable.test6, "Doa Indonesia","Taman Holis Indah Blok C5 50-51", -6.943330, 107.613670));
+        modelArrayList.add(new ListStore(R.drawable.test12, "DEENAY","Jl. Kembar Timur No.39,Cigereleng,Regol,Kota", -6.943320, 107.613904));
+        modelArrayList.add(new ListStore(R.drawable.test7, "MERZ", " Gandaria 8 Office Tower, 11th Floor, Unit, Jl. Sultan Iskandar Muda, RT.10/RW.6, Pd. Pinang, Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota ",1.169968, 104.003014));
+
 
         listStoreAdapter = new ListStoreAdapter(this, modelArrayList, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(ListAuthenticStoreActivity.this, AuthenticeStoreActivity.class);
+                if (position == 0){
+                    intent.putExtra("brand_name","SABICHI");
+                }else if (position == 1){
+                    intent.putExtra("brand_name","Doa Indonesia");
+                }else if (position == 2){
+                    intent.putExtra("brand_name","DEENAY");
+                }else if (position == 3){
+                    intent.putExtra("brand_name","MERZ");
+                }
                 startActivity(intent);
             }
         });
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(ListAuthenticStoreActivity.this, LinearLayoutManager.VERTICAL, false));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(ListAuthenticStoreActivity.this,2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(ListAuthenticStoreActivity.this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(listStoreAdapter);
+        listStoreAdapter.notifyDataSetChanged();
 
     }
 

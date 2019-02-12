@@ -20,7 +20,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.ViewHolder> {
+public class
+ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.ViewHolder> {
 
     private Activity context;
     private ArrayList<ListStore> dataList;
@@ -50,6 +51,7 @@ public class ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         Picasso.get().load(dataList.get(position).getImage()).into(holder.imageView);
         holder.txtBrands.setText(dataList.get(position).getBrand_name());
+        holder.txtAddress.setText(dataList.get(position).getBrand_address());
     }
 
     @Override
@@ -63,8 +65,9 @@ public class ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.View
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.image_authentic_store);
-            txtBrands = (TextView) itemView.findViewById(R.id.brand_name_authentic_store);
+            imageView = (ImageView) itemView.findViewById(R.id.logo_brandStore);
+            txtBrands = (TextView) itemView.findViewById(R.id.nama_brandStore);
+            txtAddress = (TextView) itemView.findViewById(R.id.alamat_brandStore);
         }
 
     }
