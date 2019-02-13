@@ -181,7 +181,7 @@ public class HomeFragment extends Fragment {
         mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), HighLightScreen.class);
+                Intent intent = new Intent(getContext(), SeeAllStoriesActivity.class);
                 intent.putExtra("hasil", "1");
                 startActivity(intent);
             }
