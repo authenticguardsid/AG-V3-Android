@@ -18,23 +18,30 @@
             android:background="@drawable/toolbar"
             android:elevation="2dp">
 
-            <ImageView
-                android:id="@+id/backPress"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="10dp"
-                android:adjustViewBounds="false"
-                android:src="@drawable/ic_left_arrow" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center|left">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="AUTHENTIC STORE"
-                android:textColor="#000"
-                android:textSize="18dp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/backPress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="false"
+                    android:src="@drawable/ic_back" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="AUTHENTIC STORE"
+                    android:textColor="#000"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
@@ -85,13 +92,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#e7e7e7"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_authentic_store"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:orientation="vertical"
                     />
 
