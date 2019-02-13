@@ -33,9 +33,9 @@ public class LeaderBoard extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.listLeader);
         modelArrayList = new ArrayList<>();
 
-        modelArrayList.add(new Rank(R.drawable.goldmedal, "", "Satria Kurniawan", "10000"));
-        modelArrayList.add(new Rank(R.drawable.silvermedal, "", "Rahmad Satria", "10000"));
-        modelArrayList.add(new Rank(R.drawable.bronzemedal, "", "Yudhistira Caraka", "10000"));
+        modelArrayList.add(new Rank(R.drawable.badge, "", "Satria Kurniawan", "10000"));
+        modelArrayList.add(new Rank(R.drawable.secondprize, "", "Rahmad Satria", "10000"));
+        modelArrayList.add(new Rank(R.drawable.thirdprize, "", "Yudhistira Caraka", "10000"));
         modelArrayList.add(new Rank(R.drawable.normalmedal, "4", "Taufiq Ramadhan", "10000"));
 
         leaderboardAdapter = new LeaderboardAdapter(this, modelArrayList);
