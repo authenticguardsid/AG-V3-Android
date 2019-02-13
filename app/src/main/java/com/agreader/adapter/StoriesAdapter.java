@@ -48,6 +48,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     public void onBindViewHolder(final StoriesAdapter.ViewHolder holder, int position) {
         holder.txt_title.setText(dataList.get(position).getTitl());
         holder.txt_info.setText(dataList.get(position).getShort_info());
+        holder.txt_url.setText(dataList.get(position).getUrl());
         Picasso.get().load(dataList.get(position).getImage()).fit().into(holder.imageView);
         holder.read_more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +65,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView txt_title, txt_info;
+        private TextView txt_title, txt_info,txt_url;
         private RoundedImageView imageView;
         private Button read_more;
 
@@ -74,6 +75,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             txt_info = (TextView) itemView.findViewById(R.id.short_information_list_ag_stories);
             read_more = (Button) itemView.findViewById(R.id.read_more_ag_stories);
             imageView = (RoundedImageView)itemView.findViewById(R.id.image_stories);
+            txt_url = (TextView)itemView.findViewById(R.id.urlAgStories);
         }
     }
 

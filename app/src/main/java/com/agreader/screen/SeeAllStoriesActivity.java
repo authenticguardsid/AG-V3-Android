@@ -139,7 +139,13 @@ public class SeeAllStoriesActivity extends AppCompatActivity {
                                 storiesAdapter = new StoriesAdapter(SeeAllStoriesActivity.this, storiesList, new CustomItemClickListener() {
                                     @Override
                                     public void onItemClick(View v, int position) {
-
+                                        final Stories stories = storiesList.get(position);
+                                        Intent detail_intent = new Intent(SeeAllStoriesActivity.this,DetailStoriesActivity.class);
+                                        detail_intent.putExtra("gambar",stories.getImage());
+                                        detail_intent.putExtra("judul",stories.getTitl());
+                                        detail_intent.putExtra("article",stories.getShort_info());
+                                        detail_intent.putExtra("url",stories.getUrl());
+                                        startActivity(detail_intent);
                                     }
                                 });
                                 recyclerView.setAdapter(storiesAdapter);
