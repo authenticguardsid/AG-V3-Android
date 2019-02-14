@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.agreader.R;
@@ -50,6 +51,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,7 +104,10 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView,recylerPromo;
     private ArrayList<Brand> mData = new ArrayList<>();
     private ArrayList<Promo> mDataPromo = new ArrayList<>();
+    ProgressBar mProgressBarPromo, mProgressBarBrand;
     String  JSON;
+
+    ShimmerFrameLayout mShimmerViewContainer;
 
 
     CarouselView carouselView;
@@ -135,6 +140,9 @@ public class HomeFragment extends Fragment {
         aa = rootView.findViewById(R.id.cardProfile);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        mProgressBarPromo = (ProgressBar) rootView.findViewById(R.id.progressPromo);
+        mProgressBarBrand = (ProgressBar) rootView.findViewById(R.id.progressBrand);
+        mShimmerViewContainer = (ShimmerFrameLayout) rootView.findViewById(R.id.shimmer_view_container);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUser.getIdToken(true)
                 .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -321,6 +329,7 @@ public class HomeFragment extends Fragment {
                     }
                     carouselView.setViewListener(viewListener);
                     carouselView.setPageCount(imageUrls.size());
+                    mShimmerViewContainer.stopShimmerAnimation();
 
                     Log.d("lol", "result3 " + imageUrls);
                 } catch (JSONException e) {
@@ -363,9 +372,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mShimmerViewContainer.startShimmerAnimation();
         getDataSlider(token);
         carouselView.setViewListener(viewListener);
         carouselView.setPageCount(imageUrls.size());
+    }
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmerAnimation();
+        super.onPause();
     }
      private void getBrand(String tes){
          String url = "http://admin.authenticguards.com/api/feature?appid=003";
@@ -391,6 +407,7 @@ public class HomeFragment extends Fragment {
                          mData.add(new Brand(idString,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
                      }
                      mAdapter.notifyDataSetChanged();
+                     mProgressBarBrand.setVisibility(View.GONE);
                  } catch (JSONException e) {
                      e.printStackTrace();
                  }
@@ -431,6 +448,7 @@ public class HomeFragment extends Fragment {
                         mDataPromo.add(new Promo(idx, finalImage, title, harga, "5", tanggal, desc, termC));
                     }
                     mAdapterPromo.notifyDataSetChanged();
+                    mProgressBarBrand.setVisibility(ProgressBar.INVISIBLE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -8,6 +8,12 @@
     <color name="colorGold">#9d8348</color>
     <color name="colorGREY">#767676</color>
 
+    <color name="placeholder_bg">#dddddd</color>
+    <color name="item_name">#0c0c0c</color>
+    <color name="description">#1a1a1a</color>
+    <color name="chef">#777</color>
+    <color name="timestamp">#777</color>
+
     <!--dot colors-->
     <color name="dot_inactive_screen1">#0f0f0f</color>
     <color name="dot_inactive_screen2">#0f0f0f</color>
