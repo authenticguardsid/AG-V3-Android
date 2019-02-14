@@ -75,6 +75,13 @@ public class SeeAllStoriesActivity extends AppCompatActivity {
                     }
                 });
 
+        token = DataRequest.getResultToken(getApplicationContext());
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+        LinearLayoutManager gridLayoutManager = new GridLayoutManager(SeeAllStoriesActivity.this,2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -124,17 +131,21 @@ public class SeeAllStoriesActivity extends AppCompatActivity {
                                 finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
                                 storiesList.add(new Stories(title,article,finalImage,url));
 
-                                recyclerView.setHasFixedSize(true);
-                                recyclerView.setNestedScrollingEnabled(false);
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(SeeAllStoriesActivity.this,2);
+
                                 /*LinearLayoutManager layoutManager = new LinearLayoutManager(SeeAllStoriesActivity.this, LinearLayoutManager.VERTICAL, true);
                                 layoutManager.setStackFromEnd(true);*/
-                                recyclerView.setLayoutManager(gridLayoutManager);
+
 
                                 storiesAdapter = new StoriesAdapter(SeeAllStoriesActivity.this, storiesList, new CustomItemClickListener() {
                                     @Override
                                     public void onItemClick(View v, int position) {
-
+                                        final Stories stories = storiesList.get(position);
+                                        Intent detail_intent = new Intent(SeeAllStoriesActivity.this,DetailStoriesActivity.class);
+                                        detail_intent.putExtra("gambar",stories.getImage());
+                                        detail_intent.putExtra("judul",stories.getTitl());
+                                        detail_intent.putExtra("article",stories.getShort_info());
+                                        detail_intent.putExtra("url",stories.getUrl());
+                                        startActivity(detail_intent);
                                     }
                                 });
                                 recyclerView.setAdapter(storiesAdapter);

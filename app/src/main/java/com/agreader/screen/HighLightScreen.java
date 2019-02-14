@@ -80,8 +80,7 @@ public class HighLightScreen extends AppCompatActivity {
         recyclerView.setHasFixedSize(false);
 
 
-        LinearLayoutManager layoutManager =
-                new GridLayoutManager(this, 2);
+        LinearLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
 
 
