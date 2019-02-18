@@ -53,7 +53,7 @@ public class MasterActivity extends AppCompatActivity {
         goPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(MasterActivity.this,PointActivity.class);
+                Intent intent = new Intent(MasterActivity.this, Certificate.class);
                startActivity(intent);
             }
         });

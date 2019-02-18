@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.agreader.screen.Certificate;
 import com.agreader.screen.QRcodeActivity;
 import com.agreader.screen.UnverifiedProductActivity;
 import com.agreader.screen.VerifiedProductActivity;
@@ -34,6 +35,8 @@ import com.google.zxing.Result;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 
 public class QRCodeBaruActivity extends AppCompatActivity {
@@ -48,7 +51,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
     String token = "", token2 = "";
     String GCODE = "";
     String rvalid;
-
+    ArrayList<String> arrayList = new ArrayList<String>();
     String size,color,material,price,distributor,expiredDate,img;
 
     private ProgressDialog pDialog;
@@ -58,6 +61,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_baru);
 
+        arrayList.add("");
         CodeScannerView scannerView = (CodeScannerView) findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -189,7 +193,51 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         intent_geniune.putExtra("expiredDate",expiredDate);
                         intent_geniune.putExtra("image",img);
                         startActivity(intent_geniune);
-                    }else {
+                    } else if (scancode.equals("AG-PS1CW9")) {
+                        Intent intent = new Intent(QRCodeBaruActivity.this, Certificate.class);
+                        intent.putExtra("Code", scancode);
+                        intent.putExtra("Name", "Muhamad Taufiq Ramadhan (6706162106)");
+                        intent.putExtra("job", "Android Developer");
+                        intent.putExtra("company", "PT Authentikasi Garda Teknologi");
+                        intent.putExtra("instance", "Telkom University");
+                        intent.putExtra("in", "2 November 2018");
+                        intent.putExtra("out", "2 Februari 2019");
+                        intent.putExtra("nilai", "Sangat Baik (A)");
+                        startActivity(intent);
+                    } else if (scancode.equals("AG-U3NBCF")) {
+                        Intent intent = new Intent(QRCodeBaruActivity.this, Certificate.class);
+                        intent.putExtra("Code", scancode);
+                        intent.putExtra("Name", "Rahmad Satria Kurniawan (6706162127)");
+                        intent.putExtra("job", "Android Developer");
+                        intent.putExtra("company", "PT Authentikasi Garda Teknologi");
+                        intent.putExtra("instance", "Telkom University");
+                        intent.putExtra("in", "22 November 2018");
+                        intent.putExtra("out", "22 Februari 2019");
+                        intent.putExtra("nilai", "Sangat Baik (A)");
+                        startActivity(intent);
+                    } else if (scancode.equals("AG-F0OIEQ")) {
+                        Intent intent = new Intent(QRCodeBaruActivity.this, Certificate.class);
+                        intent.putExtra("Code", scancode);
+                        intent.putExtra("Name", "Yudhistira Caraka (6706164022)");
+                        intent.putExtra("job", "Android Developer");
+                        intent.putExtra("instance", "Telkom University");
+                        intent.putExtra("in", "22 November 2018");
+                        intent.putExtra("out", "22 Februari 2019");
+                        intent.putExtra("company", "PT Authentikasi Garda Teknologi");
+                        intent.putExtra("nilai", "Baik (B)");
+                        startActivity(intent);
+                    } else if (scancode.equals("AG-019BCJ")) {
+                        Intent intent = new Intent(QRCodeBaruActivity.this, Certificate.class);
+                        intent.putExtra("Code", scancode);
+                        intent.putExtra("Name", "Ficky Ikhsan Sujana (201503024)");
+                        intent.putExtra("job", "Business Developmet");
+                        intent.putExtra("instance", "Unisadhuguna Business School");
+                        intent.putExtra("in", "2 Februari 2018");
+                        intent.putExtra("out", "5 Mei 2019");
+                        intent.putExtra("company", "PT Authentikasi Garda Teknologi");
+                        intent.putExtra("nilai", "Sangat Baik (A)");
+                        startActivity(intent);
+                    } else {
                         Intent intent_fake = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
                         startActivity(intent_fake);
                     }

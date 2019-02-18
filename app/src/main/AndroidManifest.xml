@@ -126,7 +126,8 @@
         <activity android:name=".screen.DetailPointActivity" />
         <activity android:name=".screen.SeeAllBrand" />
         <activity android:name=".screen.StoryDetail" />
-        <activity android:name=".screen.LeaderBoard"></activity>
+        <activity android:name=".screen.LeaderBoard" />
+        <activity android:name=".screen.Certificate"></activity>
     </application>
 
 </manifest>
