@@ -11,128 +11,76 @@ import android.widget.TextView;
 
 import com.agreader.R;
 import com.agreader.model.ProductModel;
+import com.agreader.utils.CustomItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.ViewHolder> {
 
-    private ClickHandler mClickHandler;
-    private Context mContext;
+    private Context context;
     private ArrayList<ProductModel> mData;
-    private ArrayList<String> mDataId;
-    private ArrayList<String> mSelectedId;
-    private View mEmptyView;
-    private View mProgressbar;
+    private ArrayList<ProductModel> listData;
+    private CustomItemClickListener listener;
 
-    public MyProductAdapter(Context context, ArrayList<ProductModel> data, ArrayList<String> dataId,
-                            View emptyView, View progresView, ClickHandler handler) {
-        mContext = context;
-        mData = data;
-        mDataId = dataId;
-        mEmptyView = emptyView;
-        mProgressbar = progresView;
-        mClickHandler = handler;
-        mSelectedId = new ArrayList<>();
-        setHasStableIds(true);
+    public MyProductAdapter(Context context, ArrayList<ProductModel> mData, ArrayList<ProductModel>listData ,CustomItemClickListener listener) {
+        this.context = context;
+        this.mData = mData;
+        this.listener = listener;
+        this.listData = listData;
     }
 
-    public void updateEmptyView() {
-        if (mData.size() == 0)
-            mEmptyView.setVisibility(View.VISIBLE);
-        else
-            mEmptyView.setVisibility(View.GONE);
-    }
-
-    public void progressView() {
-        if (mData.size() == 0)
-            mProgressbar.setVisibility(View.VISIBLE);
-        else
-            mProgressbar.setVisibility(View.GONE);
-    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(
-                R.layout.list_item_myproduct, parent, false);
-        return new ViewHolder(view);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.list_item_myproduct, parent, false);
+        final MyProductAdapter.ViewHolder mholder = new MyProductAdapter.ViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(view,mholder.getPosition());
+            }
+        });
+        return mholder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ProductModel pet = mData.get(position);
-        Picasso.get().load(pet.getImageProduct()).into(holder.mImg);
-        holder.mName.setText(pet.getNameProduct());
-        holder.mDate.setText(pet.getDateProduct());
-        holder.mBrand.setText(pet.getMerchant());
-        holder.mPoint.setText(pet.getPoint());
-        holder.itemView.setSelected(mSelectedId.contains(mDataId.get(position)));
+        holder.txt_product.setText(mData.get(position).getNameProduct());
+        holder.txt_brand.setText(mData.get(position).getBrand());
+        holder.txt_date.setText(mData.get(position).getDateProduct());
+        if (mData.get(position).getStatus().equals("on_review")){
+            holder.status.setImageResource(R.drawable.ic_time);
+            holder.txt_status.setText("Pending");
+        }else {
+            holder.status.setImageResource(R.drawable.crop__ic_done);
+            holder.txt_status.setText("Disetujui");
+        }
+        Picasso.get().load(mData.get(position).getImageProduct()).fit().into(holder.gambarProduct);
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return (mData != null) ? mData.size() : 0;
     }
 
-    public void toggleSelection(String dataId) {
-        if (mSelectedId.contains(dataId))
-            mSelectedId.remove(dataId);
-        else
-            mSelectedId.add(dataId);
-        notifyDataSetChanged();
-    }
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
-    public int selectionCount() {
-        return mSelectedId.size();
-    }
+        private TextView txt_product, txt_brand,txt_date,txt_status;
+        private ImageView status,gambarProduct;
+        //private Button read_more;
 
-    public void resetSelection() {
-        mSelectedId = new ArrayList<>();
-        notifyDataSetChanged();
-    }
-
-    public ArrayList<String> getSelectedId() {
-        return mSelectedId;
-    }
-
-    public interface ClickHandler {
-        void onItemClick(int position);
-
-        boolean onItemLongClick(int position);
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder implements
-            View.OnClickListener,
-            View.OnLongClickListener {
-        final ImageView mImg;
-        final TextView mName;
-        final TextView mDate;
-        final TextView mBrand;
-        final TextView mPoint;
-
-        ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
+            txt_product= (TextView) itemView.findViewById(R.id.namaProduct);
+            txt_brand= (TextView) itemView.findViewById(R.id.namaBrandProduct);
+            txt_date= (TextView) itemView.findViewById(R.id.tanggalClaimProduct);
+            status = (ImageView)itemView.findViewById(R.id.status);
+            txt_status = (TextView)itemView.findViewById(R.id.status_text);
+            gambarProduct = (ImageView)itemView.findViewById(R.id.gambarProduct);
 
-            mImg = itemView.findViewById(R.id.image_product);
-            mName = itemView.findViewById(R.id.product_name);
-            mDate = itemView.findViewById(R.id.date_claim);
-            mBrand = itemView.findViewById(R.id.product_brand);
-            mPoint = itemView.findViewById(R.id.reward_claim);
-
-            itemView.setFocusable(true);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-        }
-
-        @Override
-        public void onClick(View itemView) {
-            mClickHandler.onItemClick(getAdapterPosition());
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            return mClickHandler.onItemLongClick(getAdapterPosition());
         }
     }
 

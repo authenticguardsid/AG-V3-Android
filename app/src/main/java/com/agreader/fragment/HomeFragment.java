@@ -257,28 +257,8 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.list_brand);
         recyclerView.setHasFixedSize(false);
 
-
         getBrand(JSON);
-        mAdapter = new BrandAdapter(getContext(), mData, mDataId,
-                new BrandAdapter.ClickHandler() {
-                    @Override
-                    public void onItemClick(int position) {
-                        if (mActionMode != null) {
-                            mAdapter.toggleSelection(mDataId.get(position));
-                            if (mAdapter.selectionCount() == 0)
-                                mActionMode.finish();
-                            else
-                                mActionMode.invalidate();
-                            return;
-                        }
-                        Brand pet = mData.get(position);
-                        Intent intent = new Intent(getApplicationContext(), FeaturedDetailActivity.class);
-                        intent.putExtra("id", pet.getId());
-                        intent.putExtra("name", pet.getName());
-                        intent.putExtra("image", pet.getImage());
-                        startActivity(intent);
-                    }
-                });
+
 
         mAdapterPromo = new PromoAdapter(getContext(), mDataPromo, mDataId,
                 new PromoAdapter.ClickHandler() {
@@ -304,7 +284,6 @@ public class HomeFragment extends Fragment {
                         startActivity(intentDetailPoint);
                     }
                 });
-        recyclerView.setAdapter(mAdapter);
         recylerPromo.setAdapter(mAdapterPromo);
 //        autoScroll();
         return rootView;
@@ -405,9 +384,33 @@ public class HomeFragment extends Fragment {
                          Log.d("tolil", "onResponse: " + brand.getString("name"));
 //                         String client = brand.getString("name");
                          mData.add(new Brand(idString,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
+
+
+                         mAdapter = new BrandAdapter(getContext(), mData, mDataId,
+                                 new BrandAdapter.ClickHandler() {
+                                     @Override
+                                     public void onItemClick(int position) {
+                                         if (mActionMode != null) {
+                                             mAdapter.toggleSelection(mDataId.get(position));
+                                             if (mAdapter.selectionCount() == 0)
+                                                 mActionMode.finish();
+                                             else
+                                                 mActionMode.invalidate();
+                                             return;
+                                         }
+                                         Brand pet = mData.get(position);
+                                         Intent intent = new Intent(getApplicationContext(), FeaturedDetailActivity.class);
+                                         intent.putExtra("id", pet.getId());
+                                         intent.putExtra("name", pet.getName());
+                                         intent.putExtra("image", pet.getImage());
+                                         startActivity(intent);
+                                     }
+                                 });
+                         mProgressBarBrand.setVisibility(View.INVISIBLE);
+                         recyclerView.setAdapter(mAdapter);
+                         mAdapter.notifyDataSetChanged();
                      }
-                     mAdapter.notifyDataSetChanged();
-                     mProgressBarBrand.setVisibility(View.GONE);
+                     /*mProgressBarBrand.setVisibility(View.GONE);*/
                  } catch (JSONException e) {
                      e.printStackTrace();
                  }
