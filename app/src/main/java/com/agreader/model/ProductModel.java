@@ -3,18 +3,78 @@ package com.agreader.model;
 import java.io.Serializable;
 
 public class ProductModel implements Serializable {
-    String id, imageProduct, nameProduct, dateProduct, merchant, point;
+    String id, imageProduct, nameProduct, dateProduct, merchant, point,status,brand;
+
+    private String size,color,material,price,distributor,expiredDate,alamatBrand,logoBrand;
 
     public ProductModel() {
     }
 
-    public ProductModel(String id, String imageProduct, String nameProduct, String dateProduct, String merchant, String point) {
-        this.id = id;
+
+
+    public String getAlamatBrand() {
+        return alamatBrand;
+    }
+
+    public String getLogoBrand() {
+        return logoBrand;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public String getDistributor() {
+        return distributor;
+    }
+
+    public String getExpiredDate() {
+        return expiredDate;
+    }
+
+
+    public ProductModel(String imageProduct, String nameProduct, String brand, String dateProduct, String status,String size, String color, String material, String price, String distributor, String expiredDate, String alamatBrand, String logoBrand) {
         this.imageProduct = imageProduct;
+        this.brand = brand;
         this.nameProduct = nameProduct;
         this.dateProduct = dateProduct;
-        this.merchant = merchant;
-        this.point = point;
+        this.status = status;
+        this.size = size;
+        this.color = color;
+        this.material = material;
+        this.price = price;
+        this.distributor = distributor;
+        this.expiredDate = expiredDate;
+        this.alamatBrand = alamatBrand;
+        this.logoBrand = logoBrand;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getId() {
