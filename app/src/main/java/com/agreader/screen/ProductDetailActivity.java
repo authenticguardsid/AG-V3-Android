@@ -85,7 +85,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDetailActivity.this, ClaimProductActivity.class);
-                intent.putExtra("code",getIntent().getStringExtra("code"));
+                intent.putExtra("code", getIntent().getStringExtra("code"));
                 startActivity(intent);
                 finish();
             }

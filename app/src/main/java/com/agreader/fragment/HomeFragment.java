@@ -189,7 +189,7 @@ public class HomeFragment extends Fragment {
         mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SeeAllStoriesActivity.class);
+                Intent intent = new Intent(getContext(), HighLightScreen.class);
                 intent.putExtra("hasil", "1");
                 startActivity(intent);
             }
@@ -257,8 +257,28 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.list_brand);
         recyclerView.setHasFixedSize(false);
 
-        getBrand(JSON);
 
+        getBrand(JSON);
+        mAdapter = new BrandAdapter(getContext(), mData, mDataId,
+                new BrandAdapter.ClickHandler() {
+                    @Override
+                    public void onItemClick(int position) {
+                        if (mActionMode != null) {
+                            mAdapter.toggleSelection(mDataId.get(position));
+                            if (mAdapter.selectionCount() == 0)
+                                mActionMode.finish();
+                            else
+                                mActionMode.invalidate();
+                            return;
+                        }
+                        Brand pet = mData.get(position);
+                        Intent intent = new Intent(getApplicationContext(), FeaturedDetailActivity.class);
+                        intent.putExtra("id", pet.getId());
+                        intent.putExtra("name", pet.getName());
+                        intent.putExtra("image", pet.getImage());
+                        startActivity(intent);
+                    }
+                });
 
         mAdapterPromo = new PromoAdapter(getContext(), mDataPromo, mDataId,
                 new PromoAdapter.ClickHandler() {
@@ -284,6 +304,7 @@ public class HomeFragment extends Fragment {
                         startActivity(intentDetailPoint);
                     }
                 });
+        recyclerView.setAdapter(mAdapter);
         recylerPromo.setAdapter(mAdapterPromo);
 //        autoScroll();
         return rootView;
@@ -362,68 +383,45 @@ public class HomeFragment extends Fragment {
         mShimmerViewContainer.stopShimmerAnimation();
         super.onPause();
     }
-     private void getBrand(String tes){
-         String url = "http://admin.authenticguards.com/api/feature?appid=003";
-         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-             @Override
-             public void onResponse(String response) {
-                 try {
-                     JSONObject jsonObject = new JSONObject(response);
-                     JSONObject json= jsonObject.getJSONObject("result");
-                     JSONArray jsonArray = json.getJSONArray("data");
-                     Log.d("twtw", "onResponse: " + jsonArray);
-                     for (int i = 0; i < 5 ; i++) {
-                         JSONObject data = jsonArray.getJSONObject(i);
-                         Log.d("lol", "ini data json" + data);
-                         int id = data.getInt("id");
-                         String idString = String.valueOf(id);
-                         String image = data.getString("image");
-                         String name = data.getString("Name");
-                         Log.d("twtw", "onResponse: " +image);
-                         JSONObject brand = data.getJSONObject("client");
-                         Log.d("tolil", "onResponse: " + brand.getString("name"));
+
+    private void getBrand(String tes) {
+        String url = "http://admin.authenticguards.com/api/feature?appid=003";
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject json = jsonObject.getJSONObject("result");
+                    JSONArray jsonArray = json.getJSONArray("data");
+                    Log.d("twtw", "onResponse: " + jsonArray);
+                    for (int i = 0; i < 5; i++) {
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        Log.d("lol", "ini data json" + data);
+                        int id = data.getInt("id");
+                        String idString = String.valueOf(id);
+                        String image = data.getString("image");
+                        String name = data.getString("Name");
+                        Log.d("twtw", "onResponse: " + image);
+                        JSONObject brand = data.getJSONObject("client");
+                        Log.d("tolil", "onResponse: " + brand.getString("name"));
 //                         String client = brand.getString("name");
-                         mData.add(new Brand(idString,name,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg" ));
-
-
-                         mAdapter = new BrandAdapter(getContext(), mData, mDataId,
-                                 new BrandAdapter.ClickHandler() {
-                                     @Override
-                                     public void onItemClick(int position) {
-                                         if (mActionMode != null) {
-                                             mAdapter.toggleSelection(mDataId.get(position));
-                                             if (mAdapter.selectionCount() == 0)
-                                                 mActionMode.finish();
-                                             else
-                                                 mActionMode.invalidate();
-                                             return;
-                                         }
-                                         Brand pet = mData.get(position);
-                                         Intent intent = new Intent(getApplicationContext(), FeaturedDetailActivity.class);
-                                         intent.putExtra("id", pet.getId());
-                                         intent.putExtra("name", pet.getName());
-                                         intent.putExtra("image", pet.getImage());
-                                         startActivity(intent);
-                                     }
-                                 });
-                         mProgressBarBrand.setVisibility(View.INVISIBLE);
-                         recyclerView.setAdapter(mAdapter);
-                         mAdapter.notifyDataSetChanged();
-                     }
-                     /*mProgressBarBrand.setVisibility(View.GONE);*/
-                 } catch (JSONException e) {
-                     e.printStackTrace();
-                 }
-             }
-         }, new Response.ErrorListener() {
-             @Override
-             public void onErrorResponse(VolleyError error) {
-                 Log.d("twtw", "onErrorResponse: " + error);
-             }
-         });
-         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-         requestQueue.add(stringRequest);
-     }
+                        mData.add(new Brand(idString, name, "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg"));
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    mProgressBarBrand.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("twtw", "onErrorResponse: " + error);
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
 
     private void getPromo(String token){
         String url = "http://admin.authenticguards.com/api/promo_?token="+ token +"&appid=003";

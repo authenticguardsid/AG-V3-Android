@@ -3,13 +3,12 @@ package com.agreader.model;
 import java.io.Serializable;
 
 public class ProductModel implements Serializable {
-    String id, imageProduct, nameProduct, dateProduct, merchant, point,status,brand;
+    String id, imageProduct, nameProduct, dateProduct, merchant, point, status, brand;
 
-    private String size,color,material,price,distributor,expiredDate,alamatBrand,logoBrand;
+    private String size, color, material, price, distributor, expiredDate, alamatBrand, logoBrand;
 
     public ProductModel() {
     }
-
 
 
     public String getAlamatBrand() {
@@ -45,7 +44,7 @@ public class ProductModel implements Serializable {
     }
 
 
-    public ProductModel(String imageProduct, String nameProduct, String brand, String dateProduct, String status,String size, String color, String material, String price, String distributor, String expiredDate, String alamatBrand, String logoBrand) {
+    public ProductModel(String imageProduct, String nameProduct, String brand, String dateProduct, String status, String size, String color, String material, String price, String distributor, String expiredDate, String alamatBrand, String logoBrand) {
         this.imageProduct = imageProduct;
         this.brand = brand;
         this.nameProduct = nameProduct;

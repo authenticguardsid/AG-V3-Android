@@ -185,7 +185,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         intent_geniune.putExtra("email", email);
                         intent_geniune.putExtra("web", web);
 
-                        intent_geniune.putExtra("code",GCODE);
+                        intent_geniune.putExtra("code", GCODE);
 
                         intent_geniune.putExtra("size",size);
                         intent_geniune.putExtra("color",color);

@@ -22,7 +22,7 @@ public class MyProductDetail extends AppCompatActivity {
 
     ArrayList<String> imageUrls = new ArrayList<String>();
 
-    private TextView txt_size,txt_color,txt_material,txt_price,txt_distributor,txt_expiredDate,txt_namaBrand,txt_alamatBrand,txt_namaProduk;
+    private TextView txt_size, txt_color, txt_material, txt_price, txt_distributor, txt_expiredDate, txt_namaBrand, txt_alamatBrand, txt_namaProduk;
     private CircleImageView logo_brand;
     private String harga;
 
@@ -30,17 +30,17 @@ public class MyProductDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_product_detail);
-        txt_size = (TextView)findViewById(R.id.sizeDetaill);
-        txt_color= (TextView)findViewById(R.id.colorDetaill);
-        txt_material= (TextView)findViewById(R.id.materialDetaill);
-        txt_price= (TextView)findViewById(R.id.priceDetaill);
-        txt_distributor= (TextView)findViewById(R.id.distributorDetaill);
-        txt_expiredDate= (TextView)findViewById(R.id.expiredDateDetaill);
+        txt_size = (TextView) findViewById(R.id.sizeDetaill);
+        txt_color = (TextView) findViewById(R.id.colorDetaill);
+        txt_material = (TextView) findViewById(R.id.materialDetaill);
+        txt_price = (TextView) findViewById(R.id.priceDetaill);
+        txt_distributor = (TextView) findViewById(R.id.distributorDetaill);
+        txt_expiredDate = (TextView) findViewById(R.id.expiredDateDetaill);
         txt_namaBrand = (TextView) findViewById(R.id.namaBrandd);
-        txt_alamatBrand = (TextView)findViewById(R.id.alamatBrandd);
-        logo_brand = (CircleImageView)findViewById(R.id.logoBrandd);
-        txt_namaProduk = (TextView)findViewById(R.id.namaProductt);
-        carouselView = (CarouselView)findViewById(R.id.gambarDetailProduct);
+        txt_alamatBrand = (TextView) findViewById(R.id.alamatBrandd);
+        logo_brand = (CircleImageView) findViewById(R.id.logoBrandd);
+        txt_namaProduk = (TextView) findViewById(R.id.namaProductt);
+        carouselView = (CarouselView) findViewById(R.id.gambarDetailProduct);
 
 
         txt_namaProduk.setText(getIntent().getStringExtra("namaProduk"));
@@ -54,7 +54,7 @@ public class MyProductDetail extends AppCompatActivity {
         DecimalFormat df = new DecimalFormat("#.##");
         String hargaFormat = df.format(total);
 
-        txt_price.setText("Rp."+hargaFormat);
+        txt_price.setText("Rp." + hargaFormat);
         txt_distributor.setText(getIntent().getStringExtra("distributor"));
         txt_expiredDate.setText(getIntent().getStringExtra("expiredDate"));
 

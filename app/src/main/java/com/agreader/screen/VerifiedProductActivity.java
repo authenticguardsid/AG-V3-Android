@@ -60,7 +60,7 @@ public class VerifiedProductActivity extends AppCompatActivity {
                 intent.putExtra("distributor",getIntent().getStringExtra("distributor"));
                 intent.putExtra("expiredDate",getIntent().getStringExtra("expiredDate"));
                 intent.putExtra("image",getIntent().getStringExtra("image"));
-                intent.putExtra("code",getIntent().getStringExtra("code"));
+                intent.putExtra("code", getIntent().getStringExtra("code"));
                 startActivity(intent);
                 finish();
             }

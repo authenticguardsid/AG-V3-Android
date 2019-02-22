@@ -1,133 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screen.ClaimProductActivity">
+    tools:context=".screen.QRcodeActivity">
 
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/claim"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.03" />
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+        <TextView
+            android:id="@+id/textClaim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="CLAIM THIS PRODUCT IS YOURS"
+            android:textColor="@android:color/black"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_centerHorizontal="true"
+            android:textSize="21sp"
+            android:textAlignment="center" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        <TextView
+            android:id="@+id/textReward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="and get reward points because you"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/black"
+            android:layout_below="@+id/textClaim"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:textAlignment="center" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        <TextView
+            android:id="@+id/textHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="help us fight counterfeiting"
+            android:layout_below="@+id/textReward"
+            android:textColor="@android:color/black"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_centerHorizontal="true" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/textHelp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Menu"
+            android:text="Please take a picture of your Receipt" />
 
-    <FrameLayout
-        android:id="@+id/img_post"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline14"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toTopOf="@+id/guideline10">
+    </RelativeLayout>
 
-    </FrameLayout>
+    <!--<fragment-->
+    <!--android:id="@+id/barcode_scanner"-->
+    <!--android:layout_below="@+id/claim"-->
+    <!--android:name="info.androidhive.barcode.BarcodeReader"-->
+    <!--android:layout_width="250dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_height="250dp"-->
+    <!--app:auto_focus="true"-->
+    <!--app:use_flash="false" />-->
 
     <ImageView
-        android:id="@+id/img_klik"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:tint="@color/colorAccent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="foto"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/img_post"
-        app:srcCompat="@drawable/ic_camera" />
+        android:id="@+id/img_post"
+        android:layout_width="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/claim"
+        android:layout_height="250dp"
+        android:background="#44000000" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="CLAIM THIS PRODUCT IS YOURS"
-        android:textColor="@android:color/black"
-        android:textSize="21sp"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toTopOf="@+id/guideline9" />
+        android:layout_below="@+id/img_post"
+        android:layout_marginTop="20dp">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="@android:color/black"
-        android:text="and get reward points because you"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        <ImageView
+            android:id="@+id/img_klik"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/icons_8_integrated_webcam_filled"
+            android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="help us fight counterfeiting"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:textColor="@color/colorWhite"
+            android:text="Share"
+            android:padding="16dp"
+            android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="0dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Menu"
-        android:text="Please take a picture of your receipet"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintStart_toStartOf="@+id/guideline11" />
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        android:text="share"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/img_post" />
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
