@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -50,9 +52,10 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
-public class ClaimProductActivity extends AppCompatActivity {
+public class ClaimProductActivity extends AppCompatActivity implements LocationListener {
 
     private static int IMG_CAMERA = 2;
 
@@ -60,15 +63,17 @@ public class ClaimProductActivity extends AppCompatActivity {
     private Button btnShare;
     private ImageView imagePost, imageKlik;
     private String urlPost = "", code = "", token = "", gambar;
-    private double longitude, latitude;
+    private double longitude, latitude, loc, lang;
     private FirebaseUser firebaseUser;
     private FusedLocationProviderClient client;
+    public LocationManager locationManager;
+    public Criteria criteria;
+    public String bestProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_claim_product);
-
         client = LocationServices.getFusedLocationProviderClient(this);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -78,10 +83,11 @@ public class ClaimProductActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         token = task.getResult().getToken();
-                        Log.d("lol", "onCompleteBaru: " + token);
+                        Log.d("ClaimActivity", "new: " + token);
                         String result = "";
                     }
                 });
+        Log.d("ClaimActivity", "onCompleteBaru: " + token + code);
         urlPost = "http://admin.authenticguards.com/api/claim_/" + code + "?token=" + token + "&appid=003";
 
         btnShare = (Button) findViewById(R.id.btn_share);
@@ -101,6 +107,7 @@ public class ClaimProductActivity extends AppCompatActivity {
             }
         });
 
+
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +116,10 @@ public class ClaimProductActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Log.d("cobacoba", "onCreate: " + longitude + latitude);
+        getLocation();
+        Log.d("cobacoba", "onCreate: " + longitude + latitude);
 
     }
 
@@ -168,52 +179,47 @@ public class ClaimProductActivity extends AppCompatActivity {
     }
 
     private void uploadImage(final String image) {
-
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlPost, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    if (ActivityCompat.checkSelfPermission(ClaimProductActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ClaimProductActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, urlPost,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("uploade", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-
-
-                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    longitude = location.getLongitude();
-                    latitude = location.getLatitude();
-
-                    Log.i("proses5", longitude + "");
-                    Log.i("proses6", latitude + "");
-
-                    response.put("photo", image);
-                    response.put("loclong", longitude);
-                    response.put("loclang", latitude);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(ClaimProductActivity.this, "No internet connection", Toast.LENGTH_LONG).show();
+                    }
+                }) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new Hashtable<String, String>();
+                params.put("photo", image);
+                params.put("loclang", String.valueOf(lang));
+                params.put("loclong", String.valueOf(loc));
+                return params;
             }
-        });
-        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
-
-
+        };
+        {
+            int socketTimeout = 30000;
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            stringRequest.setRetryPolicy(policy);
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        }
     }
+
+    public static boolean isLocationEnabled(Context context) {
+        //...............
+        return true;
+    }
+
 
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -221,6 +227,54 @@ public class ClaimProductActivity extends AppCompatActivity {
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+
+    }
+
+    protected void getLocation() {
+        if (isLocationEnabled(ClaimProductActivity.this)) {
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            criteria = new Criteria();
+            bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+
+            //You can still do this if you like, you might get lucky:
+            if (ActivityCompat.checkSelfPermission(ClaimProductActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ClaimProductActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(ClaimProductActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                return;
+            } else {
+            }
+            // Write you code here if permission already given.
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            if (location != null) {
+                Log.e("TAG", "GPS is on");
+                lang = location.getLatitude();
+                loc = location.getLongitude();
+                Log.d("cobacoba", "getLocation: " + loc + lang);
+            }
+        }
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        locationManager.removeUpdates(this);
+
+        //open the map:
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
 
     }
 }
