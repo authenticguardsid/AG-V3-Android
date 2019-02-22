@@ -13,8 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.agreader.QRCodeBaruActivity;
-import com.agreader.screen.QRcodeActivity;
+import com.agreader.screen.QRCodeBaruActivity;
 import com.agreader.R;
 
 

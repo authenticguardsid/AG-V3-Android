@@ -15,15 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "1068271326502-gsck66qradjj4v2au5jaruikgdqck2t7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.agreader",
-            "certificate_hash": "73c1652d62322d96870688814e297d089532a094"
-          }
-        },
-        {
-          "client_id": "1068271326502-pp8k4oo87hc5b66tqq7r53ejs7rpj9v4.apps.googleusercontent.com",
+          "client_id": "1068271326502-dvjfakv390drmf3h8otv5m9404r8i304.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.agreader",
@@ -31,11 +23,27 @@
           }
         },
         {
-          "client_id": "1068271326502-2782apv5bugq9kd8l0mtciej43j6krrh.apps.googleusercontent.com",
+          "client_id": "1068271326502-l1mdgg3u1g1p20ujl227jct4dem0iu8i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.agreader",
+            "certificate_hash": "eadc1a0eba7b9745c47f4a91611282beae6edf72"
+          }
+        },
+        {
+          "client_id": "1068271326502-dscpnvfoopm2rhkea77818hkajmfukkh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.agreader",
             "certificate_hash": "363c345a842f4e3522a6fdd6da5eddb78f006273"
+          }
+        },
+        {
+          "client_id": "1068271326502-4nd7tjqkk4036i9h6fp1g4kviios20eb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.agreader",
+            "certificate_hash": "013f11d4dd4e1ff66137732fe4ab2e15f11de4ae"
           }
         },
         {
@@ -178,6 +186,14 @@
           "android_info": {
             "package_name": "com.authenticguards.reader",
             "certificate_hash": "e7584fc9b6e0e7558c752844d672d18eb0ad7e28"
+          }
+        },
+        {
+          "client_id": "1068271326502-6tql3f92l0auhrga3uioc2f4eo8o7si7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.authenticguards.reader",
+            "certificate_hash": "d63619f8b5fa51e770adf2f96dd0635b99c9443f"
           }
         },
         {

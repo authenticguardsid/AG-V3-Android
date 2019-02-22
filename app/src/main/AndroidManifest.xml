@@ -15,7 +15,7 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
-        android:name=".utils.AppController"
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,6 +39,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo_ag" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+
+        <service android:name=".utils.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -125,13 +144,14 @@
         <activity android:name=".screen.DetailHighlightScreen" />
         <activity android:name=".screen.MyProductDetail" />
         <activity android:name=".screen.ListAuthenticStoreActivity" />
-        <activity android:name=".QRCodeBaruActivity" />
+        <activity android:name=".screen.QRCodeBaruActivity" />
         <activity android:name=".screen.HighLightPromo" />
         <activity android:name=".screen.DetailPointActivity" />
         <activity android:name=".screen.SeeAllBrand" />
         <activity android:name=".screen.StoryDetail" />
         <activity android:name=".screen.LeaderBoard" />
-        <activity android:name=".screen.Certificate"></activity>
+        <activity android:name=".screen.Certificate" />
+        <activity android:name=".screen.DetailNotifActivity"></activity>
     </application>
 
 </manifest>
