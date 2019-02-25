@@ -60,5 +60,4 @@ public class DataRequest {
         Volley.newRequestQueue(context).add(jsonObjectRequest);
     }
 
-
 }

@@ -1,7 +1,6 @@
-package com.agreader;
+package com.agreader.screen;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,10 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.agreader.screen.Certificate;
-import com.agreader.screen.QRcodeActivity;
-import com.agreader.screen.UnverifiedProductActivity;
-import com.agreader.screen.VerifiedProductActivity;
+import com.agreader.R;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;

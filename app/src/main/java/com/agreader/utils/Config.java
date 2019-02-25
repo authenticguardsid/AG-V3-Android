@@ -4,9 +4,17 @@ public class Config {
     //Email Validation pattern
     public static final String regEx = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b";
 
-    //Fragments Tags
-    public static final String Login_Fragment = "Login_Fragment";
-    public static final String SignUp_Fragment = "SignUp_Fragment";
-    public static final String ForgotPassword_Fragment = "ForgotPassword_Fragment";
+    // global topic to receive app wide push notifications
+    public static final String TOPIC_GLOBAL = "global";
+
+    // broadcast receiver intent filters
+    public static final String REGISTRATION_COMPLETE = "registrationComplete";
+    public static final String PUSH_NOTIFICATION = "pushNotification";
+
+    // id to handle the notification in the notification tray
+    public static final int NOTIFICATION_ID = 100;
+    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
+
+    public static final String SHARED_PREF = "ah_firebase";
 }
 
