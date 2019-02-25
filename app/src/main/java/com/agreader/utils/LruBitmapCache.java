@@ -1,5 +1,6 @@
 package com.agreader.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
@@ -14,7 +15,7 @@ public class LruBitmapCache extends LruCache<String, Bitmap> implements
         return cacheSize;
     }
 
-    public LruBitmapCache() {
+    public LruBitmapCache(Context mCtx) {
         this(getDefaultLruCacheSize());
     }
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,12 +26,20 @@ import android.widget.Toast;
 
 import com.agreader.R;
 import com.agreader.utils.DataRequest;
+import com.agreader.utils.VolleyMultipartRequest;
+import com.agreader.utils.VolleySingleton;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -49,11 +58,17 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class ClaimProductActivity extends AppCompatActivity implements LocationListener {
 
@@ -89,7 +104,7 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
                 });
         Log.d("ClaimActivity", "onCompleteBaru: " + token + code);
         urlPost = "http://admin.authenticguards.com/api/claim_/" + code + "?token=" + token + "&appid=003";
-
+        Log.d("ClaimActivity", "new: " + urlPost);
         btnShare = (Button) findViewById(R.id.btn_share);
         imagePost = (ImageView) findViewById(R.id.img_post);
         imageKlik = (ImageView) findViewById(R.id.img_klik);
@@ -138,35 +153,15 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
                     imageKlik.setVisibility(View.GONE);
                     Bitmap bitmapnew = null;
                     Log.d("isigambar", "onClick: " + filepath);
-                    try {
-                        bitmapnew = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Bitmap lastBitmap = null;
-                    lastBitmap = bitmapnew;
-                    Log.d("isigambar", "onClick: " + lastBitmap);
-                    String image = getStringImage(lastBitmap);
-                    uploadImage(image);
+                    InputStream iStream = getContentResolver().openInputStream(filepath);
+                    byte[] inputData = getBytes(iStream);
+                    uploadImage(inputData);
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
 
             } else if (requestCode == IMG_CAMERA) {
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                Bitmap bitmapnew = null;
-                Log.d("isigambar", "onClick: " + filepath);
-                try {
-                    bitmapnew = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Bitmap lastBitmap = null;
-                lastBitmap = bitmapnew;
-                Log.d("isigambar", "onClick: " + lastBitmap);
-                String image = getStringImage(lastBitmap);
-                uploadImage(image);
-                Log.d("tes1", longitude + latitude + image);
                 imagePost.setImageBitmap(thumbnail);
                 btnShare.setVisibility(View.VISIBLE);
                 imageKlik.setVisibility(View.GONE);
@@ -178,41 +173,63 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
         }
     }
 
-    private void uploadImage(final String image) {
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, urlPost,
-                new Response.Listener<String>() {
+    private void uploadImage(final byte[] image) {
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest
+                (com.android.volley.Request.Method.POST,
+                        "http://admin.authenticguards.com/api/claim_/" + code + "?token=" + token + "&appid=003"
+                        , new Response.Listener<NetworkResponse>() {
+
                     @Override
-                    public void onResponse(String response) {
-                        Log.d("uploade", response);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public void onResponse(NetworkResponse response) {
+                        Log.d("claim_", "onResponse: " + response);
+                        if (response != null) {
+                            Log.e("Volley", "Error. HTTP Status Code:" + response.statusCode);
                         }
                     }
-                },
-                new Response.ErrorListener() {
+
+                }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ClaimProductActivity.this, "No internet connection", Toast.LENGTH_LONG).show();
+                        error.printStackTrace();
+                        Log.e("claim_", "onErrorResponse: " + code + token);
+                        if (error instanceof TimeoutError) {
+                            Log.e("Volley", "TimeoutError");
+                        } else if (error instanceof NoConnectionError) {
+                            Log.e("Volley", "NoConnectionError");
+                        } else if (error instanceof AuthFailureError) {
+                            Log.e("Volley", "AuthFailureError");
+                        } else if (error instanceof ServerError) {
+                            Log.e("Volley", "ServerError");
+                        } else if (error instanceof NetworkError) {
+                            Log.e("Volley", "NetworkError");
+                        } else if (error instanceof ParseError) {
+                            Log.e("Volley", "ParseError");
+                        }
                     }
                 }) {
+            //pass file here (*/* - means you can pass any kind of file)
+
+            //pass String parameters here
+            String file_name = "claim-" + UUID.randomUUID().toString() + ".jpg";
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new Hashtable<String, String>();
-                params.put("photo", image);
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("photo", file_name);
                 params.put("loclang", String.valueOf(lang));
                 params.put("loclong", String.valueOf(loc));
+                Log.d("claim_", "getParams: " + params);
                 return params;
             }
+
+            @Override
+            protected Map<String, VolleyMultipartRequest.DataPart> getByteData() {
+                Map<String, DataPart> up_params = new HashMap<>();
+                up_params.put("photo", new DataPart(file_name, image, "image/jpeg"));
+                Log.d("claim_", "getByteData: " + up_params);
+                return up_params;
+            }
         };
-        {
-            int socketTimeout = 30000;
-            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            stringRequest.setRetryPolicy(policy);
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
-        }
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
     }
 
     public static boolean isLocationEnabled(Context context) {
@@ -220,6 +237,17 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
         return true;
     }
 
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
 
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -251,6 +279,37 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
                 Log.d("cobacoba", "getLocation: " + loc + lang);
             }
         }
+    }
+
+    public Bitmap loadBitmap(String url) {
+        Bitmap bm = null;
+        InputStream is = null;
+        BufferedInputStream bis = null;
+        try {
+            URLConnection conn = new URL(url).openConnection();
+            conn.connect();
+            is = conn.getInputStream();
+            bis = new BufferedInputStream(is, 8192);
+            bm = BitmapFactory.decodeStream(bis);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return bm;
     }
 
 

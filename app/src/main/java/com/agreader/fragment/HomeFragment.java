@@ -30,6 +30,7 @@ import com.agreader.model.Brand;
 import com.agreader.model.Hadiah;
 import com.agreader.model.NewsModel;
 import com.agreader.model.Promo;
+import com.agreader.model.User;
 import com.agreader.screen.AuthenticeStoreActivity;
 import com.agreader.screen.DetailHighlightScreen;
 import com.agreader.screen.DetailPointActivity;
@@ -71,6 +72,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -345,11 +347,53 @@ public class HomeFragment extends Fragment {
             }
         });
         Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
-
+        final HashMap<String, Object> user = new HashMap<>();
         final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
         dbf.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (!dataSnapshot.child("completeProfile").exists()) {
+                    User us = dataSnapshot.getValue(User.class);
+                    String gambar = "", numberPhone = "", name = "", gender = "", age = "", address = "", totalPoint = "";
+                    if (dataSnapshot.child("gambar").exists()) {
+                        gambar = us.getGambar();
+                    }
+
+                    if (dataSnapshot.child("numberPhone").exists()) {
+                        numberPhone = us.getNumberPhone();
+                    }
+
+                    if (dataSnapshot.child("name").exists()) {
+                        name = us.getName();
+                    }
+                    if (dataSnapshot.child("gender").exists()) {
+                        gender = us.getGender();
+                    }
+                    if (dataSnapshot.child("age").exists()) {
+                        age = us.getAge();
+                    }
+                    if (dataSnapshot.child("address").exists()) {
+                        address = us.getAddress();
+                    }
+
+                    if (dataSnapshot.child("totalPoint").exists()) {
+                        totalPoint = us.getTotalPoint();
+                    }
+                    user.put("numberPhone", numberPhone);
+                    user.put("idEmail", currentUser.getUid());
+                    user.put("idPhone", "");
+                    user.put("name", name);
+                    user.put("email", currentUser.getEmail());
+                    user.put("gender", gender);
+                    user.put("age", age);
+                    user.put("address", address);
+                    user.put("gambar", gambar);
+                    user.put("totalPoint", totalPoint);
+                    user.put("completeProfile", "false");
+                    dbf.setValue(user);
+                }
+
                 if (dataSnapshot.child("completeProfile").exists()){
                     String complete = dataSnapshot.child("completeProfile").getValue().toString();
                     if (complete.equals("true")){
