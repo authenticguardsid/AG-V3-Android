@@ -44,6 +44,7 @@ public class NotifFragment extends Fragment {
     private DividerItemDecoration dividerItemDecoration;
     private List<Notif> notifList;
     private RecyclerView.Adapter adapter;
+    private View emptyView;
 
     public NotifFragment() {
         // Required empty public constructor
@@ -56,9 +57,10 @@ public class NotifFragment extends Fragment {
         changeStatusBarColor();
 
         mList = view.findViewById(R.id.recycler_notif);
+        emptyView = view.findViewById(R.id.empty_view_notif);
 
         notifList = new ArrayList<>();
-        adapter = new NotifAdapter(getApplicationContext(),notifList);
+        adapter = new NotifAdapter(getApplicationContext(), notifList, emptyView);
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -83,7 +85,7 @@ public class NotifFragment extends Fragment {
     }
 
     private void getData(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/notification/?appid=003", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/notification/?appid=002", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if(response.length() > 0){
