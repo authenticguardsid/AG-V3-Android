@@ -1,6 +1,5 @@
 package com.agreader.screen;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -39,7 +38,6 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private String verificationId;
     private FirebaseAuth mAuth;
     private FirebaseUser gabung;
-    private ProgressDialog pDialog;
 
     private EditText editText;
     private TextView tunggu,number;
@@ -52,14 +50,12 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     String numberPhone = "";
     String name = "";
-    String emailnya = "";
+    String email = "";
     String gender = "";
     String age = "";
     String address = "";
-    String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Fuser.png?alt=media&token=a07b3aa8-90d4-4322-8e1d-8f20b91e54b0";
-    String totalPoint = "10000";
-    String completeProfile = "false";
-    String codebaru = "";
+    String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Ficons8-male-user-100.png?alt=media&token=4c93ddec-e12e-429c-87e6-1d610531b4df";
+
 
 
     private static final String FORMAT = "%02d:%02d";
@@ -90,13 +86,14 @@ public class VerifyPhoneActivity extends AppCompatActivity {
        kirim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String textfield = editText.getText().toString();
-                if (TextUtils.isEmpty(textfield)) {
+                if (TextUtils.isEmpty(editText.getText().toString())){
                     editText.setError("Required");
                     editText.setFocusable(true);
                     return;
-                } else {
-                    verifyCode(codebaru);
+                }else {
+                    editText.setError(null);
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,code);
+                    signInWithCredential(credential);
                 }
             }
         });
@@ -153,7 +150,6 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
 
     private void verifyCode(String code2){
-
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,code2);
         signInWithCredential(credential);
     }
@@ -166,39 +162,56 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Log.d("LOL", "onComplete: success");
+
                             final FirebaseUser currentUser = mAuth.getCurrentUser();
-                            final HashMap<String, Object> user= new HashMap<>();
-                            name = currentUser.getDisplayName();
+
                             final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+                            final HashMap<String, Object> user= new HashMap<>();
+
                             dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        Intent pindah = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
-
-                                        startActivity(pindah);
-                                    }
-
                                     User us = dataSnapshot.getValue(User.class);
 
-                                    gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/hadiah%2Fuser.png?alt=media&token=178bff40-3a10-4d6f-8544-c93d7fc2dcc1";
+                                    if (dataSnapshot.child("gambar").exists()){
+                                        gambar = us.getGambar();
+                                    }
 
-                                    user.put("numberPhone", phonenumber);
-                                    user.put("idEmail", currentUser.getUid());
-                                    user.put("idPhone", phonenumber);
-                                    user.put("name", "");
-                                    user.put("email", "");
-                                    user.put("gender", "");
-                                    user.put("age", "");
-                                    user.put("address", "");
+                                    if (namaa != null){
+                                        name = namaa;
+                                    }else{
+                                        if (dataSnapshot.child("name").exists()){
+                                            name = us.getName();
+                                        }
+                                    }
+
+
+                                    if (dataSnapshot.child("email").exists()){
+                                        email = us.getEmail();
+                                    }
+                                    if (dataSnapshot.child("gender").exists()){
+                                        gender = us.getGender();
+                                    }
+                                    if (dataSnapshot.child("age").exists()){
+                                        age = us.getAge();
+                                    }
+                                    if (dataSnapshot.child("address").exists()){
+                                        address = us.getAddress();
+                                    }
+
+                                    user.put("numberPhone",currentUser.getPhoneNumber());
+                                    user.put("idPhone",currentUser.getUid());
+                                    user.put("idEmail","");
+                                    user.put("name",name);
+                                    user.put("email",email);
+                                    user.put("gender",gender);
+                                    user.put("age",age);
+                                    user.put("address",address);
                                     user.put("gambar",gambar);
-                                    user.put("totalPoint", "10000");
-                                    user.put("completeProfile", "false");
+                                    user.put("totalPoint","0");
 
                                     dbf.setValue(user);
-                                    Intent pindah = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
-                                    startActivity(pindah);
+
                                 }
 
                                 @Override
@@ -207,6 +220,9 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                 }
                             });
 
+                            Intent intent = new Intent(VerifyPhoneActivity.this,MasterActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
 
                         }else {
                             Toast.makeText(VerifyPhoneActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -241,7 +257,6 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
             code = phoneAuthCredential.getSmsCode();
-            codebaru = code;
             if (code != null){
                 editText.setText(code);
                 signInWithCredential(phoneAuthCredential);
@@ -260,19 +275,11 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             code = editText.getText().toString().trim();
             if (TextUtils.isEmpty(code)){
                 Toast.makeText(VerifyPhoneActivity.this, "Gagal", Toast.LENGTH_SHORT).show();
-            } else {
+            }else {
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(s,code);
                 signInWithCredential(credential);
             }
 
         }
     };
-
-    private void displayLoader() {
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Create Account...");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(false);
-        pDialog.show();
-    }
 }
