@@ -50,9 +50,8 @@ public class PhoneLoginScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String number = "+62"+numberPhone.getText().toString();
-
+                
                 Log.i("Nomor " ,  number);
-
                 if (numberPhone.getText().toString().substring(0,0).equals("0")){
                     numberPhone.setError("Invalid Number");
                     numberPhone.requestFocus();
