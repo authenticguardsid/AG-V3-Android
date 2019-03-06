@@ -45,7 +45,7 @@ import java.util.HashMap;
 public class LoginScreenActivity extends AppCompatActivity {
 
 
-    LinearLayout buttonPhoneLogin,buttonemail;
+    LinearLayout buttonEmail, buttonGmail, buttonPhoneLogin;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     Button mRegister,buttonLogin;
     private static final int RC_SIGN=9001;
@@ -157,8 +157,8 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
 
-        buttonPhoneLogin = (LinearLayout) findViewById(R.id.login_hp);
-        buttonPhoneLogin.setOnClickListener(new View.OnClickListener() {
+        buttonEmail = (LinearLayout) findViewById(R.id.login_email);
+        buttonEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LoginScreenActivity.this, LoginActivity.class);
@@ -166,14 +166,23 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
 
-        buttonemail = (LinearLayout) findViewById(R.id.login_email);
-        buttonemail.setOnClickListener(new View.OnClickListener() {
+        buttonGmail = (LinearLayout) findViewById(R.id.login_gmail);
+        buttonGmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signInwithGoogle();
             }
         });
 
+
+        buttonPhoneLogin = (LinearLayout) findViewById(R.id.login_hp);
+        buttonPhoneLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginScreenActivity.this, PhoneLoginScreenActivity.class);
+                startActivity(i);
+            }
+        });
 
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override

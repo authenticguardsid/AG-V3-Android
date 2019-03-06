@@ -1,5 +1,6 @@
 package com.agreader.screen;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -38,6 +39,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private String verificationId;
     private FirebaseAuth mAuth;
     private FirebaseUser gabung;
+    private ProgressDialog pDialog;
 
     private EditText editText;
     private TextView tunggu,number;
@@ -55,8 +57,6 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     String age = "";
     String address = "";
     String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Ficons8-male-user-100.png?alt=media&token=4c93ddec-e12e-429c-87e6-1d610531b4df";
-
-
 
     private static final String FORMAT = "%02d:%02d";
 
@@ -76,7 +76,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
         phonenumber = getIntent().getStringExtra("phonenumber");
 
-        Log.i("Nomor Auth",phonenumber);
+        Log.i("Nomor Auth", phonenumber);
 
         Intent getData = getIntent();
         if (getData.getStringExtra("nama") != null){
@@ -86,25 +86,36 @@ public class VerifyPhoneActivity extends AppCompatActivity {
        kirim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(editText.getText().toString())){
+                String text = editText.getText().toString();
+                if (TextUtils.isEmpty(text)){
                     editText.setError("Required");
                     editText.setFocusable(true);
                     return;
-                }else {
-                    editText.setError(null);
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,code);
-                    signInWithCredential(credential);
+                }else{
+                    if(text.equals(code)){
+                        displayLoader();
+                        verifyCode(text);
+                    }
                 }
+
             }
         });
 
-        number.setText("Please type the verification code sent to \n "+phonenumber);
+        number.setText("Please type the verification code sent to \n " + phonenumber);
         sendVerificationCode(phonenumber);
 
         countdownTime();
 
         changeStatusBarColor();
 
+    }
+
+    private void displayLoader() {
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Account Verification...");
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 
     private void changeStatusBarColor() {
@@ -137,6 +148,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         }.start();
     }
 
+
     private void resendVerificationCode(String phoneNumber,
                                         PhoneAuthProvider.ForceResendingToken token) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -153,8 +165,6 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,code2);
         signInWithCredential(credential);
     }
-
-
 
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
@@ -184,7 +194,6 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                             name = us.getName();
                                         }
                                     }
-
 
                                     if (dataSnapshot.child("email").exists()){
                                         email = us.getEmail();

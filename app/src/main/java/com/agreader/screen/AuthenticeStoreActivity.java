@@ -76,20 +76,6 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
                     @Override
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         token = task.getResult().getToken();
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/getuser?token="+token+"&appid=003", null, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                token2 = token;
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        });
-                        Volley.newRequestQueue(AuthenticeStoreActivity.this).add(jsonObjectRequest);
-                        Log.e("token-firebase", "" + token);
-                        Log.e("token2-firebase", "" + token2);
                     }
                 });
 
@@ -127,6 +113,7 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
                         currentLatitude = 1.169968;
                         currentLongitude = 104.003014;
                     }
+                    Log.d("lol", "hasilnyaa : Lat " + currentLatitude + " Lon" + currentLongitude);
 
                    /* double currentLatitude = -6.943330;
                     double currentLongitude = 107.613670;*/
@@ -181,7 +168,7 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
 
     }
 
-    public void list_store(){
+    public void list_store_merz(){
         JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.net/api/locator_?token=a&appid=001", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
