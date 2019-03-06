@@ -44,7 +44,6 @@ public class NotifFragment extends Fragment {
     private DividerItemDecoration dividerItemDecoration;
     private List<Notif> notifList;
     private RecyclerView.Adapter adapter;
-    private View emptyView;
 
     public NotifFragment() {
         // Required empty public constructor
@@ -57,10 +56,9 @@ public class NotifFragment extends Fragment {
         changeStatusBarColor();
 
         mList = view.findViewById(R.id.recycler_notif);
-        emptyView = view.findViewById(R.id.empty_view_notif);
 
         notifList = new ArrayList<>();
-        adapter = new NotifAdapter(getApplicationContext(), notifList, emptyView);
+        adapter = new NotifAdapter(getApplicationContext(), notifList);
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

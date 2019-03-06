@@ -54,13 +54,54 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_authentic_store);
         modelArrayList = new ArrayList<>();
 
-        ImageView imgBack = findViewById(R.id.backPressStore);
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        firebaseUser.getIdToken(true)
+//                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+//                        token = task.getResult().getToken();
+//                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/getuser?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+//                            @Override
+//                            public void onResponse(JSONObject response) {
+//                                token2 = token;
+//                            }
+//                        }, new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//
+//                            }
+//                        });
+//                        Volley.newRequestQueue(ListAuthenticStoreActivity.this).add(jsonObjectRequest);
+//                        Log.e("token-firebase", "" + token2);
+//                    }
+//                });
+
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.net/api/locator_?token=a&appid=001", null, new Response.Listener<JSONObject>() {
+////            @Override
+////            public void onResponse(JSONObject response) {
+////                if (response.length() > 0) {
+////                    for (int i = 0; i < response.length(); i++) {
+////                        try {
+////                            JSONArray jsonArray = response.getJSONArray("result");
+////                            for (int j = 0; j < jsonArray.length() ; j++) {
+////                                JSONObject jsonObject = jsonArray.getJSONObject(j);
+////                                String brand_name = jsonObject.getString("Name");
+////                                String address = jsonObject.getString("addressOfficeOrStore");
+////                                Log.d("asdasd", "brand_name : " + brand_name + "address : " + address);
+////                            }
+////                        } catch (JSONException e) {
+////                            e.printStackTrace();
+////                        }
+////                    }
+////                }
+////            }
+////        }, new Response.ErrorListener() {
+////            @Override
+////            public void onErrorResponse(VolleyError error) {
+////
+////            }
+////        });
+////        Volley.newRequestQueue(this).add(jsonObjectRequest);
 
         carouselView = (CarouselView) findViewById(R.id.slider);
         carouselView.setPageCount(sampleImages.length);
@@ -78,13 +119,13 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(ListAuthenticStoreActivity.this, AuthenticeStoreActivity.class);
                 if (position == 0){
-                    intent.putExtra("brand_name", modelArrayList.get(position).getBrand_name());
+                    intent.putExtra("brand_name", "SABICHI");
                 }else if (position == 1){
-                    intent.putExtra("brand_name",modelArrayList.get(position).getBrand_name());
+                    intent.putExtra("brand_name", "Doa Indonesia");
                 }else if (position == 2){
-                    intent.putExtra("brand_name", modelArrayList.get(position).getBrand_name());
+                    intent.putExtra("brand_name", "DEENAY");
                 }else if (position == 3){
-                    intent.putExtra("brand_name", modelArrayList.get(position).getBrand_name());
+                    intent.putExtra("brand_name", "MERZ");
                 }
                 startActivity(intent);
             }
@@ -94,11 +135,6 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
         //recyclerView.setLayoutManager(new LinearLayoutManager(ListAuthenticStoreActivity.this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(listStoreAdapter);
         listStoreAdapter.notifyDataSetChanged();
-
-    }
-
-    @Override
-    public void onBackPressed() {
 
     }
 

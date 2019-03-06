@@ -1,79 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screen.DetailNotifActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/lol"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/ToolbarHome"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/toolbar"
-            android:elevation="2dp">
-
-            <ImageView
-                android:id="@+id/backPressNotif"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="10dp"
-                android:adjustViewBounds="false"
-                android:src="@drawable/ic_back" />
-
-            <TextView
-                android:id="@+id/titleBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:textColor="#000"
-                android:text="Detail Notification"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
+    tools:context=".pages.DetailNotifActivity">
 
     <RelativeLayout
         android:id="@+id/relative_notif_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/image_notif_click"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_alignParentTop="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/logo_ag" />
+            android:src="@drawable/logo_ag"
+            android:scaleType="centerCrop" />
 
         <RelativeLayout
             android:id="@+id/linear1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/image_notif_click"
-            android:layout_marginTop="0dp">
+            android:layout_below="@id/image_notif_click">
 
             <TextView
                 android:id="@+id/title_notif_click"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:paddingLeft="15dp"
-                android:paddingTop="10dp"
                 android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:layout_alignParentStart="true"
                 android:paddingBottom="10dp"
-                android:text="Title"
                 android:textColor="@color/cardview_dark_background"
+                android:text="Title"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="sans" />
@@ -83,13 +45,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:paddingLeft="15dp"
-                android:paddingTop="10dp"
                 android:paddingRight="15dp"
+                android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="DD/MM/YY"
                 android:textColor="@color/cardview_dark_background"
+                android:text="DD/MM/YY"
+                android:layout_centerVertical="true"
                 android:textSize="14sp"
                 android:typeface="sans" />
 
@@ -100,23 +62,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/linear1"
-            android:layout_marginTop="-1dp"
-            android:lineSpacingMultiplier="1.5"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingBottom="10dp"
-            android:text="message will appear here"
+            android:lineSpacingMultiplier="1.5"
             android:textColor="@color/cardview_dark_background"
+            android:text="message will appear here"
             android:textSize="14sp"
             android:typeface="sans" />
 
     </RelativeLayout>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.72" />
-
-</android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>

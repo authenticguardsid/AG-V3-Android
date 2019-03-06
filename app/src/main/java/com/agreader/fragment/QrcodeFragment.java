@@ -26,9 +26,11 @@ public class QrcodeFragment extends Fragment {
 
     final int REQUEST_CODE_CAMERA = 999;
 
+
     public QrcodeFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

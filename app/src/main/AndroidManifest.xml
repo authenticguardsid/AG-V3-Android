@@ -4,6 +4,7 @@
     package="com.agreader">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -15,7 +16,6 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
-        android:name=".utils.AppController"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -125,7 +125,7 @@
         <activity android:name=".screen.DetailHighlightScreen" />
         <activity android:name=".screen.MyProductDetail" />
         <activity android:name=".screen.ListAuthenticStoreActivity" />
-        <activity android:name=".QRCodeBaruActivity" />
+        <activity android:name=".screen.QRCodeBaruActivity" />
         <activity android:name=".screen.HighLightPromo" />
         <activity android:name=".screen.DetailPointActivity" />
         <activity android:name=".screen.SeeAllBrand" />
