@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -53,7 +54,7 @@ public class MasterActivity extends AppCompatActivity {
         goPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MasterActivity.this, Certificate.class);
+                Intent intent = new Intent(MasterActivity.this, PointActivity.class);
                startActivity(intent);
             }
         });
@@ -185,16 +186,20 @@ public class MasterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User us = dataSnapshot.getValue(User.class);
-                String point = us.getTotalPoint();
-                double parsepoint = Double.parseDouble(point);
-                NumberFormat formatter = new DecimalFormat("#,###");
-                String formattedNumber = formatter.format(parsepoint);
-                    if(us.getTotalPoint() != null)
+                try {
+                    String point = us.getTotalPoint();
+                    double parsepoint = Double.parseDouble(point);
+                    NumberFormat formatter = new DecimalFormat("#,###");
+                    String formattedNumber = formatter.format(parsepoint);
+                    if (us.getTotalPoint() != null)
                         pointt.setText(formattedNumber + " pts");
-                    else{
+                    else {
                         pointt.setText("0 pts");
                     }
+                } catch (NullPointerException e) {
+                    Log.e("errorbangsat", "onDataChange: ", e);
                 }
+            }
 
 
             @Override

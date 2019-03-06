@@ -97,7 +97,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.cardview:cardview:1.0.0'
-
+    implementation 'net.mainapi.sdk:core:1.0.0@aar'
+    implementation 'net.mainapi.sdk:smsotp:1.0.1@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

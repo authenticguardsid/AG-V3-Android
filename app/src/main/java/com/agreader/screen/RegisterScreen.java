@@ -41,7 +41,7 @@ public class RegisterScreen extends AppCompatActivity {
     String age = "";
     String address = "";
     String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Fuser.png?alt=media&token=a07b3aa8-90d4-4322-8e1d-8f20b91e54b0";
-    String totalPoint = "100";
+    String totalPoint = "10000";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

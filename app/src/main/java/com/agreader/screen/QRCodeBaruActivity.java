@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.agreader.R;
+import com.agreader.utils.DataRequest;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -59,6 +62,9 @@ public class QRCodeBaruActivity extends AppCompatActivity {
 
         arrayList.add("");
         CodeScannerView scannerView = (CodeScannerView) findViewById(R.id.scanner_view);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
@@ -66,7 +72,19 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                 QRCodeBaruActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        validation_code(result.getText());
+                        ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+                        toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+                        Toast.makeText(QRCodeBaruActivity.this, "Code : " + result.getText(), Toast.LENGTH_SHORT).show();
+                        token2 = DataRequest.getResultToken(getApplicationContext());
+                        String resultcode = result.getText();
+                        int length = resultcode.length();
+                        Log.d("length", "run: " + length);
+                        if (length <= 9) {
+                            validation_code(result.getText(), token2);
+                        } else {
+                            Intent intent = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 });
             }
@@ -84,27 +102,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
         }
 
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseUser.getIdToken(true)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    @Override
-                    public void onComplete(@android.support.annotation.NonNull Task<GetTokenResult> task) {
-                        token = task.getResult().getToken();
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/getuser?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                token2 = token;
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
 
-                            }
-                        });
-                        Volley.newRequestQueue(QRCodeBaruActivity.this).add(jsonObjectRequest);
-                        Log.e("token-firebase", "" + token2);
-                    }
-                });
 
 
     }
@@ -132,9 +130,10 @@ public class QRCodeBaruActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public void validation_code(final String scancode){
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/check_/"+scancode+"?token="+token2+"&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+    public void validation_code(final String scancode, String tokenbaru) {
+        displayLoader();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/check_/" + scancode + "?token=" + tokenbaru + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
@@ -143,7 +142,6 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                             rvalid = response.getString("status");
                             JSONObject jsonObject = response.getJSONObject("result");
                             JSONObject resultObject = jsonObject.getJSONObject("product");
-
                             size = resultObject.getString("size");
                             color = resultObject.getString("color");
                             price = resultObject.getString("price");
@@ -172,6 +170,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         Log.e("token-firebase", ""+token);
                     }
                     if (rvalid.equals(GENIUNE_CODE)) {
+                        pDialog.dismiss();
                         Intent intent_geniune = new Intent(QRCodeBaruActivity.this, VerifiedProductActivity.class);
                         intent_geniune.putExtra("key", scancode);
                         intent_geniune.putExtra("brand", brand);
@@ -236,6 +235,7 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         intent.putExtra("nilai", "Sangat Baik (A)");
                         startActivity(intent);
                     } else {
+                        pDialog.dismiss();
                         Intent intent_fake = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
                         startActivity(intent_fake);
                     }
@@ -244,16 +244,15 @@ public class QRCodeBaruActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
         Volley.newRequestQueue(this).add(jsonObjectRequest);
-
     }
 
     private void displayLoader() {
         pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Account Verification...");
+        pDialog.setMessage("Code Verification...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         pDialog.show();

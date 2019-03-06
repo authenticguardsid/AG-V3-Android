@@ -116,7 +116,6 @@ public class ProfileFragment extends Fragment {
                 }else {
                     name.setText(us.getName());
                 }
-
                 if (us.getEmail().isEmpty()){
                     email.setText("EMAIL");
                 }else {

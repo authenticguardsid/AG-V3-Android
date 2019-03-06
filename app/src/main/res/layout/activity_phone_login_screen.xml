@@ -29,18 +29,32 @@
         android:padding="70dp"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/numberPhone"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="e.g 812345678"
-            android:textColor="#FFF"
-            android:inputType="number"
-            android:digits="1234567890"
-            android:maxLength="11"
-            android:textColorHint="#333333"
-            android:backgroundTint="#333333"
-            android:layout_marginBottom="50dp"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:text="+62"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:textColor="@color/colorWhite" />
+
+            <EditText
+                android:id="@+id/numberPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="e.g 812345678"
+                android:textColor="#FFF"
+                android:inputType="number"
+                android:digits="1234567890"
+                android:maxLength="15"
+                android:textColorHint="#333333"
+                android:backgroundTint="#333333" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/nextNumberPhone"
@@ -48,6 +62,7 @@
             android:layout_height="wrap_content"
             android:text="Next"
             android:elevation="10dp"
+            android:layout_marginTop="20dp"
             android:textColor="@android:color/white"
             android:background="@drawable/button"/>
 

@@ -15,7 +15,7 @@
             android:id="@+id/rellayout0"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:background="@color/colorAccent"
+            android:background="#edeeee"
             android:gravity="center">
 
             <LinearLayout
@@ -31,7 +31,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="2.3"
                     android:paddingTop="48dp"
-                    android:tint="@color/colorWhite"
+                    android:tint="#ff0000"
                     android:src="@drawable/icons_8_xbox_x"/>
 
                 <TextView
@@ -40,7 +40,7 @@
                     android:layout_weight="0.2"
                     android:text="OOPS SORRY !"
                     android:textAlignment="center"
-                    android:textColor="#FFF"
+                    android:textColor="#000"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:typeface="sans"/>
@@ -51,7 +51,7 @@
                     android:layout_weight="0.5"
                     android:text="Sorry this product may be fake"
                     android:textAlignment="center"
-                    android:textColor="#FFF"
+                    android:textColor="#000"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:typeface="sans"/>

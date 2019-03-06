@@ -86,16 +86,7 @@ public class ProductFragment extends Fragment {
 
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseUser.getIdToken(true)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                        token = task.getResult().getToken();
-                        Log.d("lol", "onCompleteBaru: " + token);
-                        String result = "";
-                        DataRequest.setUser(getContext(), token);
-                    }
-                });
+
 
         token = DataRequest.getResultToken(getContext());
         recyclerView = rootView.findViewById(R.id.listProduct);
@@ -106,13 +97,35 @@ public class ProductFragment extends Fragment {
 
         emptyView = (LinearLayout) rootView.findViewById(R.id.emptyView);
 
-        getProduct();
+        token = DataRequest.getResultToken(getContext());
+        getProduct(token);
+
+        mAdapter = new MyProductAdapter(getContext(), mData, listProduct, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                final ProductModel productModel = mData.get(position);
+                Intent detail_intent = new Intent(getContext(), MyProductDetail.class);
+                detail_intent.putExtra("namaProduk", mData.get(position).getNameProduct());
+                detail_intent.putExtra("size", productModel.getSize());
+                detail_intent.putExtra("color", productModel.getColor());
+                detail_intent.putExtra("material", productModel.getMaterial());
+                detail_intent.putExtra("price", productModel.getPrice());
+                detail_intent.putExtra("distributor", productModel.getDistributor());
+                detail_intent.putExtra("expiredDate", productModel.getExpiredDate());
+                detail_intent.putExtra("image", mData.get(position).getImageProduct());
+                detail_intent.putExtra("nama_brand", mData.get(position).getBrand());
+                detail_intent.putExtra("alamat_brand", productModel.getAlamatBrand());
+                detail_intent.putExtra("logo_brand", productModel.getLogoBrand());
+                startActivity(detail_intent);
+            }
+        });
+        recyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
 
-    private void getProduct() {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://admin.authenticguards.com/api/myproduct_?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+    private void getProduct(String tokenlol) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://admin.authenticguards.com/api/myproduct_?token=" + tokenlol + "&appid=003", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
@@ -122,13 +135,10 @@ public class ProductFragment extends Fragment {
                         JSONArray results = (JSONArray) jsonObject.get("data");
                         for (int i = 0; i < results.length(); i++) {
                             JSONObject data = results.getJSONObject(i);
-
                             final String tanggal = data.getString("created_at");
                             date_claim_product = tanggal.substring(0, 10);
                             status = data.getString("statusClaim");
-
                             JSONObject produk = (JSONObject) data.get("product");
-
                             name_product = produk.getString("nama");
 
                             size = produk.getString("size");
@@ -150,45 +160,21 @@ public class ProductFragment extends Fragment {
                             finalImage2 = "http://admin.authenticguards.com/storage/app/public/" + imageBrand + ".jpg";
 
                             mData.add(new ProductModel(finalImage, name_product, name_brand, date_claim_product, status, size, color, material, price, distributor, expiredDate, alamat, finalImage2));
-
-
-                            mAdapter = new MyProductAdapter(getContext(), mData, listProduct, new CustomItemClickListener() {
-                                @Override
-                                public void onItemClick(View v, int position) {
-                                    final ProductModel productModel = mData.get(position);
-                                    Intent detail_intent = new Intent(getContext(), MyProductDetail.class);
-                                    detail_intent.putExtra("namaProduk", mData.get(position).getNameProduct());
-                                    detail_intent.putExtra("size", productModel.getSize());
-                                    detail_intent.putExtra("color", productModel.getColor());
-                                    detail_intent.putExtra("material", productModel.getMaterial());
-                                    detail_intent.putExtra("price", productModel.getPrice());
-                                    detail_intent.putExtra("distributor", productModel.getDistributor());
-                                    detail_intent.putExtra("expiredDate", productModel.getExpiredDate());
-                                    detail_intent.putExtra("image", mData.get(position).getImageProduct());
-
-                                    detail_intent.putExtra("nama_brand", mData.get(position).getBrand());
-                                    detail_intent.putExtra("alamat_brand", productModel.getAlamatBrand());
-                                    detail_intent.putExtra("logo_brand", productModel.getLogoBrand());
-                                    startActivity(detail_intent);
-                                }
-                            });
-
-
-                            recyclerView.setAdapter(mAdapter);
-                            mAdapter.notifyDataSetChanged();
-                            emptyView.setVisibility(View.GONE);
                         }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    mAdapter.notifyDataSetChanged();
+                    emptyView.setVisibility(View.GONE);
                 } else {
-//                    emptyView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.VISIBLE);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
         Volley.newRequestQueue(getContext()).add(jsonObjectRequest);

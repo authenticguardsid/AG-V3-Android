@@ -2,6 +2,8 @@ package com.agreader.screen;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,6 +11,7 @@ import com.agreader.R;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
+import com.synnapps.carouselview.ViewListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -64,14 +67,21 @@ public class MyProductDetail extends AppCompatActivity {
 
         imageUrls.add(getIntent().getStringExtra("image"));
         carouselView.setPageCount(imageUrls.size());
-        carouselView.setImageListener(imageListener);
+        carouselView.setViewListener(viewListener);
 
     }
 
-    ImageListener imageListener = new ImageListener() {
+    ViewListener viewListener = new ViewListener() {
+        //
         @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            Picasso.get().load(imageUrls.get(position)).fit().into(imageView);
+        public View setViewForPosition(int position) {
+            View customView = getLayoutInflater().inflate(R.layout.custom_product, null);
+            ImageView myImageView = customView.findViewById(R.id.myImageProduct);
+            Log.d("lol", "arraylist: " + imageUrls);
+            Picasso.get().load(imageUrls.get(position)).into(myImageView);
+            return customView;
         }
     };
+
+
 }

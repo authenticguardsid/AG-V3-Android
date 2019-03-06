@@ -24,8 +24,8 @@
         <TextView
             android:id="@+id/textView3"
             android:layout_width="0dp"
-            android:layout_height="366dp"
-            android:background="@color/colorAccent"
+            android:layout_height="280dp"
+            android:background="#edeeee"
             app:layout_constraintBottom_toTopOf="@+id/guideline17"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -37,20 +37,26 @@
             android:id="@+id/imageView3"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="30dp"
+            android:tint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.485"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_verified_new" />
+            app:layout_constraintTop_toTopOf="@+id/textView3"
+            app:layout_constraintVertical_bias="0.203"
+            app:srcCompat="@drawable/icons_8_verified_account"
+            tools:ignore="VectorDrawableCompat" />
 
         <TextView
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:text="Congratulations !"
-            android:textColor="#fff"
-            android:textSize="24sp"
+            android:textColor="#000"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:typeface="sans"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,11 +70,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Your Product is valid"
-            android:textSize="18sp"
+            android:text="Your Product is Genuine!"
+            android:textSize="12sp"
             android:textStyle="normal"
             android:typeface="sans"
-            android:textColor="#fff"
+            android:textColor="#000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -94,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.28" />
+            app:layout_constraintGuide_percent="0.33" />
 
         <TextView
             android:id="@+id/textView18"
@@ -104,7 +110,7 @@
             android:layout_marginTop="16dp"
             android:text="Code"
             android:textColor="@color/cardview_dark_background"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:typeface="sans"
             app:layout_constraintStart_toStartOf="@+id/guideline20"
@@ -129,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Store"
+            android:text="Brand"
             android:textColor="@color/cardview_dark_background"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -166,13 +172,13 @@
 
         <TextView
             android:id="@+id/textView25"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Company"
+            android:textColor="@color/cardview_dark_background"
             android:textSize="14sp"
             android:typeface="sans"
-            android:textColor="@color/cardview_dark_background"
             app:layout_constraintBottom_toBottomOf="@+id/textView24"
             app:layout_constraintStart_toStartOf="@+id/guideline18"
             app:layout_constraintTop_toTopOf="@+id/textView24" />
@@ -196,13 +202,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Address"
+            android:textColor="@color/cardview_dark_background"
             android:textSize="14sp"
             android:typeface="sans"
-            android:textColor="@color/cardview_dark_background"
             app:layout_constraintBottom_toBottomOf="@+id/textView26"
+            app:layout_constraintEnd_toStartOf="@+id/guideline21"
+            app:layout_constraintHorizontal_bias="0.01"
             app:layout_constraintStart_toStartOf="@+id/guideline18"
-            app:layout_constraintTop_toTopOf="@+id/textView26" />
+            app:layout_constraintTop_toTopOf="@+id/textView26"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/textView28"
@@ -305,7 +315,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.94" />
+            app:layout_constraintGuide_percent="0.92" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline22"
@@ -316,14 +326,18 @@
 
         <Button
             android:id="@+id/product_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="323dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button"
             android:text="Product Detail"
             android:textColor="@color/colorWhite"
-            android:background="@drawable/button"
-            app:layout_constraintBottom_toTopOf="@+id/guideline19"
-            app:layout_constraintEnd_toStartOf="@+id/guideline21"
-            app:layout_constraintStart_toStartOf="@+id/guideline20" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.511"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView34"
