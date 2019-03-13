@@ -18,6 +18,7 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +41,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 //        changeStatusBarColor();
+
         img = getIntent().getStringExtra("image");
 
-        urlImage = "http://admin.authenticguards.com/product/"+ img +".jpg";
+        urlImage = "http://admin.authenticguards.com/product/" + img + ".jpg";
         imageUrls.add(urlImage);
+
 
         carouselView = (CarouselView)findViewById(R.id.slider);
         carouselView.setPageCount(imageUrls.size());
@@ -62,12 +65,17 @@ public class ProductDetailActivity extends AppCompatActivity {
         color.setText(getIntent().getStringExtra("color"));
         material.setText(getIntent().getStringExtra("material"));
         harga = getIntent().getStringExtra("price");
+        if (!harga.equals("unregistered")) {
+            double total = Double.parseDouble(harga.substring(3));
+            NumberFormat formatter = new DecimalFormat("#,###");
+            String formattedNumber = formatter.format(total);
+            price.setText("Rp." + formattedNumber);
+        } else {
+            price.setText(harga);
+        }
 
-        double total = Double.parseDouble(harga.substring(3));
-        DecimalFormat df = new DecimalFormat("#.##");
-        String hargaFormat = df.format(total);
 
-        price.setText("Rp"+hargaFormat);
+
         distributor.setText(getIntent().getStringExtra("distributor"));
         expiredDate.setText("-");
 

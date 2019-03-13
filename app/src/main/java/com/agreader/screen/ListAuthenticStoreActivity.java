@@ -15,6 +15,7 @@ import com.agreader.R;
 import com.agreader.adapter.ListStoreAdapter;
 import com.agreader.model.ListStore;
 import com.agreader.utils.CustomItemClickListener;
+import com.agreader.utils.DataRequest;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,6 +36,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class ListAuthenticStoreActivity extends AppCompatActivity {
 
     private FirebaseUser firebaseUser;
@@ -42,6 +45,10 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
     private String token="", token2="";
     private ListStoreAdapter listStoreAdapter;
     private ArrayList<ListStore> modelArrayList;
+    String idbrand = "",
+            namebrand = "",
+            imagebrand = "",
+            addressbrand = "";
 
     CarouselView carouselView;
     int[] sampleImages = {R.drawable.noimage, R.drawable.noimage, R.drawable.noimage, R.drawable.noimage};
@@ -54,79 +61,28 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_authentic_store);
         modelArrayList = new ArrayList<>();
 
-//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        firebaseUser.getIdToken(true)
-//                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-//                        token = task.getResult().getToken();
-//                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/getuser?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                token2 = token;
-//                            }
-//                        }, new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//
-//                            }
-//                        });
-//                        Volley.newRequestQueue(ListAuthenticStoreActivity.this).add(jsonObjectRequest);
-//                        Log.e("token-firebase", "" + token2);
-//                    }
-//                });
+        ImageView imgBack = findViewById(R.id.backPressStore);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.net/api/locator_?token=a&appid=001", null, new Response.Listener<JSONObject>() {
-////            @Override
-////            public void onResponse(JSONObject response) {
-////                if (response.length() > 0) {
-////                    for (int i = 0; i < response.length(); i++) {
-////                        try {
-////                            JSONArray jsonArray = response.getJSONArray("result");
-////                            for (int j = 0; j < jsonArray.length() ; j++) {
-////                                JSONObject jsonObject = jsonArray.getJSONObject(j);
-////                                String brand_name = jsonObject.getString("Name");
-////                                String address = jsonObject.getString("addressOfficeOrStore");
-////                                Log.d("asdasd", "brand_name : " + brand_name + "address : " + address);
-////                            }
-////                        } catch (JSONException e) {
-////                            e.printStackTrace();
-////                        }
-////                    }
-////                }
-////            }
-////        }, new Response.ErrorListener() {
-////            @Override
-////            public void onErrorResponse(VolleyError error) {
-////
-////            }
-////        });
-////        Volley.newRequestQueue(this).add(jsonObjectRequest);
+        token = DataRequest.getResultToken(getApplicationContext());
+
 
         carouselView = (CarouselView) findViewById(R.id.slider);
         carouselView.setPageCount(sampleImages.length);
 
         carouselView.setImageListener(imageListener);
 
-        modelArrayList.add(new ListStore(R.drawable.test8, "SABICHI","Jl. Pasirluyu VII No. 7 Bandung 40254", -6.6867070, 107.02222));
-        modelArrayList.add(new ListStore(R.drawable.test6, "Doa Indonesia","Taman Holis Indah Blok C5 50-51", -6.943330, 107.613670));
-        modelArrayList.add(new ListStore(R.drawable.test12, "DEENAY","Jl. Kembar Timur No.39,Cigereleng,Regol,Kota", -6.943320, 107.613904));
-        modelArrayList.add(new ListStore(R.drawable.test7, "MERZ", " Gandaria 8 Office Tower, 11th Floor, Unit, Jl. Sultan Iskandar Muda, RT.10/RW.6, Pd. Pinang, Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota ",1.169968, 104.003014));
-
+        getBrand(token);
 
         listStoreAdapter = new ListStoreAdapter(this, modelArrayList, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(ListAuthenticStoreActivity.this, AuthenticeStoreActivity.class);
-                if (position == 0){
-                    intent.putExtra("brand_name", "SABICHI");
-                }else if (position == 1){
-                    intent.putExtra("brand_name", "Doa Indonesia");
-                }else if (position == 2){
-                    intent.putExtra("brand_name", "DEENAY");
-                }else if (position == 3){
-                    intent.putExtra("brand_name", "MERZ");
-                }
                 startActivity(intent);
             }
         });
@@ -134,7 +90,11 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         //recyclerView.setLayoutManager(new LinearLayoutManager(ListAuthenticStoreActivity.this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(listStoreAdapter);
-        listStoreAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 
@@ -144,5 +104,35 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
             imageView.setImageResource(sampleImages[position]);
         }
     };
+
+    private void getBrand(String token) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/locator_?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        idbrand = data.getString("id");
+                        namebrand = data.getString("Name");
+                        imagebrand = data.getString("image");
+                        Log.d("bismillahinidia", "onResponse: " + imagebrand);
+                        addressbrand = data.getString("addressOfficeOrStore");
+                        modelArrayList.add(new ListStore(idbrand, "http://admin.authenticguards.com/storage/app/public/" + imagebrand + ".jpg", namebrand, addressbrand));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                listStoreAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+    }
+
 
 }

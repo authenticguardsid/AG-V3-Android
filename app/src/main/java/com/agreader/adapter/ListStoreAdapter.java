@@ -3,22 +3,34 @@ package com.agreader.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.agreader.R;
 import com.agreader.model.Hadiah;
 import com.agreader.model.ListStore;
+import com.agreader.model.NewsModel;
+import com.agreader.model.Promo;
 import com.agreader.utils.CustomItemClickListener;
+import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class
 ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.ViewHolder> {
@@ -71,5 +83,6 @@ ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.ViewHolder> {
         }
 
     }
+
 
 }

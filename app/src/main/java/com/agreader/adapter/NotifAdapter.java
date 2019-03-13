@@ -1,5 +1,4 @@
 package com.agreader.adapter;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -23,10 +22,19 @@ public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.ViewHolder> 
     private List<Notif> mData;
     private String userImage = null;
     private int clickCount = 0;
+    private View mEmptyView;
 
-    public NotifAdapter(Context mContext, List<Notif> mData) {
+    public NotifAdapter(Context mContext, List<Notif> mData, View mEmptyView) {
         this.mContext = mContext;
         this.mData = mData;
+        this.mEmptyView = mEmptyView;
+    }
+
+    public void updateEmptyView() {
+        if (mData.size() == 0)
+            mEmptyView.setVisibility(View.VISIBLE);
+        else
+            mEmptyView.setVisibility(View.GONE);
     }
 
     @Override
@@ -39,6 +47,11 @@ public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final NotifAdapter.ViewHolder holder, final int position) {
+        if (mData.size() == 0) {
+            mEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+        }
         Picasso.get().load(mData.get(position).getImage()).placeholder(R.drawable.logo_ag).into(holder.image);
         holder.title.setText(mData.get(position).getTitle());
         holder.message.setText(mData.get(position).getMessage());

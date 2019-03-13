@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,17 +9,52 @@
         android:id="@+id/scanner_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:autoFocusButtonColor="@android:color/white"
+        app:autoFocusButtonColor="@color/colorAccent"
         app:autoFocusButtonVisible="true"
-        app:flashButtonColor="@android:color/white"
+        app:flashButtonColor="@color/colorAccent"
         app:flashButtonVisible="true"
-        app:frameColor="@android:color/white"
+        app:frameColor="@color/colorAccent"
         app:frameCornersSize="20dp"
         app:frameCornersRadius="0dp"
         app:frameAspectRatioWidth="1"
         app:frameAspectRatioHeight="1"
-        app:frameSize="0.4"
-        app:frameThickness="2dp"
-        app:maskColor="#77000000"/>
+        app:frameSize="0.5"
+        app:frameThickness="6dp"
+        app:maskColor="#00000000" />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/layer_4"></LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:gravity="center|bottom"
+        android:background="@drawable/layerbottom">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/qrcode"
+                android:tint="@color/colorWhite"
+                android:layout_marginBottom="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scan your genuine product"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp"
+                android:layout_marginBottom="15dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

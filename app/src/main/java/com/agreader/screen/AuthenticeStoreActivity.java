@@ -128,11 +128,21 @@ public class AuthenticeStoreActivity extends FragmentActivity  {
                         currentLongitude = 104.003014;
                     }
 
+                    double currentLatitude1 = 1.169968;
+                    double currentLongitude1 = 104.003014;
+
                    /* double currentLatitude = -6.943330;
                     double currentLongitude = 107.613670;*/
                     LatLng latLng = new LatLng(currentLatitude, currentLongitude);
                     googleMap.addMarker(new MarkerOptions()
                                     .position(latLng)
+                                    .title("Lorem Ipsum")
+                            //.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+                    );
+
+                    LatLng lol = new LatLng(currentLatitude, currentLongitude);
+                    googleMap.addMarker(new MarkerOptions()
+                                    .position(lol)
                                     .title("Lorem Ipsum")
                             //.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
                     );

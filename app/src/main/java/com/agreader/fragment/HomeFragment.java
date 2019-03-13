@@ -252,7 +252,7 @@ public class HomeFragment extends Fragment {
         snapHelper.attachToRecyclerView(recylerPromo);
 //        recylerPromo.addItemDecoration(new LinePagerIndicatorDecoration());
 //        autoScroll();
-
+        getPromo(token);
 
 
         //home_section_8
@@ -261,7 +261,37 @@ public class HomeFragment extends Fragment {
 
         //getBrand(JSON);
 
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/feature?appid=003", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response.length() > 0) {
+                    try {
+                        JSONObject json = response.getJSONObject("result");
+                        JSONArray jsonArray = json.getJSONArray("data");
+                        for (int i = 0; i < 5; i++) {
+                            JSONObject data = jsonArray.getJSONObject(i);
+                            Log.d("lol", "ini data json" + data);
+                            int id = data.getInt("id");
+                            String idString = String.valueOf(id);
+                            String image = data.getString("image");
+                            String name = data.getString("Name");
+                            JSONObject brand = data.getJSONObject("client");
+                            mData.add(new Brand(idString, name, "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg"));
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBarBrand.setVisibility(View.GONE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
+            }
+        });
+        Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
 
         mAdapter = new BrandAdapter(getContext(), mData, mDataId,
                 new BrandAdapter.ClickHandler() {
@@ -349,53 +379,11 @@ public class HomeFragment extends Fragment {
             }
         });
         Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
-        final HashMap<String, Object> user = new HashMap<>();
+
         final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
         dbf.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if (!dataSnapshot.child("completeProfile").exists()) {
-                    User us = dataSnapshot.getValue(User.class);
-                    String gambar = "", numberPhone = "", name = "", gender = "", age = "", address = "", totalPoint = "";
-                    if (dataSnapshot.child("gambar").exists()) {
-                        gambar = us.getGambar();
-                    }
-
-                    if (dataSnapshot.child("numberPhone").exists()) {
-                        numberPhone = us.getNumberPhone();
-                    }
-
-                    if (dataSnapshot.child("name").exists()) {
-                        name = us.getName();
-                    }
-                    if (dataSnapshot.child("gender").exists()) {
-                        gender = us.getGender();
-                    }
-                    if (dataSnapshot.child("age").exists()) {
-                        age = us.getAge();
-                    }
-                    if (dataSnapshot.child("address").exists()) {
-                        address = us.getAddress();
-                    }
-
-                    if (dataSnapshot.child("totalPoint").exists()) {
-                        totalPoint = us.getTotalPoint();
-                    }
-                    user.put("numberPhone", numberPhone);
-                    user.put("idEmail", currentUser.getUid());
-                    user.put("idPhone", "");
-                    user.put("name", name);
-                    user.put("email", currentUser.getEmail());
-                    user.put("gender", gender);
-                    user.put("age", age);
-                    user.put("address", address);
-                    user.put("gambar", gambar);
-                    user.put("totalPoint", totalPoint);
-                    user.put("completeProfile", "false");
-                    dbf.setValue(user);
-                }
-
                 if (dataSnapshot.child("completeProfile").exists()){
                     String complete = dataSnapshot.child("completeProfile").getValue().toString();
                     if (complete.equals("true")){
@@ -420,8 +408,6 @@ public class HomeFragment extends Fragment {
         super.onResume();
         mShimmerViewContainer.startShimmerAnimation();
         getDataSlider(token);
-        getPromo(token);
-        getBrand();
         carouselView.setViewListener(viewListener);
         carouselView.setPageCount(imageUrls.size());
     }
@@ -432,26 +418,35 @@ public class HomeFragment extends Fragment {
         super.onPause();
     }
 
-    private void getBrand() {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/feature?appid=003", null, new Response.Listener<JSONObject>() {
+
+    private void getPromo(String token) {
+        String url = "http://admin.authenticguards.com/api/promo_?token=" + token + "&appid=003";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
                     try {
                         JSONObject json = response.getJSONObject("result");
                         JSONArray jsonArray = json.getJSONArray("data");
-                        for (int i = 0; i < 5; i++) {
+                        Log.d("twtw", "onResponse: " + jsonArray);
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject data = jsonArray.getJSONObject(i);
-                            Log.d("lol", "ini data json" + data);
                             int id = data.getInt("id");
-                            String idString = String.valueOf(id);
+                            String idx = String.valueOf(id);
                             String image = data.getString("image");
-                            String name = data.getString("Name");
-                            JSONObject brand = data.getJSONObject("client");
-                            mData.add(new Brand(idString, name, "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg"));
+                            final String title = data.getString("title");
+                            final String price = data.getString("price");
+                            final String time = data.getString("time");
+                            final String desc = data.getString("description");
+                            final String termC = data.getString("termCondition");
+                            final String tanggal = time.substring(0, 10);
+                            final String harga = price.substring(6, 9);
+                            finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                            mDataPromo.add(new Promo(idx, finalImage, title, harga, "5", tanggal, desc, termC));
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBarBrand.setVisibility(View.GONE);
+                        mAdapterPromo.notifyDataSetChanged();
+                        mProgressBarBrand.setVisibility(ProgressBar.INVISIBLE);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -464,47 +459,6 @@ public class HomeFragment extends Fragment {
             }
         });
         Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
-    }
-
-    private void getPromo(String token){
-        String url = "http://admin.authenticguards.com/api/promo_?token="+ token +"&appid=003";
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONObject json= jsonObject.getJSONObject("result");
-                    JSONArray jsonArray = json.getJSONArray("data");
-                    Log.d("twtw", "onResponse: " + jsonArray);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject data = jsonArray.getJSONObject(i);
-                        int id = data.getInt("id");
-                        String idx = String.valueOf(id);
-                        String image = data.getString("image");
-                        final String title = data.getString("title");
-                        final String price = data.getString("price");
-                        final String time = data.getString("time");
-                        final String desc = data.getString("description");
-                        final String termC = data.getString("termCondition");
-                        final String tanggal = time.substring(0, 10);
-                        final String harga = price.substring(6, 9);
-                        finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
-                        mDataPromo.add(new Promo(idx, finalImage, title, harga, "5", tanggal, desc, termC));
-                    }
-                    mAdapterPromo.notifyDataSetChanged();
-                    mProgressBarBrand.setVisibility(ProgressBar.INVISIBLE);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("twtw", "onErrorResponse: " + error);
-            }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
     }
     public void autoScroll() {
         final Handler handler = new Handler();

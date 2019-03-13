@@ -141,30 +141,51 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         try {
                             rvalid = response.getString("status");
                             JSONObject jsonObject = response.getJSONObject("result");
-                            JSONObject resultObject = jsonObject.getJSONObject("product");
-                            size = resultObject.getString("size");
-                            color = resultObject.getString("color");
-                            price = resultObject.getString("price");
-                            material = resultObject.getString("material");
-                            distributor = resultObject.getString("distributedOn");
-                            expiredDate = resultObject.getString("expireDate");
-                            img = resultObject.getString("image");
-
-                            GCODE = jsonObject.getString("code");
-                            Log.i("scancode",scancode);
-                            Log.i("tokenFirebase",token2);
-                            JSONObject dataclient = jsonObject.getJSONObject("client");
-                            JSONObject data = jsonObject.getJSONObject("brand");
-                            brand = data.getString("Name");
-                            company = dataclient.getString("name");
-                            address = data.getString("addressOfficeOrStore");
-                            phone = data.getString("csPhone");
-                            email = data.getString("csEmail");
-                            web = data.getString("web");
-
+                            if (!jsonObject.isNull("product")) {
+                                Log.d("dodol", "kondisi 1");
+                                JSONObject resultObject = jsonObject.getJSONObject("product");
+                                Log.d("dodol", "kondisi 1");
+                                size = resultObject.getString("size");
+                                color = resultObject.getString("color");
+                                price = resultObject.getString("price");
+                                material = resultObject.getString("material");
+                                distributor = resultObject.getString("distributedOn");
+                                expiredDate = resultObject.getString("expireDate");
+                                img = resultObject.getString("image");
+                                GCODE = jsonObject.getString("code");
+                                Log.i("scancode", scancode);
+                                Log.i("tokenFirebase", token2);
+                                JSONObject dataclient = jsonObject.getJSONObject("client");
+                                JSONObject data = jsonObject.getJSONObject("brand");
+                                brand = data.getString("Name");
+                                company = dataclient.getString("name");
+                                address = data.getString("addressOfficeOrStore");
+                                phone = data.getString("csPhone");
+                                email = data.getString("csEmail");
+                                web = data.getString("web");
+                            } else {
+                                Log.d("dodol", "kondisi 2");
+                                JSONObject newresultObject = jsonObject.getJSONObject("package_code");
+                                JSONObject brandnew = jsonObject.getJSONObject("brand");
+                                JSONObject clientnew = jsonObject.getJSONObject("client");
+                                size = "unregistered";
+                                color = "unregistered";
+                                price = "unregistered";
+                                material = "unregistered";
+                                distributor = "unregistered";
+                                expiredDate = "unregistered";
+                                img = "unregistered";
+                                GCODE = jsonObject.getString("code");
+                                brand = brandnew.getString("Name");
+                                company = clientnew.getString("name");
+                                address = clientnew.getString("address");
+                                phone = clientnew.getString("phone");
+                                email = clientnew.getString("email");
+                                web = clientnew.getString("web");
+                            }
 
                         } catch (JSONException e) {
-
+                            Log.e("erorpisan", "onResponse: " + e);
                         }
                         Log.e("scancode", ""+scancode);
                         Log.e("token-firebase", ""+token);

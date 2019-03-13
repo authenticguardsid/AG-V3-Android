@@ -1,5 +1,6 @@
 package com.agreader.screen;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,7 +28,7 @@ public class FeaturedDetailActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     private TextView detailText, ratingText;
-    private ImageView clientImage;
+    private ImageView clientImage, back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,15 @@ public class FeaturedDetailActivity extends AppCompatActivity {
 
         clientImage = (ImageView) findViewById(R.id.id_client);
         Picasso.get().load(getIntent().getStringExtra("image")).into(clientImage);
+
+        back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FeaturedDetailActivity.this, MasterActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

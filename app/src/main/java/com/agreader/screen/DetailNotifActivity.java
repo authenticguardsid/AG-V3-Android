@@ -1,7 +1,7 @@
 package com.agreader.screen;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class DetailNotifActivity extends AppCompatActivity {
 
     private String key;
-    private ImageView imageView;
+    private ImageView imageView, mBackPressed;
     private TextView title, date, message;
 
     @Override
@@ -29,7 +29,19 @@ public class DetailNotifActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.title_notif_click);
         date = (TextView) findViewById(R.id.date_notif_click);
         message = (TextView) findViewById(R.id.message_notif_click);
+        mBackPressed = (ImageView) findViewById(R.id.backPressNotif);
+        mBackPressed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         getData(getIntent().getStringExtra("id"));
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     private void getData(String key){

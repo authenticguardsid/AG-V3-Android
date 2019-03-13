@@ -53,11 +53,17 @@ public class MyProductDetail extends AppCompatActivity {
         txt_material.setText(getIntent().getStringExtra("material"));
         harga = getIntent().getStringExtra("price");
 
-        double total = Double.parseDouble(harga.substring(3));
-        DecimalFormat df = new DecimalFormat("#.##");
-        String hargaFormat = df.format(total);
 
-        txt_price.setText("Rp." + hargaFormat);
+        if (harga != "") {
+            double total = Double.parseDouble(harga.substring(3));
+            DecimalFormat df = new DecimalFormat("#.##");
+            String hargaFormat = df.format(total);
+
+            txt_price.setText("Rp." + hargaFormat);
+        } else {
+            txt_price.setText("");
+        }
+
         txt_distributor.setText(getIntent().getStringExtra("distributor"));
         txt_expiredDate.setText(getIntent().getStringExtra("expiredDate"));
 

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".screen.Certificate">
 
-
     <android.support.constraint.Guideline
         android:id="@+id/guideline31"
         android:layout_width="wrap_content"
@@ -67,6 +66,7 @@
 
     <ImageView
         android:id="@+id/imageView"
+        android:src="@drawable/ic_congrat"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
@@ -76,8 +76,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline31"
-        app:srcCompat="@drawable/ic_congrat" />
+        app:layout_constraintTop_toTopOf="@+id/guideline31" />
 
     <TextView
         android:id="@+id/textView43"
