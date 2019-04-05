@@ -88,6 +88,15 @@
 
             </RelativeLayout>
 
+            <ProgressBar
+                android:id="@+id/progressBrand"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="50dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_authentic_store"
                 android:layout_width="match_parent"

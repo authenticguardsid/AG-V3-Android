@@ -208,26 +208,6 @@
                 android:textStyle="bold"/>
 
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/login_numberphone"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_below="@+id/login_hp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="LOGIN WITH NUMBER PHONE"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold" />
-
-        </LinearLayout>
 
     </RelativeLayout>
 

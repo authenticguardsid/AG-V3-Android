@@ -89,4 +89,9 @@ public class PhoneLoginScreenActivity extends AppCompatActivity {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+    public void sendOtp() {
+
+    }
+
 }

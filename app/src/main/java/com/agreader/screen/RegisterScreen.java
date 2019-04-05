@@ -2,6 +2,7 @@ package com.agreader.screen;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class RegisterScreen extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     String numberPhone = "";
     String name = "";
+    Uri filepath;
     String emailnya = "";
     String gender = "";
     String age = "";
@@ -52,7 +54,7 @@ public class RegisterScreen extends AppCompatActivity {
         textNumber = (EditText) findViewById(R.id.numberPhone);
         textEmail = (EditText) findViewById(R.id.email);
         textPassword = (EditText) findViewById(R.id.password);
-        totalPoint = "10" ;
+        totalPoint = "10000";
         textConfirm = (EditText) findViewById(R.id.confirmationPassword);
         btnRegister = (Button) findViewById(R.id.registerAkun);
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +82,6 @@ public class RegisterScreen extends AppCompatActivity {
 
                 if(!confirm_password.equals(password)){
                     Toast.makeText(getApplicationContext(), "Password and Confirmation Password does'nt match!", Toast.LENGTH_SHORT).show();
-                    pDialog.dismiss();
                 }else{
                     displayLoader();
                     mFirebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -116,7 +117,18 @@ public class RegisterScreen extends AppCompatActivity {
                                                 user.put("completeProfile","false");
 
                                                 dbf.setValue(user);
-                                                Intent pindah = new Intent(RegisterScreen.this,MasterActivity.class);
+                                                Intent pindah = new Intent(RegisterScreen.this, VerifyPhoneActivity.class);
+                                                pindah.putExtra("number", textNumber.getText().toString());
+                                                pindah.putExtra("name", currentUser);
+                                                pindah.putExtra("emailnya", textNumber.getText().toString());
+                                                pindah.putExtra("gender", "");
+                                                pindah.putExtra("age", "");
+                                                pindah.putExtra("address", "");
+                                                pindah.putExtra("gambar", gambar);
+                                                pindah.putExtra("totalPoint", "10000");
+                                                pindah.putExtra("filepath", "");
+                                                pindah.putExtra("completeProfile", "false");
+
                                                 startActivity(pindah);
                                             }
 

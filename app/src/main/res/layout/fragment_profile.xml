@@ -32,7 +32,6 @@
 
                 <TextView
                     android:id="@+id/textEditProfile"
-                    android:layout_toRightOf="@+id/textFname"
                     android:layout_alignParentEnd="true"
                     android:gravity="end"
                     android:layout_width="wrap_content"

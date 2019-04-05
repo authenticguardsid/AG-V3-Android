@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.agreader.R;
@@ -42,7 +44,7 @@ public class HighLightScreen extends AppCompatActivity {
     TextView titleBar;
     private DatabaseReference database;
     String token, JSON;
-    ;
+    ProgressBar pDialog;
     private ArrayList<String> mDataId;
     private NewsAdapter mAdapter;
     private ActionMode mActionMode;
@@ -79,19 +81,26 @@ public class HighLightScreen extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.listNews);
         recyclerView.setHasFixedSize(false);
 
+        pDialog = (ProgressBar) findViewById(R.id.progressLoad);
 
         LinearLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
 
+        TextView rootEmpty = (TextView) findViewById(R.id.rootText);
+        TextView childEmpty = (TextView) findViewById(R.id.childText);
 
         emptyView = (View) findViewById(R.id.emptyView);
         String news = getIntent().getStringExtra("hasil");
         if (news.equals("1")) {
             getDataStories(token);
             titleBar.setText("AG STORIES");
+            rootEmpty.setText("No Stories Yet");
+            childEmpty.setText("Stories will appear here");
         } else if (news.equals("0")) {
             titleBar.setText("HIGHLIGHT");
             getDataHighlight(token);
+            rootEmpty.setText("No Highlight Yet");
+            childEmpty.setText("Highlight will appear here");
         }
 
         mAdapter = new NewsAdapter(getApplicationContext(), mData, mDataId, emptyView, progress,
@@ -203,7 +212,7 @@ public class HighLightScreen extends AppCompatActivity {
                     Log.d("lol", "Error: " + e);
                 }
                 mAdapter.notifyDataSetChanged();
-                mAdapter.updateEmptyView();
+                pDialog.setVisibility(View.GONE);
                 mAdapter.updateEmptyView();
             }
         }, new Response.ErrorListener() {
@@ -242,7 +251,6 @@ public class HighLightScreen extends AppCompatActivity {
                     Log.d("lol", "Error: " + e);
                 }
                 mAdapter.notifyDataSetChanged();
-                mAdapter.updateEmptyView();
                 mAdapter.updateEmptyView();
             }
         }, new Response.ErrorListener() {

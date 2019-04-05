@@ -91,6 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:text="+62"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="#333333"
                 android:backgroundTint="#333333"/>

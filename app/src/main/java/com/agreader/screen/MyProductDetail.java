@@ -1,5 +1,6 @@
 package com.agreader.screen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class MyProductDetail extends AppCompatActivity {
     private TextView txt_size, txt_color, txt_material, txt_price, txt_distributor, txt_expiredDate, txt_namaBrand, txt_alamatBrand, txt_namaProduk;
     private CircleImageView logo_brand;
     private String harga;
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,14 @@ public class MyProductDetail extends AppCompatActivity {
         txt_material.setText(getIntent().getStringExtra("material"));
         txt_material.setText(getIntent().getStringExtra("material"));
         harga = getIntent().getStringExtra("price");
+        back = (ImageView) findViewById(R.id.backPress);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyProductDetail.this, MasterActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         if (harga != "") {

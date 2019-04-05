@@ -45,7 +45,7 @@ import java.util.HashMap;
 public class LoginScreenActivity extends AppCompatActivity {
 
 
-    LinearLayout buttonPhoneLogin, buttonemail, buttonNumber;
+    LinearLayout buttonPhoneLogin, buttonemail;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     Button mRegister,buttonLogin;
     private static final int RC_SIGN=9001;
@@ -157,15 +157,6 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
 
-        buttonNumber = (LinearLayout) findViewById(R.id.login_numberphone);
-        buttonNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginScreenActivity.this, PhoneLoginScreenActivity.class);
-                startActivity(intent);
-
-            }
-        });
 
 
         buttonPhoneLogin = (LinearLayout) findViewById(R.id.login_hp);

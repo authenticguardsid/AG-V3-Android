@@ -1,6 +1,7 @@
 package com.agreader.screen;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -41,6 +43,8 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen;
+
 public class EditProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "LOL";
@@ -48,6 +52,7 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText name,age,address,email,phonenumber;
     Button savEdit;
     String isComplete;
+    Dialog dialog;
 
     private static int IMG_CAMERA = 2;
 
@@ -65,7 +70,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-
+        filepath = null;
 
         picture = (ImageView)findViewById(R.id.fotoProfile);
         name = (EditText)findViewById(R.id.editTextNamaProfile);
@@ -74,7 +79,6 @@ public class EditProfileActivity extends AppCompatActivity {
         email = (EditText)findViewById(R.id.editTextEmailProfile);
         phonenumber = (EditText)findViewById(R.id.editTextPhoneNumberProfile);
         savEdit = (Button)findViewById(R.id.saveEdit);
-
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -123,13 +127,15 @@ public class EditProfileActivity extends AppCompatActivity {
                 age.setText(us.getAge());
                 address.setText(us.getAddress());
                 email.setText(us.getEmail());
+
                 if (!us.getEmail().isEmpty()){
                     email.setFocusable(false);
                 }
                 Picasso.get().load(us.getGambar()).into(picture);
-                phonenumber.setText(us.getNumberPhone());
-                if (!us.getNumberPhone().isEmpty()){
-                    phonenumber.setFocusable(false);
+                if (us.getNumberPhone().equals("")) {
+                    phonenumber.setText("+62");
+                } else {
+                    phonenumber.setText(us.getNumberPhone());
                 }
             }
 
@@ -173,240 +179,234 @@ public class EditProfileActivity extends AppCompatActivity {
         final String emaile = email.getText().toString();
         final String phoneNumbere = phonenumber.getText().toString();
         final String point;
-
-        final StorageReference ref = storageReference.child("users/"+ UUID.randomUUID().toString());
-        if (filepath == null){
-            final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
-            dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    User usr = dataSnapshot.getValue(User.class);
-                    isComplete = usr.getCompleteProfile();
-                    final HashMap<String, Object> user= new HashMap<>();
-                    if (isComplete.equals("false")) {
-                        if (name.getText().equals("") || spinner.getText().equals("") || age.getText().equals("") || phonenumber.equals("") || address.getText().equals("")) {
-                            Log.d(TAG, "iscomplete : kondisi profil belum lengkap");
-                            user.put("name", namee);
-                            user.put("gender", gendeer);
-                            user.put("age", agee);
-                            user.put("address", addresse);
-                            user.put("email", emaile);
-                            user.put("id", currentUser.getUid());
-                            user.put("numberPhone", phoneNumbere);
-                            user.put("gambar", usr.getGambar());
-                            user.put("totalPoint", usr.getTotalPoint());
-                            user.put("completeProfile", "false");
-                            dbf.setValue(user);
-                            Toast.makeText(EditProfileActivity.this, "Profile tersimpan ,Lengkapi Profile dengan mendapatkan 5.000 point", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Log.d("LOL", "iscomplete: " + usr.getCompleteProfile());
-                            Log.d("LOL", "iscomplete: ini kalau sudah lengkap");
-                            user.put("name", namee);
-                            user.put("gender", gendeer);
-                            user.put("age", agee);
-                            user.put("address", addresse);
-                            user.put("email", emaile);
-                            user.put("id", currentUser.getUid());
-                            user.put("numberPhone", phoneNumbere);
-                            user.put("gambar", usr.getGambar());
-                            String pointText = usr.getTotalPoint();
-                            int point = Integer.parseInt(pointText);
-                            int total = point + 5000;
-                            String totalString = Integer.toString(total);
-                            user.put("totalPoint", totalString);
-                            user.put("completeProfile", "true");
-                            dbf.setValue(user);
-                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditProfileActivity.this);
-                            View mView = getLayoutInflater().inflate(R.layout.reward_popup,
-                                    null);
-                            Button reward;
-                            reward = (Button) mView.findViewById(R.id.ok);
-                            mBuilder.setView(mView);
-                            final AlertDialog dialog = mBuilder.create();
-                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                            reward.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+        final FirebaseUser currentUserfirst = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference dbffirst = FirebaseDatabase.getInstance().getReference("user").child(currentUserfirst.getUid());
+        dbffirst.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User usr = dataSnapshot.getValue(User.class);
+                if (phoneNumbere.equals(usr.getNumberPhone())) {
+                    final StorageReference ref = storageReference.child("users/" + UUID.randomUUID().toString());
+                    if (filepath == null) {
+                        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                        final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+                        dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                User usr = dataSnapshot.getValue(User.class);
+                                isComplete = usr.getCompleteProfile();
+                                final HashMap<String, Object> user = new HashMap<>();
+                                if (isComplete.equals("false")) {
+                                    if (!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(age.getText()) && !TextUtils.isEmpty(address.getText())) {
+                                        Log.d(TAG, "iscomplete : kondisi profil belum lengkap");
+                                        String condition = "";
+                                        condition = "true";
+                                        user.put("name", namee);
+                                        user.put("gender", gendeer);
+                                        user.put("age", agee);
+                                        user.put("address", addresse);
+                                        user.put("email", emaile);
+                                        user.put("id", currentUser.getUid());
+                                        user.put("numberPhone", phoneNumbere);
+                                        user.put("gambar", usr.getGambar());
+                                        int total = Integer.parseInt(usr.getTotalPoint()) + 5000;
+                                        user.put("totalPoint", String.valueOf(total));
+                                        user.put("completeProfile", condition);
+                                        dbf.setValue(user);
+                                        Toast.makeText(EditProfileActivity.this, "Profile tersimpan ,Lengkapi Profile dengan mendapatkan 5.000 point", Toast.LENGTH_SHORT).show();
+                                        View viewthen = getLayoutInflater().inflate(R.layout.fullscreen_popup, null);
+                                        dialog = new Dialog(EditProfileActivity.this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+                                        dialog.setContentView(viewthen);
+                                        Button buttonhome;
+                                        buttonhome = viewthen.findViewById(R.id.butthome);
+                                        buttonhome.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        });
+                                        dialog.show();
+                                        return;
+                                    } else {
+                                        String condition = "";
+                                        condition = "false";
+                                        user.put("name", namee);
+                                        user.put("gender", gendeer);
+                                        user.put("age", agee);
+                                        user.put("address", addresse);
+                                        user.put("email", emaile);
+                                        user.put("id", currentUser.getUid());
+                                        user.put("numberPhone", phoneNumbere);
+                                        user.put("gambar", usr.getGambar());
+                                        user.put("totalPoint", usr.getTotalPoint());
+                                        user.put("completeProfile", condition);
+                                        dbf.setValue(user);
+                                        Toast.makeText(EditProfileActivity.this, "Profile tersimpan ,Lengkapi Profile dengan mendapatkan 5.000 point", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                                        startActivity(intent);
+                                    }
+                                } else if (isComplete.equals("true")) {
+                                    String condition = "";
+                                    condition = "true";
+                                    user.put("name", namee);
+                                    user.put("gender", gendeer);
+                                    user.put("age", agee);
+                                    user.put("address", addresse);
+                                    user.put("email", emaile);
+                                    user.put("id", currentUser.getUid());
+                                    user.put("numberPhone", phoneNumbere);
+                                    user.put("gambar", usr.getGambar());
+                                    user.put("totalPoint", usr.getTotalPoint());
+                                    user.put("completeProfile", condition);
+                                    dbf.setValue(user);
+                                    Toast.makeText(EditProfileActivity.this, "Profile tersimpan ", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
                                     startActivity(intent);
                                 }
-                            });
-                            dialog.show();
-                        }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     } else {
-                        if (name.getText().equals("") || spinner.getText().equals("") || age.getText().equals("") || phonenumber.equals("") || address.getText().equals("")) {
-                            Log.d("LOL", "iscomplete: ini profil sudah pernah lengkap tapi tidak lengkap ");
-                            user.put("name", namee);
-                            user.put("gender", gendeer);
-                            user.put("age", agee);
-                            user.put("address", addresse);
-                            user.put("email", emaile);
-                            user.put("id", currentUser.getUid());
-                            user.put("numberPhone", phoneNumbere);
-                            user.put("totalPoint", usr.getTotalPoint());
-                            user.put("gambar", usr.getGambar());
-                            user.put("completeProfile", "true");
-                            dbf.setValue(user);
-                            Toast.makeText(EditProfileActivity.this, "Profile Tersimpan Lengkapi Profil mu dapatkan hadia menarik !", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Log.d("LOL", "iscomplete: ini kondisi dimana profil telah lengkap tapi sudah dapat reward ");
-                            user.put("name", namee);
-                            user.put("gender", gendeer);
-                            user.put("age", agee);
-                            user.put("address", addresse);
-                            user.put("email", emaile);
-                            user.put("id", currentUser.getUid());
-                            user.put("numberPhone", phoneNumbere);
-                            user.put("gambar", usr.getGambar());
-                            user.put("totalPoint", usr.getTotalPoint());
-                            user.put("completeProfile", "true");
-                            dbf.setValue(user);
-                            Toast.makeText(EditProfileActivity.this, "Profile Tersimpan", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
-                            startActivity(intent);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }else {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-            UploadTask uploadTask = ref.putFile(filepath);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            final String urlGambar = uri.toString();
-                            final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                            final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
-                            dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    User usr = dataSnapshot.getValue(User.class);
-                                    isComplete = usr.getCompleteProfile();
-                                    final HashMap<String, Object> user= new HashMap<>();
-                                    if (isComplete.equals("false")) {
-                                        if (name.getText().equals("") || spinner.getText().equals("") || age.getText().equals("") || phonenumber.equals("") || address.getText().equals("")) {
-                                            Log.d("LOL", "iscomplete: ini kondisi dimana profil belum lengkap dan belum dapat reward ");
-                                            user.put("name", namee);
-                                            user.put("gender", gendeer);
-                                            user.put("age", agee);
-                                            user.put("address", addresse);
-                                            user.put("email", emaile);
-                                            user.put("numberPhone", phoneNumbere);
-                                            user.put("gambar", urlGambar);
-                                            user.put("totalPoint", usr.getTotalPoint());
-                                            user.put("completeProfile", "false");
-                                            dbf.setValue(user);
-                                            Toast.makeText(EditProfileActivity.this, "Profile tersimpan ,Lengkapi Profile dengan mendapatkan 5.000 point", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
-                                            startActivity(intent);
-                                        } else {
-                                            Log.d("LOL", "iscomplete: " + usr.getCompleteProfile());
-                                            user.put("name", namee);
-                                            user.put("gender", gendeer);
-                                            user.put("age", agee);
-                                            user.put("address", addresse);
-                                            user.put("email", emaile);
-                                            user.put("numberPhone", phoneNumbere);
-                                            user.put("gambar", urlGambar);
-                                            String pointText = usr.getTotalPoint();
-                                            int point = Integer.parseInt(pointText);
-                                            int total = point + 5000;
-                                            String totalString = Integer.toString(total);
-                                            user.put("totalPoint", totalString);
-                                            user.put("completeProfile", "true");
-                                            dbf.setValue(user);
-                                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditProfileActivity.this);
-                                            View mView = getLayoutInflater().inflate(R.layout.reward_popup,
-                                                    null);
-                                            Button reward;
-                                            reward = (Button) mView.findViewById(R.id.ok);
-                                            mBuilder.setView(mView);
-                                            final AlertDialog dialog = mBuilder.create();
-                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                            reward.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
+                        final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+                        progressDialog.setTitle("Uploading...");
+                        progressDialog.show();
+                        UploadTask uploadTask = ref.putFile(filepath);
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        final String urlGambar = uri.toString();
+                                        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                                        final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+                                        dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                User usr = dataSnapshot.getValue(User.class);
+                                                isComplete = usr.getCompleteProfile();
+                                                final HashMap<String, Object> user = new HashMap<>();
+                                                if (isComplete.equals("false")) {
+                                                    if (!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(age.getText()) && !TextUtils.isEmpty(address.getText())) {
+                                                        Log.d("LOL", "iscomplete: ini kondisi dimana profil belum lengkap dan belum dapat reward ");
+                                                        user.put("name", namee);
+                                                        user.put("gender", gendeer);
+                                                        user.put("age", agee);
+                                                        user.put("address", addresse);
+                                                        user.put("email", emaile);
+                                                        user.put("numberPhone", phoneNumbere);
+                                                        user.put("gambar", urlGambar);
+                                                        user.put("totalPoint", usr.getTotalPoint());
+                                                        user.put("completeProfile", "true");
+                                                        dbf.setValue(user);
+                                                        // intent reward
+                                                        View viewthen = getLayoutInflater().inflate(R.layout.fullscreen_popup, null);
+                                                        dialog = new Dialog(EditProfileActivity.this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+                                                        dialog.setContentView(viewthen);
+                                                        Button buttonhome;
+                                                        buttonhome = viewthen.findViewById(R.id.butthome);
+                                                        buttonhome.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                                                                startActivity(intent);
+                                                            }
+                                                        });
+                                                        dialog.show();
+                                                        return;
+                                                    } else {
+                                                        user.put("name", namee);
+                                                        user.put("gender", gendeer);
+                                                        user.put("age", agee);
+                                                        user.put("address", addresse);
+                                                        user.put("email", emaile);
+                                                        user.put("numberPhone", phoneNumbere);
+                                                        user.put("gambar", urlGambar);
+                                                        user.put("totalPoint", usr.getTotalPoint());
+                                                        user.put("completeProfile", "false");
+                                                        dbf.setValue(user);
+                                                        // intent reward
+                                                        Toast.makeText(EditProfileActivity.this, "Profile tersimpan ,Lengkapi Profile dengan mendapatkan 5.000 point", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
+                                                        startActivity(intent);
+                                                    }
+                                                } else if (isComplete.equals("true")) {
+                                                    user.put("name", namee);
+                                                    user.put("gender", gendeer);
+                                                    user.put("age", agee);
+                                                    user.put("address", addresse);
+                                                    user.put("email", emaile);
+                                                    user.put("number", phoneNumbere);
+                                                    user.put("gambar", urlGambar);
+                                                    user.put("totalPoint", usr.getTotalPoint());
+                                                    user.put("completeProfile", "false");
+                                                    dbf.setValue(user);
+                                                    // intent reward
+                                                    Toast.makeText(EditProfileActivity.this, "Profile tersimpan", Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
                                                     startActivity(intent);
                                                 }
-                                            });
-                                            dialog.show();
-                                        }
-                                    } else {
-                                        if (name.getText().equals("") || spinner.getText().equals("") || age.getText().equals("") || phonenumber.equals("") || address.getText().equals("")) {
-                                            user.put("name", namee);
-                                            user.put("gender", gendeer);
-                                            user.put("age", agee);
-                                            user.put("address", addresse);
-                                            user.put("email", emaile);
-                                            user.put("id", currentUser.getUid());
-                                            user.put("numberPhone", phoneNumbere);
-                                            user.put("totalPoint", usr.getTotalPoint());
-                                            user.put("gambar", urlGambar);
-                                            user.put("completeProfile", "true");
-                                            dbf.setValue(user);
-                                            Toast.makeText(EditProfileActivity.this, "Profile Tersimpan", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
-                                            startActivity(intent);
-                                        } else {
-                                            Log.d("LOL", "iscomplete: ini kondisi terakir");
-                                            user.put("name", namee);
-                                            user.put("gender", gendeer);
-                                            user.put("age", agee);
-                                            user.put("address", addresse);
-                                            user.put("email", emaile);
-                                            user.put("id", currentUser.getUid());
-                                            user.put("numberPhone", phoneNumbere);
-                                            user.put("gambar", urlGambar);
-                                            user.put("totalPoint", usr.getTotalPoint());
-                                            user.put("completeProfile", "true");
-                                            dbf.setValue(user);
-                                            Toast.makeText(EditProfileActivity.this, "Profile Tersimpan", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(EditProfileActivity.this, MasterActivity.class);
-                                            startActivity(intent);
-                                        }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+
                                     }
-                                }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(EditProfileActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                        .getTotalByteCount());
+                                progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                            }
+                        });
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                        }
-                    });
+                    }
+                } else {
+                    Intent pindah = new Intent(EditProfileActivity.this, VerifyPhoneActivity.class);
+                    pindah.putExtra("number", phoneNumbere);
+                    pindah.putExtra("name", namee);
+                    pindah.putExtra("emailnya", emaile);
+                    pindah.putExtra("gender", gendeer);
+                    pindah.putExtra("age", agee);
+                    pindah.putExtra("address", addresse);
+                    pindah.putExtra("gambar", filepath);
+                    pindah.putExtra("totalPoint", usr.getTotalPoint());
+                    if (filepath == null) {
+                        pindah.putExtra("filepath", "");
+                    } else {
+                        pindah.putExtra("filepath", filepath.toString());
+                    }
+                    pindah.putExtra("completeProfile", usr.getCompleteProfile());
+                    startActivity(pindah);
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(EditProfileActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                            .getTotalByteCount());
-                    progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                }
-            });
+            }
 
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
+
+    public void completeProfile() {
+
+    }
+
 }

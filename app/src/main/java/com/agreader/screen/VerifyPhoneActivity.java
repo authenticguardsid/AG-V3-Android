@@ -1,7 +1,9 @@
 package com.agreader.screen;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -17,12 +19,21 @@ import android.widget.Toast;
 
 import com.agreader.R;
 import com.agreader.model.User;
+import com.agreader.utils.DataRequest;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
@@ -30,36 +41,48 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class VerifyPhoneActivity extends AppCompatActivity {
 
-    private String verificationId;
-    private FirebaseAuth mAuth;
-    private FirebaseUser gabung;
+
+    FirebaseUser firebaseUser;
     private ProgressDialog pDialog;
 
     private EditText editText;
     private TextView tunggu,number;
-
-    private Button kirim;
-
-    private PhoneAuthProvider.ForceResendingToken resendingToken;
-
-    String phonenumber,code,yeay,namaa;
-
+    Dialog dialog;
     String numberPhone = "";
     String name = "";
     String emailnya = "";
     String gender = "";
     String age = "";
     String address = "";
-    String gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/users%2Fuser.png?alt=media&token=a07b3aa8-90d4-4322-8e1d-8f20b91e54b0";
-    String totalPoint = "10000";
-    String completeProfile = "false";
-    String codebaru = "";
+    String gambar = "";
+    String totalPoint = "";
+    String token = "";
+    String filepath;
+    String completeProfile = "";
+    private Button kirim;
+    Uri uriFilepath;
+    String valid;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
+    private PhoneAuthProvider.ForceResendingToken resendingToken;
+
+    String phonenumber, code, yeay, namaa;
+
 
 
     private static final String FORMAT = "%02d:%02d";
@@ -68,8 +91,41 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verifiy_phone);
+        Intent intent = getIntent();
 
-        mAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        numberPhone = intent.getStringExtra("number");
+        name = intent.getStringExtra("name");
+        emailnya = intent.getStringExtra("emailnya");
+        gender = intent.getStringExtra("gender");
+        age = intent.getStringExtra("age");
+        address = intent.getStringExtra("address");
+        gambar = intent.getStringExtra("gambar");
+        totalPoint = intent.getStringExtra("totalPoint");
+        completeProfile = intent.getStringExtra("completeProfile");
+        filepath = intent.getStringExtra("filepath");
+        if (filepath.equals("")) {
+            uriFilepath = null;
+        } else {
+            uriFilepath = Uri.parse(filepath);
+        }
+
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        token = task.getResult().getToken();
+                        Log.d("lol", "onCompleteBaru: " + token);
+                        String result = "";
+                        DataRequest.setUser(getApplicationContext(), token);
+                        sentOtp(token, numberPhone);
+                    }
+                });
+
 
 
         editText = (EditText)findViewById(R.id.editTextCode);
@@ -78,9 +134,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
         kirim = (Button)findViewById(R.id.kirim);
 
-        phonenumber = getIntent().getStringExtra("phonenumber");
 
-        Log.i("Nomor Auth",phonenumber);
 
         Intent getData = getIntent();
         if (getData.getStringExtra("nama") != null){
@@ -96,13 +150,13 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     editText.setFocusable(true);
                     return;
                 } else {
-                    verifyCode(codebaru);
+                    verifyOtp(token, editText.getText().toString());
                 }
             }
         });
 
-        number.setText("Please type the verification code sent to \n "+phonenumber);
-        sendVerificationCode(phonenumber);
+        number.setText("Please type the verification code sent to \n " + numberPhone);
+
 
         countdownTime();
 
@@ -117,7 +171,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     }
 
     private void countdownTime(){
-        new CountDownTimer(60000, 1000) {
+        new CountDownTimer(180000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 tunggu.setText("Please Wait "+String.format(FORMAT,
@@ -132,73 +186,231 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                 tunggu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        resendVerificationCode(phonenumber,resendingToken);
                         countdownTime();
+                        sentOtp(token, numberPhone);
                     }
                 });
             }
         }.start();
     }
 
-    private void resendVerificationCode(String phoneNumber,
-                                        PhoneAuthProvider.ForceResendingToken token) {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
-                mCallBack,         // OnVerificationStateChangedCallbacks
-                token);             // ForceResendingToken from callbacks
+    public void sentOtp(String token, String number) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                "http://admin.authenticguards.com/api/smsotp?token=" + token + "&appid=003&phone=" + number, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+    }
+
+    public void verifyOtp(String token, String number) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                "http://admin.authenticguards.com/api/Verifysms?token=" + token + "&appid=003&code=" + number, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    valid = response.getString("status");
+                    Log.d("isvalid", "onResponse: " + valid + response.getString("status"));
+                    if (valid.equals("Success")) {
+                        setData();
+                    } else {
+                        Toast.makeText(VerifyPhoneActivity.this, "Wrong Code", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
 
-    private void verifyCode(String code2){
+    public void setData() {
+        final StorageReference ref = storageReference.child("users/" + UUID.randomUUID().toString());
+        if (uriFilepath == null) {
+            final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            final HashMap<String, Object> user = new HashMap<>();
+            name = currentUser.getDisplayName();
+            final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+            dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (completeProfile.equals("false")) {
+                        if (number.equals("") && emailnya.equals("") && age.equals("") && name.equals("")
+                                && address.equals("")) {
+                            User us = dataSnapshot.getValue(User.class);
+                            user.put("numberPhone", number);
+                            user.put("idEmail", emailnya);
+                            user.put("idPhone", number);
+                            user.put("name", name);
+                            user.put("email", emailnya);
+                            user.put("gender", gender);
+                            user.put("age", age);
+                            user.put("address", address);
+                            user.put("gambar", us.getGambar());
+                            int reward = Integer.parseInt(totalPoint) + 5000;
+                            user.put("totalPoint", Integer.toString(reward));
+                            user.put("completeProfile", true);
+                            dbf.setValue(user);
+                            //intent reward
+                            View viewthen = getLayoutInflater().inflate(R.layout.fullscreen_popup, null);
+                            dialog = new Dialog(VerifyPhoneActivity.this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+                            dialog.setContentView(viewthen);
+                            Button buttonhome;
+                            buttonhome = viewthen.findViewById(R.id.butthome);
+                            buttonhome.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                            dialog.show();
+                        } else {
+                            User us = dataSnapshot.getValue(User.class);
+                            user.put("numberPhone", number);
+                            user.put("idEmail", emailnya);
+                            user.put("idPhone", number);
+                            user.put("name", name);
+                            user.put("email", emailnya);
+                            user.put("gender", gender);
+                            user.put("age", age);
+                            user.put("address", address);
+                            user.put("gambar", us.getGambar());
+                            user.put("totalPoint", totalPoint);
+                            user.put("completeProfile", true);
+                            dbf.setValue(user);
+                            Toast.makeText(VerifyPhoneActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
+                            startActivity(intent);
+                        }
+                    } else if (completeProfile.equals("true")) {
+                        User us = dataSnapshot.getValue(User.class);
+                        user.put("numberPhone", number);
+                        user.put("idEmail", emailnya);
+                        user.put("idPhone", number);
+                        user.put("name", name);
+                        user.put("email", emailnya);
+                        user.put("gender", gender);
+                        user.put("age", age);
+                        user.put("address", address);
+                        user.put("gambar", us.getGambar());
+                        user.put("totalPoint", totalPoint);
+                        user.put("completeProfile", true);
+                        dbf.setValue(user);
+                        Toast.makeText(VerifyPhoneActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
+                        startActivity(intent);
+                    }
+                }
 
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,code2);
-        signInWithCredential(credential);
-    }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-
-
-    private void signInWithCredential(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Log.d("LOL", "onComplete: success");
-                            final FirebaseUser currentUser = mAuth.getCurrentUser();
-                            final HashMap<String, Object> user = new HashMap<>();
-                            name = currentUser.getDisplayName();
+                }
+            });
+        } else {
+            final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+            UploadTask uploadTask = ref.putFile(uriFilepath);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            final String urlGambar = uri.toString();
+                            final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                             final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
                             dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        Intent pindah = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
-
-                                        startActivity(pindah);
+                                    User usr = dataSnapshot.getValue(User.class);
+                                    final HashMap<String, Object> user = new HashMap<>();
+                                    if (completeProfile.equals(false)) {
+                                        if (number.equals("") && emailnya.equals("") && age.equals("") && name.equals("")
+                                                && address.equals("")) {
+                                            User us = dataSnapshot.getValue(User.class);
+                                            user.put("numberPhone", number);
+                                            user.put("idEmail", emailnya);
+                                            user.put("idPhone", number);
+                                            user.put("name", name);
+                                            user.put("email", emailnya);
+                                            user.put("gender", gender);
+                                            user.put("age", age);
+                                            user.put("address", address);
+                                            user.put("gambar", urlGambar);
+                                            int reward = Integer.parseInt(totalPoint) + 5000;
+                                            user.put("totalPoint", Integer.toString(reward));
+                                            user.put("completeProfile", true);
+                                            dbf.setValue(user);
+                                            //intent reward
+                                            View viewthen = getLayoutInflater().inflate(R.layout.fullscreen_popup, null);
+                                            dialog = new Dialog(VerifyPhoneActivity.this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+                                            dialog.setContentView(viewthen);
+                                            Button buttonhome;
+                                            buttonhome = viewthen.findViewById(R.id.butthome);
+                                            buttonhome.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            });
+                                            dialog.show();
+                                        } else {
+                                            User us = dataSnapshot.getValue(User.class);
+                                            user.put("numberPhone", number);
+                                            user.put("idEmail", emailnya);
+                                            user.put("idPhone", number);
+                                            user.put("name", name);
+                                            user.put("email", emailnya);
+                                            user.put("gender", gender);
+                                            user.put("age", age);
+                                            user.put("address", address);
+                                            user.put("gambar", urlGambar);
+                                            user.put("totalPoint", totalPoint);
+                                            user.put("completeProfile", true);
+                                            dbf.setValue(user);
+                                            Toast.makeText(VerifyPhoneActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    } else if (completeProfile.equals("true")) {
+                                        User us = dataSnapshot.getValue(User.class);
+                                        user.put("numberPhone", number);
+                                        user.put("idEmail", emailnya);
+                                        user.put("idPhone", number);
+                                        user.put("name", name);
+                                        user.put("email", emailnya);
+                                        user.put("gender", gender);
+                                        user.put("age", age);
+                                        user.put("address", address);
+                                        user.put("gambar", urlGambar);
+                                        user.put("totalPoint", totalPoint);
+                                        user.put("completeProfile", true);
+                                        dbf.setValue(user);
+                                        Toast.makeText(VerifyPhoneActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
+                                        startActivity(intent);
                                     }
-
-                                    User us = dataSnapshot.getValue(User.class);
-
-                                    gambar = "https://firebasestorage.googleapis.com/v0/b/ag-version-3.appspot.com/o/hadiah%2Fuser.png?alt=media&token=178bff40-3a10-4d6f-8544-c93d7fc2dcc1";
-
-                                    user.put("numberPhone", phonenumber);
-                                    user.put("idEmail", currentUser.getUid());
-                                    user.put("idPhone", phonenumber);
-                                    user.put("name", "");
-                                    user.put("email", "");
-                                    user.put("gender", "");
-                                    user.put("age", "");
-                                    user.put("address", "");
-                                    user.put("gambar",gambar);
-                                    user.put("totalPoint", "10000");
-                                    user.put("completeProfile", "false");
-
-                                    dbf.setValue(user);
-                                    Intent pindah = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
-                                    startActivity(pindah);
                                 }
 
                                 @Override
@@ -207,66 +419,25 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                 }
                             });
 
-
-                        }else {
-                            Toast.makeText(VerifyPhoneActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(VerifyPhoneActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                            .getTotalByteCount());
+                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                }
+            });
+        }
     }
-
-    private void sendVerificationCode (String number){
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                number,
-                60,
-                TimeUnit.SECONDS,
-                this,
-                mCallBack
-        );
-        Log.i("Nomor Auth","Berhasil");
-    }
-
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks
-            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-
-        @Override
-        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            super.onCodeSent(s, forceResendingToken);
-            verificationId = s;
-            resendingToken = forceResendingToken;
-            Log.i("Code","Terkirim");
-        }
-
-        @Override
-        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-            code = phoneAuthCredential.getSmsCode();
-            codebaru = code;
-            if (code != null){
-                editText.setText(code);
-                signInWithCredential(phoneAuthCredential);
-            }
-        }
-
-        @Override
-        public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(VerifyPhoneActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCodeAutoRetrievalTimeOut(String s) {
-            super.onCodeAutoRetrievalTimeOut(s);
-            Log.i("Code","Terikimr2");
-            code = editText.getText().toString().trim();
-            if (TextUtils.isEmpty(code)){
-                Toast.makeText(VerifyPhoneActivity.this, "Gagal", Toast.LENGTH_SHORT).show();
-            } else {
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(s,code);
-                signInWithCredential(credential);
-            }
-
-        }
-    };
 
     private void displayLoader() {
         pDialog = new ProgressDialog(this);

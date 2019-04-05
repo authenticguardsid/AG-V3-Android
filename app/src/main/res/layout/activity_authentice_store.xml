@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:sothree="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0.8"
-        android:background="#fff"
         android:gravity="bottom"
+        android:background="#fff"
+        android:alpha="0.8"
         sothree:umanoDragView="@+id/dragView"
-        sothree:umanoOverlay="true"
         sothree:umanoPanelHeight="0dp"
-        sothree:umanoShadowHeight="2dp">
+        sothree:umanoShadowHeight="2dp"
+        sothree:umanoOverlay="true">
 
-        <!-- MAIN CONTENT -->
-        <FrameLayout android:layout_width="match_parent"
+
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <fragment
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/map"
@@ -31,7 +31,6 @@
 
         </FrameLayout>
 
-        <!-- SLIDING LAYOUT -->
         <LinearLayout
             android:id="@+id/dragView"
             android:layout_width="match_parent"
@@ -159,7 +158,16 @@
             </RelativeLayout>
 
         </LinearLayout>
-
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
+    <include layout="@layout/include_progress_overlay" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/getmy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
+        android:backgroundTint="@color/colorGold"
+        android:src="@drawable/ic_stat_name" />
 </RelativeLayout>
