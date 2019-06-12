@@ -1,6 +1,7 @@
 package com.agreader.fragment;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agreader.R;
 import com.agreader.adapter.BrandAdapter;
@@ -53,6 +55,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,7 +86,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -90,9 +93,10 @@ public class HomeFragment extends Fragment {
 
     View rootView;
     Button mButtonAuthenticStore, mButtonMoreInfoStories, mButtonGoProfile, mButtonHighlight;
-    TextView mButtonSeeAllStories, mButtonSeeAllPromo ,mButtonSeeAllBrand;
+    TextView mButtonSeeAllStories, mButtonSeeAllPromo, mButtonSeeAllBrand;
     FirebaseUser firebaseUser;
     String token;
+    private static final int ERROR_DIALOG_REQUEST = 9001;
     String finalImage;
     List<String> imageUrls = new ArrayList<String>();
     CardView aa;
@@ -103,11 +107,11 @@ public class HomeFragment extends Fragment {
     private PromoAdapter mAdapterPromo;
     private ActionMode mActionMode;
     private ActionMode mActionPromo;
-    RecyclerView recyclerView,recylerPromo;
+    RecyclerView recyclerView, recylerPromo;
     private ArrayList<Brand> mData = new ArrayList<>();
     private ArrayList<Promo> mDataPromo = new ArrayList<>();
     ProgressBar mProgressBarPromo, mProgressBarBrand;
-    String  JSON;
+    String JSON;
 
     ShimmerFrameLayout mShimmerViewContainer;
 
@@ -153,7 +157,7 @@ public class HomeFragment extends Fragment {
                         token = task.getResult().getToken();
                         Log.d("lol", "onCompleteBaru: " + token);
                         String result = "";
-                        DataRequest.setUser(getContext(),token);
+                        DataRequest.setUser(getContext(), token);
                     }
                 });
 
@@ -187,8 +191,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mButtonSeeAllStories = rootView.findViewById(R.id.seeAllStorirs);
-        mButtonSeeAllStories.setOnClickListener(new View.OnClickListener() {
+
+        //more info AG Stories
+        mButtonMoreInfoStories = rootView.findViewById(R.id.more_info_ag_stories);
+        mButtonMoreInfoStories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), HighLightScreen.class);
@@ -197,18 +203,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        //more info AG Stories
-        mButtonMoreInfoStories = rootView.findViewById(R.id.more_info_ag_stories);
-        mButtonMoreInfoStories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), DetailStoriesActivity.class);
-                startActivity(intent);
-            }
-        });
-
         //home_section_1
-
 
 
         //home_section_7
@@ -262,7 +257,6 @@ public class HomeFragment extends Fragment {
         //getBrand(JSON);
 
 
-
         mAdapter = new BrandAdapter(getContext(), mData, mDataId,
                 new BrandAdapter.ClickHandler() {
                     @Override
@@ -284,37 +278,14 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-        mAdapterPromo = new PromoAdapter(getContext(), mDataPromo, mDataId,
-                new PromoAdapter.ClickHandler() {
-                    @Override
-                    public void onItemClick(int position) {
-                        if (mActionMode != null) {
-                            mAdapterPromo.toggleSelection(mDataId.get(position));
-                            if (mAdapterPromo.selectionCount() == 0)
-                                mActionMode.finish();
-                            else
-                                mActionMode.invalidate();
-                            return;
-                        }
-                        Promo hadiah = mDataPromo.get(position);
-                        Intent intentDetailPoint = new Intent(getContext(), DetailPointActivity.class);
-                        intentDetailPoint.putExtra("postId", hadiah.getIdHadiah());
-                        intentDetailPoint.putExtra("title", hadiah.getJudul());
-                        intentDetailPoint.putExtra("gambar", hadiah.getGambar());
-                        intentDetailPoint.putExtra("price", hadiah.getTotalPoint());
-                        intentDetailPoint.putExtra("availablePoint", hadiah.getExpired());
-                        intentDetailPoint.putExtra("descriptionPoint", hadiah.getDesc());
-                        intentDetailPoint.putExtra("termC", hadiah.getTermC());
-                        startActivity(intentDetailPoint);
-                    }
-                });
+        mAdapterPromo = new PromoAdapter(getContext(), mDataPromo, mDataId);
         recyclerView.setAdapter(mAdapter);
         recylerPromo.setAdapter(mAdapterPromo);
 //        autoScroll();
         return rootView;
     }
 
-    private void getDataSlider(String token){
+    private void getDataSlider(String token) {
         Log.d("1", "getDataSlider: ");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/slider_?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
             @Override
@@ -354,14 +325,14 @@ public class HomeFragment extends Fragment {
         dbf.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("completeProfile").exists()){
+                if (dataSnapshot.child("completeProfile").exists()) {
                     String complete = dataSnapshot.child("completeProfile").getValue().toString();
-                    if (complete.equals("true")){
+                    if (complete.equals("true")) {
                         aa.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         aa.setVisibility(View.VISIBLE);
                     }
-                }else {
+                } else {
                     aa.setVisibility(View.VISIBLE);
                 }
             }
@@ -423,6 +394,26 @@ public class HomeFragment extends Fragment {
         super.onPause();
     }
 
+    public boolean isServicesOK() {
+        Log.d("lol", "isServicesOK: checking google services version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+
+        if (available == ConnectionResult.SUCCESS) {
+            //everything is fine and the user can make map requests
+            Log.d("", "isServicesOK: Google Play Services is working");
+            return true;
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+            //an error occured but we can resolve it
+            Log.d("", "isServicesOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        } else {
+            Toast.makeText(getContext(), "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
 
     private void getPromo(String token) {
         String url = "http://admin.authenticguards.com/api/promo_?token=" + token + "&appid=003";
@@ -465,10 +456,12 @@ public class HomeFragment extends Fragment {
         });
         Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
     }
+
     public void autoScroll() {
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             int count = 0;
+
             @Override
             public void run() {
                 recylerPromo.smoothScrollToPosition(++count);

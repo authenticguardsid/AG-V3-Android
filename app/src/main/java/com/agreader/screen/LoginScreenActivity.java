@@ -68,9 +68,11 @@ public class LoginScreenActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
-        if (currentUser != null){
-            startActivity(new Intent(LoginScreenActivity.this,MasterActivity.class));
-            finish();
+        if (currentUser != null) {
+            if (currentUser.isEmailVerified()) {
+                startActivity(new Intent(LoginScreenActivity.this, MasterActivity.class));
+                finish();
+            }
         }
     }
 
@@ -297,6 +299,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                                         user.put("gambar",gambar);
                                         user.put("totalPoint",totalPoint);
                                         user.put("completeProfile","false");
+                                        user.put("onverifiednumber", "false");
                                         dbf.setValue(user);
                                         Intent pindah = new Intent(LoginScreenActivity.this,MasterActivity.class);
                                         startActivity(pindah);
@@ -324,7 +327,3 @@ public class LoginScreenActivity extends AppCompatActivity {
         pDialog.show();
     }
 }
-
-//    Intent pindah = new Intent(LoginScreenActivity.this,MasterActivity.class);
-//                            pindah.putExtra("tambahPoint","100");
-//                                    startActivity(pindah);

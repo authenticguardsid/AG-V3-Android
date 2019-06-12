@@ -2,7 +2,9 @@ package com.agreader.screen;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -173,7 +175,24 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        code = getIntent().getStringExtra("code");
+        firebaseUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        token = task.getResult().getToken();
+                        Log.d("ClaimActivity", "new: " + token);
+                        String result = "";
+                    }
+                });
+    }
+
     private void uploadImage(final byte[] image) {
+        Log.d("TES", "uploadImage:  " + code + token);
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest
                 (com.android.volley.Request.Method.POST,
                         "http://admin.authenticguards.com/api/claim_/" + code + "?token=" + token + "&appid=003"
@@ -281,6 +300,26 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        code = getIntent().getStringExtra("code");
+        firebaseUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        token = task.getResult().getToken();
+                        Log.d("ClaimActivity", "new: " + token);
+                        String result = "";
+                    }
+                });
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+        }
+    }
+
     public Bitmap loadBitmap(String url) {
         Bitmap bm = null;
         InputStream is = null;
@@ -312,6 +351,23 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
         return bm;
     }
 
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
     @Override
     public void onLocationChanged(Location location) {

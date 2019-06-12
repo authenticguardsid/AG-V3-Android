@@ -1,10 +1,14 @@
 package com.agreader.screen;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
@@ -15,16 +19,21 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agreader.R;
 import com.agreader.model.ListStore;
 import com.agreader.model.MarkerData;
 import com.agreader.utils.BubleTransformation;
+import com.agreader.utils.FetchURL;
+import com.agreader.utils.TaskLoadedCallback;
 import com.agreader.utils.Utils;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -35,6 +44,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -43,8 +53,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
@@ -56,20 +69,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import static android.net.sip.SipErrorCode.TIME_OUT;
 
-public class AuthenticeStoreActivity extends FragmentActivity implements OnMapReadyCallback {
+public class AuthenticeStoreActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     FloatingActionButton fab;
     String id;
     Utils utils;
+    double kmdistance;
     View progressOverlay;
+    private MarkerOptions place1, place2;
+    ;
+    double currentLatitude, currentLongitude, targetLongitude, targetLatitude;
     MarkerOptions markerOption;
     List<Target> targets;
+    String title, address, callnumber;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     HashMap<Marker, MarkerData> mMarkersHashMap;
 
@@ -89,16 +108,8 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
                 return;
             }
             mMap.setMyLocationEnabled(true);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Do something after 5s = 5000ms\
-                    Intent intent = getIntent();
-                    id = intent.getStringExtra("id");
-                    displaymarker(id);
-                }
-            }, 100);
+
+
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             final Utils utils = new Utils(getApplicationContext());
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -117,6 +128,7 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
                     return true;
                 }
             });
+
 
         }
     }
@@ -175,6 +187,25 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
 
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                                    .anchor(0.5f, 0.5f));
+                            currentLatitude = currentLocation.getLatitude();
+                            currentLongitude = currentLocation.getLongitude();
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Do something after 5s = 5000ms\
+                                    Intent intent = getIntent();
+                                    id = intent.getStringExtra("id");
+                                    displaymarker(id, currentLatitude, currentLongitude);
+                                }
+                            }, 100);
+                            place1 = new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Location 1");
+
+
+
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
                             Toast.makeText(AuthenticeStoreActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
@@ -195,6 +226,14 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
     private void moveCameraStore(LatLng latLng, float zoom) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        utils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                utils.animateView(progressOverlay, View.GONE, 0, 200);
+            }
+        }, TIME_OUT);
     }
 
 
@@ -254,7 +293,7 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
     }
 
 
-    public void displaymarker(String id) {
+    public void displaymarker(String id, final double culat, final double culong) {
         Log.d(TAG, "displaymarker: disni");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/locatorshow_/" + id + "?appid=003", null, new Response.Listener<JSONObject>() {
             @Override
@@ -266,13 +305,24 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
                     String id = String.valueOf(jsonObject.getInt("id"));
                     String latitude = jsonObject.getString("lat");
                     String longitude = jsonObject.getString("lon");
+                    String waStore = jsonObject.getString("whatsapp");
+                    String callStore = jsonObject.getString("csPhone");
+                    String address = jsonObject.getString("addressOfficeOrStore");
                     String image = "http://admin.authenticguards.com/storage/app/public/" + jsonObject.getString("image") + ".jpg";
                     ArrayList<MarkerData> markers = new ArrayList<MarkerData>();
                     Log.d(TAG, "markerLOOLLL " + name + id + latitude + longitude + image);
                     markers.clear();
+
+//                    place2 = new MarkerOptions().position(new LatLng(targetLatitude, targetLongitude)).title("Location 2");
+                    Log.d("culatculong", "onResponse: " + culat + culong);
+//                    new FetchURL(AuthenticeStoreActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
                     if (!latitude.equals("-") && !longitude.equals("-")) {
+                        targetLatitude = Double.parseDouble(latitude);
+                        targetLongitude = Double.parseDouble(longitude);
                         markers.add(new MarkerData(id, image, Double.parseDouble(latitude), Double.parseDouble(longitude), name));
                         plotMarkers(markers);
+                        moveCameraStore(new LatLng(targetLatitude, targetLongitude), DEFAULT_ZOOM);
+                        displaySliding(image, name, waStore, callStore, address);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -319,6 +369,68 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
         }
     }
 
+    public void displaySliding(String image, String name, String wa, final String call, final String address) {
+
+        final ImageView iconMarker = (ImageView) findViewById(R.id.iconMarker);
+        final TextView nameStore = (TextView) findViewById(R.id.name_store);
+        final TextView callStore = (TextView) findViewById(R.id.call_store);
+        final TextView addressStore = (TextView) findViewById(R.id.address_store);
+        final TextView distaceStore = (TextView) findViewById(R.id.distance_store);
+        final Button buttonCall = (Button) findViewById(R.id.button_call_store);
+        final Button buttonDirection = (Button) findViewById(R.id.button_call_direction);
+        CalculationByDistance(new LatLng(currentLatitude, currentLongitude), new LatLng(targetLatitude, targetLongitude));
+        String distancereal = String.valueOf(kmdistance);
+        Picasso.get().load(image).into(iconMarker);
+        nameStore.setText(name);
+        callStore.setText("Whatsapp :" + wa + " Call : " + call);
+        addressStore.setText(address);
+        distaceStore.setText(distancereal.substring(0, 4) + " KM");
+        buttonCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", call, null)));
+            }
+        });
+
+        buttonDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("geo:" + targetLatitude + "," + targetLongitude + "?q=" + address);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
+
+
+    }
+
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+        kmdistance = km;
+        return Radius * c;
+    }
+
+
     protected Marker createMarker(final double latitude, final double longitude, final String title, final String image) {
 
         Marker mymarker;
@@ -332,6 +444,29 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
         Picasso.get().load(image).resize(250, 250).centerInside().transform(new BubleTransformation(50)).into(target);
 
         return mymarker;
+    }
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+
+        Log.d("lognaaa", "getUrl: " + origin + dest + directionMode);
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=AIzaSyDZwjotwJaIdIwEWjZYcJwjsDHyTm3Mpl8";
+        return url;
+    }
+
+    @Override
+    public void onTaskDone(Object... values) {
+
     }
 
     public class PicassoMarker implements Target {

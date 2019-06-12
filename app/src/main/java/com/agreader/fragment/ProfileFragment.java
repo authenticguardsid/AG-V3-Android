@@ -248,74 +248,11 @@ public class ProfileFragment extends Fragment {
 
 
         //Facebook
-        mCallbackManager = CallbackManager.Factory.create();
-
-        final AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        final LoginButton loginButton = (LoginButton) v.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email", "public_profile");
-        // If using in a fragment
-        loginButton.setFragment(this);
-
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (accessToken != null){
-                    FacebookSdk.sdkInitialize(getContext());
-                    LoginManager.getInstance().logOut();
-                    AccessToken.setCurrentAccessToken(null);
-                    loginButton.unregisterCallback(mCallbackManager);
-                }else {
-                    loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            // App code
-                            handleFacebookAccessToken(loginResult.getAccessToken());
-
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            FacebookSdk.sdkInitialize(getContext());
-                            LoginManager.getInstance().logOut();
-                            AccessToken.setCurrentAccessToken(null);
-                            loginButton.unregisterCallback(mCallbackManager);
-                        }
-
-                        @Override
-                        public void onError(FacebookException exception) {
-                            // App code
-                        }
-                    });
-                }
-            }
-        });
 
         return v;
     }
 
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.getCurrentUser().linkWithCredential(credential)
-                .addOnCompleteListener( getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("FBLogin", "signInWithCredential:success");
-                            FirebaseUser user = task.getResult().getUser();
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("GagalFB", "signInWithCredential:failure", task.getException());
-
-                        }
-                    }
-
-                });
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

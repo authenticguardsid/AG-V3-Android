@@ -73,22 +73,23 @@
                         android:src="@mipmap/ic_launcher"/>
 
                     <TextView
-                        android:id="@+id/fclistClinicname"
+                        android:id="@+id/name_store"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/iconMarker"
                         android:layout_marginTop="0dp"
                         android:gravity="center"
+                        android:text="lol"
                         android:textColor="@color/colorGREY"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:typeface="sans" />
 
                     <TextView
-                        android:id="@+id/fclistClinicnameSub"
+                        android:id="@+id/call_store"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/fclistClinicname"
+                        android:layout_below="@+id/name_store"
                         android:layout_marginTop="0dp"
                         android:gravity="center"
                         android:text="Lorem ipsum"
@@ -98,10 +99,10 @@
                         android:typeface="sans" />
 
                     <TextView
-                        android:id="@+id/fclistClinicaddressTag"
+                        android:id="@+id/address_store"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/fclistClinicnameSub"
+                        android:layout_below="@+id/call_store"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
@@ -115,10 +116,10 @@
                         android:typeface="sans" />
 
                     <TextView
-                        android:id="@+id/fclistClinicaddress"
+                        android:id="@+id/distance_store"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/fclistClinicaddressTag"
+                        android:layout_below="@+id/address_store"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="2dp"
                         android:gravity="center"
@@ -128,10 +129,10 @@
                         android:typeface="sans" />
 
                     <Button
-                        android:id="@+id/bCallClinic"
+                        android:id="@+id/button_call_store"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/fclistClinicaddress"
+                        android:layout_below="@+id/distance_store"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/button_call_clinic"
                         android:layout_marginStart="16dp"
@@ -141,10 +142,10 @@
                         android:textSize="12sp"/>
 
                     <Button
-                        android:id="@+id/bDirectionsClinic"
+                        android:id="@+id/button_call_direction"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/bCallClinic"
+                        android:layout_below="@+id/button_call_store"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/button_get_direct"
                         android:layout_marginStart="16dp"

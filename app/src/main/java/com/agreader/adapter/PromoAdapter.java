@@ -33,12 +33,11 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
     private View mEmptyView;
     private View mProgressbar;
 
-    public PromoAdapter(Context context, ArrayList<Promo> data, ArrayList<String> dataId,
-                        PromoAdapter.ClickHandler handler) {
+    public PromoAdapter(Context context, ArrayList<Promo> data, ArrayList<String> dataId
+    ) {
         mContext = context;
         mData = data;
         mDataId = dataId;
-        mClickHandler = handler;
         mSelectedId = new ArrayList<>();
     }
 
@@ -70,7 +69,7 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull PromoAdapter.ViewHolder holder, int position) {
 
-        Promo pet = mData.get(position % mData.size());
+        final Promo pet = mData.get(position % mData.size());
         Log.d("tolong", "onBindViewHolder: " + pet.getGambar());
 
         Transformation transformation = new RoundedTransformationBuilder()
@@ -83,6 +82,21 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
 
         Picasso.get().load(pet.getGambar()).fit()
                 .transform(transformation).into(holder.mImg);
+
+        holder.mImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentDetailPoint = new Intent(mContext, DetailPointActivity.class);
+                intentDetailPoint.putExtra("postId", pet.getIdHadiah());
+                intentDetailPoint.putExtra("title", pet.getJudul());
+                intentDetailPoint.putExtra("gambar", pet.getGambar());
+                intentDetailPoint.putExtra("price", pet.getTotalPoint());
+                intentDetailPoint.putExtra("availablePoint", pet.getExpired());
+                intentDetailPoint.putExtra("descriptionPoint", pet.getDesc());
+                intentDetailPoint.putExtra("termC", pet.getTermC());
+                mContext.startActivity(intentDetailPoint);
+            }
+        });
     }
 
     @Override
@@ -115,8 +129,7 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
         void onItemClick(int position);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements
-            View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder {
         final RoundedImageView mImg;
 
         ViewHolder(View itemView) {
@@ -125,13 +138,8 @@ public class PromoAdapter extends RecyclerView.Adapter<PromoAdapter.ViewHolder> 
             mImg = itemView.findViewById(R.id.gambarPromo);
 
             itemView.setFocusable(true);
-            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View itemView) {
-            mClickHandler.onItemClick(getAdapterPosition());
-        }
 
     }
 }

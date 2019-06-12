@@ -79,12 +79,12 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         String resultcode = result.getText();
                         int length = resultcode.length();
                         Log.d("length", "run: " + length);
-                        if (length <= 9) {
+//                        if (length <= 9) {
                             validation_code(result.getText(), token2);
-                        } else {
-                            Intent intent = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
-                            startActivity(intent);
-                        }
+//                        } else {
+//                            Intent intent = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
+//                            startActivity(intent);
+//                        }
                     }
                 });
             }

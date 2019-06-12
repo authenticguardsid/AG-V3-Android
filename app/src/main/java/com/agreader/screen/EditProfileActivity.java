@@ -381,7 +381,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 } else {
                     Intent pindah = new Intent(EditProfileActivity.this, VerifyPhoneActivity.class);
                     pindah.putExtra("number", phoneNumbere);
-                    pindah.putExtra("name", namee);
+                    pindah.putExtra("nameUser", namee);
                     pindah.putExtra("emailnya", emaile);
                     pindah.putExtra("gender", gendeer);
                     pindah.putExtra("age", agee);

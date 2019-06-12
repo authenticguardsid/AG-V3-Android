@@ -121,6 +121,7 @@ public class ProductFragment extends Fragment {
         });
         recyclerView.setAdapter(mAdapter);
 
+
         return rootView;
     }
 
@@ -156,19 +157,20 @@ public class ProductFragment extends Fragment {
                             name_brand = brand.getString("Name");
                             alamat = brand.getString("addressOfficeOrStore");
                             imageBrand = brand.getString("image");
-
                             finalImage2 = "http://admin.authenticguards.com/storage/app/public/" + imageBrand + ".jpg";
-
                             mData.add(new ProductModel(finalImage, name_product, name_brand, date_claim_product, status, size, color, material, price, distributor, expiredDate, alamat, finalImage2));
+                        }
+                        if (results.length() == 0) {
+                            emptyView.setVisibility(View.VISIBLE);
+                        } else {
+                            emptyView.setVisibility(View.GONE);
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     mAdapter.notifyDataSetChanged();
-                    emptyView.setVisibility(View.GONE);
                 } else {
-                    emptyView.setVisibility(View.VISIBLE);
                 }
             }
         }, new Response.ErrorListener() {

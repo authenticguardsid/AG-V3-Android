@@ -12,15 +12,27 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agreader.R;
+import com.agreader.model.User;
 import com.agreader.utils.Config;
+import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,9 +41,9 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressDialog pDialog;
     private EditText txtEmail, txtPassword;
+    FirebaseUser currentUser;
     private Button buttonLogin;
-
-    FirebaseAuth.AuthStateListener mAuthListener;
+    private TextView forgetText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +57,14 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         txtEmail = (EditText) findViewById(R.id.email);
         txtPassword = (EditText) findViewById(R.id.password);
+        forgetText = (TextView) findViewById(R.id.forgot);
+        forgetText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         buttonLogin = (Button) findViewById(R.id.login);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -53,28 +73,31 @@ public class LoginActivity extends AppCompatActivity {
                 checkValidation();
             }
         });
-
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()!=null){
-                    sendToHome();
-                }
-            }
-        };
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+
+        FirebaseUser fuser = mAuth.getCurrentUser();
+        if (fuser != null) {
+            if (!fuser.isEmailVerified()) {
+                Intent intent = getIntent();
+                if (intent.getStringExtra("titleName") != null) {
+                    CFAlertDialog.Builder builder = new CFAlertDialog.Builder(this)
+                            .setDialogStyle(CFAlertDialog.CFAlertStyle.NOTIFICATION)
+                            .setTitle("Hi " + intent.getStringExtra("titleName"))
+                            .setMessage("Please check your email, we send a verification email so you can log in to your account");
+                    builder.show();
+                }
+
+            }
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mAuth.removeAuthStateListener(mAuthListener);
     }
 
     private void changeStatusBarColor() {
@@ -106,7 +129,50 @@ public class LoginActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Your email account is not registered.", Toast.LENGTH_SHORT).show();
                             } else {
-                                sendToHome();
+                                try {
+                                    currentUser = mAuth.getCurrentUser();
+                                    if (Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
+                                        try {
+                                            DatabaseReference dbuser = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+                                            dbuser.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    User user = dataSnapshot.getValue(User.class);
+                                                    if (user.getOnverifiednumber().equals("false")) {
+                                                        Intent intent = new Intent(LoginActivity.this, VerifyPhoneActivity.class);
+                                                        intent.putExtra("number", user.getNumberPhone());
+                                                        intent.putExtra("nameUser", user.getName());
+                                                        intent.putExtra("emailnya", user.getEmail());
+                                                        intent.putExtra("gender", user.getGender());
+                                                        intent.putExtra("age", user.getAge());
+                                                        intent.putExtra("address", user.getAddress());
+                                                        intent.putExtra("gambar", user.getGambar());
+                                                        intent.putExtra("totalPoint", user.getTotalPoint());
+                                                        intent.putExtra("completeProfile", user.getCompleteProfile());
+                                                        intent.putExtra("onverify", user.getOnverifiednumber());
+                                                        startActivity(intent);
+                                                    } else {
+                                                        sendToHome();
+                                                    }
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                        } catch (NullPointerException e) {
+
+                                        }
+
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "Please Verified your email", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (NullPointerException e) {
+
+                                }
                             }
                         }
                     });

@@ -228,7 +228,7 @@
                     android:layout_below="@+id/textPhoneNumber"
                     android:digits="+0123456789"
                     android:hint="e.g +62821*******"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:maxLength="14" />
 
                 <Button

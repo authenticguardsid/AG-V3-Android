@@ -18,8 +18,8 @@ android {
         applicationId "com.agreader"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 27
-        versionName "3.0.5"
+        versionCode 28
+        versionName "3.0.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.codesgood:justifiedtextview:1.1.0'
+    implementation 'com.crowdfire.cfalertdialog:cfalertdialog:1.1.0';
 
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
 

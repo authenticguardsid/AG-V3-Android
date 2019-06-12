@@ -7,8 +7,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -63,7 +63,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private TextView tunggu,number;
     Dialog dialog;
     String numberPhone = "";
-    String name = "";
+    String nameUser = "";
     String emailnya = "";
     String gender = "";
     String age = "";
@@ -73,6 +73,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     String token = "";
     String filepath;
     String completeProfile = "";
+    String onVerify = "";
     private Button kirim;
     Uri uriFilepath;
     String valid;
@@ -97,7 +98,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         storageReference = storage.getReference();
 
         numberPhone = intent.getStringExtra("number");
-        name = intent.getStringExtra("name");
+        nameUser = intent.getStringExtra("nameUser");
         emailnya = intent.getStringExtra("emailnya");
         gender = intent.getStringExtra("gender");
         age = intent.getStringExtra("age");
@@ -105,12 +106,21 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         gambar = intent.getStringExtra("gambar");
         totalPoint = intent.getStringExtra("totalPoint");
         completeProfile = intent.getStringExtra("completeProfile");
-        filepath = intent.getStringExtra("filepath");
-        if (filepath.equals("")) {
-            uriFilepath = null;
+        onVerify = intent.getStringExtra("onverify");
+
+        if (intent.getStringExtra("filepath") != null) {
+            filepath = intent.getStringExtra("filepath");
+
+            if (filepath.equals("")) {
+                uriFilepath = null;
+            } else {
+                uriFilepath = Uri.parse(filepath);
+            }
         } else {
-            uriFilepath = Uri.parse(filepath);
+            uriFilepath = null;
         }
+
+
 
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -211,6 +221,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     }
 
     public void verifyOtp(String token, String number) {
+        displayLoader();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 "http://admin.authenticguards.com/api/Verifysms?token=" + token + "&appid=003&code=" + number, null, new Response.Listener<JSONObject>() {
             @Override
@@ -219,9 +230,12 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     valid = response.getString("status");
                     Log.d("isvalid", "onResponse: " + valid + response.getString("status"));
                     if (valid.equals("Success")) {
-                        setData();
+                        pDialog.dismiss();
+                        setData(numberPhone, emailnya, nameUser, gender, age, address);
                     } else {
+                        pDialog.dismiss();
                         Toast.makeText(VerifyPhoneActivity.this, "Wrong Code", Toast.LENGTH_SHORT).show();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -241,33 +255,40 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     }
 
 
-    public void setData() {
+    public void setData(final String numberString, final String emailString, final String nameString, final String genderString, final String ageString, final String addressString) {
         final StorageReference ref = storageReference.child("users/" + UUID.randomUUID().toString());
+        final String stringNumber = numberString;
+        final String stringEmail = emailString;
+        final String stringName = nameString;
+        final String stringGender = genderString;
+        final String stringAge = ageString;
+        final String stringAddress = addressString;
         if (uriFilepath == null) {
             final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            final HashMap<String, Object> user = new HashMap<>();
-            name = currentUser.getDisplayName();
             final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+            displayLoader();
             dbf.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (completeProfile.equals("false")) {
-                        if (number.equals("") && emailnya.equals("") && age.equals("") && name.equals("")
-                                && address.equals("")) {
+                        if (!number.equals("") && !emailnya.equals("") && !age.equals("") && !nameUser.equals("")
+                                && !address.equals("")) {
                             User us = dataSnapshot.getValue(User.class);
-                            user.put("numberPhone", number);
-                            user.put("idEmail", emailnya);
-                            user.put("idPhone", number);
-                            user.put("name", name);
-                            user.put("email", emailnya);
-                            user.put("gender", gender);
-                            user.put("age", age);
-                            user.put("address", address);
-                            user.put("gambar", us.getGambar());
+                            HashMap<String, Object> user = new HashMap<>();
+                            String url = us.getGambar();
+                            user.put("numberPhone", stringNumber);
+                            user.put("name", stringName);
+                            user.put("email", stringEmail);
+                            user.put("gender", stringGender);
+                            user.put("age", stringAge);
+                            user.put("address", stringAddress);
+                            user.put("gambar", url);
                             int reward = Integer.parseInt(totalPoint) + 5000;
                             user.put("totalPoint", Integer.toString(reward));
-                            user.put("completeProfile", true);
+                            user.put("completeProfile", "true");
+                            user.put("onverifiednumber", "true");
                             dbf.setValue(user);
+                            pDialog.dismiss();
                             //intent reward
                             View viewthen = getLayoutInflater().inflate(R.layout.fullscreen_popup, null);
                             dialog = new Dialog(VerifyPhoneActivity.this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
@@ -284,36 +305,40 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                             dialog.show();
                         } else {
                             User us = dataSnapshot.getValue(User.class);
-                            user.put("numberPhone", number);
-                            user.put("idEmail", emailnya);
-                            user.put("idPhone", number);
-                            user.put("name", name);
-                            user.put("email", emailnya);
-                            user.put("gender", gender);
-                            user.put("age", age);
-                            user.put("address", address);
-                            user.put("gambar", us.getGambar());
+                            HashMap<String, Object> user = new HashMap<>();
+                            String url = us.getGambar();
+                            user.put("numberPhone", numberString);
+                            user.put("name", nameString);
+                            user.put("email", emailString);
+                            user.put("gender", genderString);
+                            user.put("age", ageString);
+                            user.put("address", addressString);
+                            user.put("gambar", url);
                             user.put("totalPoint", totalPoint);
-                            user.put("completeProfile", true);
+                            user.put("completeProfile", "false");
+                            user.put("onverifiednumber", "true");
                             dbf.setValue(user);
+                            pDialog.dismiss();
                             Toast.makeText(VerifyPhoneActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
                             startActivity(intent);
                         }
                     } else if (completeProfile.equals("true")) {
                         User us = dataSnapshot.getValue(User.class);
-                        user.put("numberPhone", number);
-                        user.put("idEmail", emailnya);
-                        user.put("idPhone", number);
-                        user.put("name", name);
-                        user.put("email", emailnya);
-                        user.put("gender", gender);
-                        user.put("age", age);
-                        user.put("address", address);
-                        user.put("gambar", us.getGambar());
+                        HashMap<String, Object> user = new HashMap<>();
+                        String url = us.getGambar();
+                        user.put("numberPhone", numberString);
+                        user.put("name", nameString);
+                        user.put("email", emailString);
+                        user.put("gender", genderString);
+                        user.put("age", ageString);
+                        user.put("address", addressString);
+                        user.put("gambar", url);
                         user.put("totalPoint", totalPoint);
-                        user.put("completeProfile", true);
+                        user.put("completeProfile", "true");
+                        user.put("onverifiednumber", "true");
                         dbf.setValue(user);
+                        pDialog.dismiss();
                         Toast.makeText(VerifyPhoneActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
                         startActivity(intent);
@@ -326,7 +351,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                 }
             });
         } else {
-            final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+            final ProgressDialog progressDialog = new ProgressDialog(VerifyPhoneActivity.this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
             UploadTask uploadTask = ref.putFile(uriFilepath);
@@ -343,24 +368,24 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     User usr = dataSnapshot.getValue(User.class);
-                                    final HashMap<String, Object> user = new HashMap<>();
                                     if (completeProfile.equals(false)) {
-                                        if (number.equals("") && emailnya.equals("") && age.equals("") && name.equals("")
+                                        if (number.equals("") && emailnya.equals("") && age.equals("") && nameUser.equals("")
                                                 && address.equals("")) {
                                             User us = dataSnapshot.getValue(User.class);
-                                            user.put("numberPhone", number);
-                                            user.put("idEmail", emailnya);
-                                            user.put("idPhone", number);
-                                            user.put("name", name);
-                                            user.put("email", emailnya);
-                                            user.put("gender", gender);
-                                            user.put("age", age);
-                                            user.put("address", address);
+                                            HashMap<String, Object> user = new HashMap<>();
+                                            user.put("numberPhone", numberString);
+                                            user.put("name", nameString);
+                                            user.put("email", emailString);
+                                            user.put("gender", genderString);
+                                            user.put("age", ageString);
+                                            user.put("address", addressString);
                                             user.put("gambar", urlGambar);
                                             int reward = Integer.parseInt(totalPoint) + 5000;
                                             user.put("totalPoint", Integer.toString(reward));
                                             user.put("completeProfile", true);
+                                            user.put("onverifiednumber", "true");
                                             dbf.setValue(user);
+                                            pDialog.dismiss();
                                             //intent reward
                                             View viewthen = getLayoutInflater().inflate(R.layout.fullscreen_popup, null);
                                             dialog = new Dialog(VerifyPhoneActivity.this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
@@ -377,36 +402,38 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                             dialog.show();
                                         } else {
                                             User us = dataSnapshot.getValue(User.class);
-                                            user.put("numberPhone", number);
-                                            user.put("idEmail", emailnya);
-                                            user.put("idPhone", number);
-                                            user.put("name", name);
-                                            user.put("email", emailnya);
-                                            user.put("gender", gender);
-                                            user.put("age", age);
-                                            user.put("address", address);
+                                            HashMap<String, Object> user = new HashMap<>();
+                                            user.put("numberPhone", numberString);
+                                            user.put("name", nameString);
+                                            user.put("email", emailString);
+                                            user.put("gender", genderString);
+                                            user.put("age", ageString);
+                                            user.put("address", addressString);
                                             user.put("gambar", urlGambar);
                                             user.put("totalPoint", totalPoint);
-                                            user.put("completeProfile", true);
+                                            user.put("completeProfile", "true");
+                                            user.put("onverifiednumber", "true");
                                             dbf.setValue(user);
+                                            pDialog.dismiss();
                                             Toast.makeText(VerifyPhoneActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
                                             startActivity(intent);
                                         }
                                     } else if (completeProfile.equals("true")) {
                                         User us = dataSnapshot.getValue(User.class);
-                                        user.put("numberPhone", number);
-                                        user.put("idEmail", emailnya);
-                                        user.put("idPhone", number);
-                                        user.put("name", name);
-                                        user.put("email", emailnya);
-                                        user.put("gender", gender);
-                                        user.put("age", age);
-                                        user.put("address", address);
+                                        HashMap<String, Object> user = new HashMap<>();
+                                        user.put("numberPhone", numberString);
+                                        user.put("name", nameString);
+                                        user.put("email", emailString);
+                                        user.put("gender", genderString);
+                                        user.put("age", ageString);
+                                        user.put("address", addressString);
                                         user.put("gambar", urlGambar);
                                         user.put("totalPoint", totalPoint);
-                                        user.put("completeProfile", true);
+                                        user.put("completeProfile", "true");
+                                        user.put("onverifiednumber", "true");
                                         dbf.setValue(user);
+                                        pDialog.dismiss();
                                         Toast.makeText(VerifyPhoneActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(VerifyPhoneActivity.this, MasterActivity.class);
                                         startActivity(intent);
@@ -441,7 +468,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     private void displayLoader() {
         pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Create Account...");
+        pDialog.setMessage("Menunggu Verifikasi...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         pDialog.show();

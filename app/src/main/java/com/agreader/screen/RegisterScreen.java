@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.agreader.R;
 import com.agreader.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -88,7 +90,7 @@ public class RegisterScreen extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    pDialog.dismiss();
+
                                     if (!task.isSuccessful()) {
                                         Toast.makeText(RegisterScreen.this, "Authentication failed : Account already exist", Toast.LENGTH_SHORT).show();
                                     } else {
@@ -115,26 +117,37 @@ public class RegisterScreen extends AppCompatActivity {
                                                 user.put("gambar",gambar);
                                                 user.put("totalPoint","10000");
                                                 user.put("completeProfile","false");
+                                                user.put("onverifiednumber", "false");
 
-                                                dbf.setValue(user);
-                                                Intent pindah = new Intent(RegisterScreen.this, VerifyPhoneActivity.class);
-                                                pindah.putExtra("number", textNumber.getText().toString());
-                                                pindah.putExtra("name", currentUser);
-                                                pindah.putExtra("emailnya", textNumber.getText().toString());
-                                                pindah.putExtra("gender", "");
-                                                pindah.putExtra("age", "");
-                                                pindah.putExtra("address", "");
-                                                pindah.putExtra("gambar", gambar);
-                                                pindah.putExtra("totalPoint", "10000");
-                                                pindah.putExtra("filepath", "");
-                                                pindah.putExtra("completeProfile", "false");
 
-                                                startActivity(pindah);
+                                                assert currentUser != null;
+                                                if (!currentUser.isEmailVerified()) {
+                                                    currentUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            dbf.setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    Toast.makeText(RegisterScreen.this, "Berhasil dismpan", Toast.LENGTH_SHORT).show();
+                                                                    Intent pindah = new Intent(RegisterScreen.this, LoginActivity.class);
+                                                                    pindah.putExtra("titleName", textName.getText().toString());
+                                                                    pDialog.dismiss();
+                                                                    startActivity(pindah);
+                                                                }
+                                                            });
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toast.makeText(RegisterScreen.this, "Error : " + e.toString(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
                                             }
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                                Toast.makeText(RegisterScreen.this, "Can't send email verification", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                                                     }

@@ -1,8 +1,18 @@
 package com.agreader.screen;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,6 +36,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,20 +52,27 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.agreader.screen.ClaimProductActivity.isLocationEnabled;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class ListAuthenticStoreActivity extends AppCompatActivity {
+public class ListAuthenticStoreActivity extends AppCompatActivity implements LocationListener {
 
     private FirebaseUser firebaseUser;
     private RecyclerView recyclerView;
     private String token="", token2="";
     private ListStoreAdapter listStoreAdapter;
     private ProgressBar pDialog;
+    private double longitude, latitude;
     private ArrayList<ListStore> modelArrayList;
     String idbrand = "",
             namebrand = "",
             imagebrand = "",
             addressbrand = "";
+
+    private FusedLocationProviderClient client;
+    public LocationManager locationManager;
+    public Criteria criteria;
+    public String bestProvider;
 
     private static final String TAG = "FindingFriend";
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -88,7 +106,7 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
 
         carouselView.setImageListener(imageListener);
 
-        getBrand(token);
+        getLocation();
 
         listStoreAdapter = new ListStoreAdapter(this, modelArrayList, new CustomItemClickListener() {
             @Override
@@ -121,8 +139,9 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
         }
     };
 
-    private void getBrand(String token) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/locator_?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+    private void getBrand(String token, double latitudeString, double longitudeString) {
+        modelArrayList.clear();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/locator_?token=" + token + "&appid=003&lat=" + latitudeString + "&lon=" + longitudeString, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -171,7 +190,76 @@ public class ListAuthenticStoreActivity extends AppCompatActivity {
         return false;
     }
 
+    protected void getLocation() {
+        if (isLocationEnabled(ListAuthenticStoreActivity.this)) {
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            criteria = new Criteria();
+            bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+
+            //You can still do this if you like, you might get lucky:
+            if (ActivityCompat.checkSelfPermission(ListAuthenticStoreActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ListAuthenticStoreActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(ListAuthenticStoreActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                return;
+            } else {
+            }
+            // Write you code here if permission already given.
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            if (location != null) {
+                Log.e("TAG", "GPS is on");
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                getBrand(token, latitude, longitude);
+                Log.d("cobacoba", "getLocation: " + latitude + " dan " + longitude);
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+        }
+        getLocation();
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
 
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
 }

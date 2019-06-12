@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
-    private String idEmail,idPhone,name, email, numberPhone, gender, age, address, gambar,totalPoint,completeProfile;
+    private String idEmail, idPhone, name, email, numberPhone, gender, age, address, gambar, totalPoint, completeProfile, onverifiednumber;
 
     public User() {
     }
@@ -24,6 +24,14 @@ public class User implements Serializable {
         this.gambar = gambar;
         this.totalPoint = totalPoint;
         this.completeProfile = completeProfile;
+    }
+
+    public String getOnverifiednumber() {
+        return onverifiednumber;
+    }
+
+    public void setOnverifiednumber(String onverifiednumber) {
+        this.onverifiednumber = onverifiednumber;
     }
 
     public String  getTotalPoint() {
