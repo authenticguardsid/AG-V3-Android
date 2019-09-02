@@ -112,7 +112,7 @@ public class SliderActivity extends AppCompatActivity {
     }
 
     private void sendToHome(){
-        Intent intent = new Intent(SliderActivity.this, LoginScreenActivity.class);
+        Intent intent = new Intent(SliderActivity.this, MasterActivity.class);
         startActivity(intent);
         finish();
     }
@@ -141,7 +141,7 @@ public class SliderActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-        startActivity(new Intent(SliderActivity.this, LoginScreenActivity.class));
+        startActivity(new Intent(SliderActivity.this, MasterActivity.class));
         finish();
     }
 

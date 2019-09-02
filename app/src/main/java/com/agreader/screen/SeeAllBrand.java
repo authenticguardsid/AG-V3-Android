@@ -100,7 +100,7 @@ public class SeeAllBrand extends AppCompatActivity {
     }
 
     private void getBrand() {
-        String url = "http://admin.authenticguards.com/api/feature?appid=003";
+        String url = "https://admin.authenticguards.com/api/feature?appid=003";
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -121,7 +121,7 @@ public class SeeAllBrand extends AppCompatActivity {
                         JSONObject brand = data.getJSONObject("client");
                         Log.d("tolil", "onResponse: " + brand.getString("name"));
                          String client = brand.getString("name");
-                        mData.add(new AllbrandModel(idString,"http://admin.authenticguards.com/storage/app/public/"+image+".jpg",name,address,client ));
+                        mData.add(new AllbrandModel(idString,"https://admin.authenticguards.com/storage/"+image+".jpg",name,address,client ));
                     }
                     mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {

@@ -77,6 +77,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private Button kirim;
     Uri uriFilepath;
     String valid;
+    String verify;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -160,7 +161,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     editText.setFocusable(true);
                     return;
                 } else {
-                    verifyOtp(token, editText.getText().toString());
+                    verifyOtp(token, editText.getText().toString(),verify);
                 }
             }
         });
@@ -206,10 +207,15 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     public void sentOtp(String token, String number) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                "http://admin.authenticguards.com/api/smsotp?token=" + token + "&appid=003&phone=" + number, null, new Response.Listener<JSONObject>() {
+                "https://admin.authenticguards.com/api/smsotp?token=" + token + "&appid=003&phone=" + number, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
+                try {
+                    verify = response.getString("verify");
+                    Log.d("onVerify", "onResponse: " + code);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -220,10 +226,10 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
     }
 
-    public void verifyOtp(String token, String number) {
+    public void verifyOtp(String token,String otp, String verify) {
         displayLoader();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                "http://admin.authenticguards.com/api/Verifysms?token=" + token + "&appid=003&code=" + number, null, new Response.Listener<JSONObject>() {
+                "https://admin.authenticguards.com/api/Verifysms?token="+token+"&appid=003&code="+otp+"&otp="+verify, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {

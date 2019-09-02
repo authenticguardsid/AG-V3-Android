@@ -3,6 +3,7 @@ package com.agreader.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,15 +14,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.agreader.R;
 import com.agreader.adapter.NotifAdapter;
+import com.agreader.base.BaseFragment;
 import com.agreader.model.Notif;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +44,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotifFragment extends Fragment {
+public class NotifFragment extends BaseFragment {
 
     private RecyclerView mList;
 
@@ -44,7 +52,8 @@ public class NotifFragment extends Fragment {
     private DividerItemDecoration dividerItemDecoration;
     private List<Notif> notifList;
     private RecyclerView.Adapter adapter;
-    private View emptyView;
+    private View emptyView,emptyViewLogin;
+    FirebaseUser firebaseUser;
 
     public NotifFragment() {
         // Required empty public constructor
@@ -54,24 +63,9 @@ public class NotifFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notif, container, false);
-        changeStatusBarColor();
 
-        mList = view.findViewById(R.id.recycler_notif);
-        emptyView = view.findViewById(R.id.empty_view_notif);
-
-        notifList = new ArrayList<>();
-        adapter = new NotifAdapter(getApplicationContext(), notifList, emptyView);
-
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);
-
-        getData();
+        setUpView(view);
+        generateView(view);
 
         return view;
     }
@@ -85,7 +79,7 @@ public class NotifFragment extends Fragment {
     }
 
     private void getData(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/notification/?appid=003", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/notification/?appid=003", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if(response.length() > 0){
@@ -99,7 +93,7 @@ public class NotifFragment extends Fragment {
                             notif.setId(data.getString("id"));
                             notif.setTitle(data.getString("title"));
                             notif.setMessage(data.getString("message"));
-                            notif.setImage("http://admin.authenticguards.com/storage/app/public/notif/"+data.getString("image")+".jpg");
+                            notif.setImage("https://admin.authenticguards.com/storage/app/public/notif/"+data.getString("image")+".jpg");
                             notif.setDate(data.getString("created_at"));
 
                             notifList.add(notif);
@@ -122,4 +116,45 @@ public class NotifFragment extends Fragment {
         Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
     }
 
+    @Override
+    public void setUpView(View view) {
+
+        mList = view.findViewById(R.id.recycler_notif);
+        emptyView = view.findViewById(R.id.empty_view_notif);
+
+        notifList = new ArrayList<>();
+        adapter = new NotifAdapter(getApplicationContext(), notifList, emptyView);
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(linearLayoutManager);
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setAdapter(adapter);
+
+        emptyViewLogin = (LinearLayout) view.findViewById(R.id.empty_view_login);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+    }
+
+    @Override
+    public void generateView(View view) {
+        changeStatusBarColor();
+        if(firebaseUser != null ){
+            getData();
+            emptyViewLogin.setVisibility(View.GONE);
+        }
+        else{
+            emptyViewLogin.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setupListener(View view) {
+
+    }
 }

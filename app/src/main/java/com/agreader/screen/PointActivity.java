@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,8 @@ public class PointActivity extends AppCompatActivity {
     private hadiahAdapter adapter;
     private ArrayList<Hadiah> hadiahs;
     private DatabaseReference dbf;
+    LinearLayout emptyView,emptyViewLogin;
+    RelativeLayout goLogin,goPoint;
 
 
     String token = "";
@@ -76,20 +79,39 @@ public class PointActivity extends AppCompatActivity {
 //        namaProfile = (TextView)findViewById(R.id.namaPoint);
         totalPoints = (TextView)findViewById(R.id.totalPoints);
         peringkat = (RelativeLayout)findViewById(R.id.peringkat);
+        emptyView = (LinearLayout)findViewById(R.id.emptyView);
+        emptyViewLogin = (LinearLayout) findViewById(R.id.empty_view_login);
+        goLogin = (RelativeLayout) findViewById(R.id.go_login);
+        goPoint = (RelativeLayout) findViewById(R.id.go_point);
 
 
 
-        currentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+
+        if(currentUser != null){
+            goLogin.setVisibility(View.GONE);
+            emptyViewLogin.setVisibility(View.GONE);
+            currentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                 @Override
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     token = task.getResult().getToken();
                     DataRequest.setUser(getApplicationContext(),token);
                 }
             });
-
-        getDataPromo(token);
-
-        loadData();
+            getDataPromo(token);
+            loadData();
+        }else {
+            goLogin.setVisibility(View.VISIBLE);
+            goPoint.setVisibility(View.GONE);
+            goLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(PointActivity.this,LoginScreenActivity.class);
+                    startActivity(intent);
+                }
+            });
+            peringkat.setVisibility(View.GONE);
+            emptyViewLogin.setVisibility(View.VISIBLE);
+        }
 
 
         peringkat.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +125,7 @@ public class PointActivity extends AppCompatActivity {
     }
 
     private void getDataPromo(String token){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://admin.authenticguards.com/api/promo_?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "https://admin.authenticguards.com/api/promo_?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
@@ -122,15 +144,16 @@ public class PointActivity extends AppCompatActivity {
                             final String termC = data.getString("termCondition");
                             final String tanggal = time.substring(0,10);
                             final String harga = price.substring(6,9);
-                            finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                            finalImage = "https://admin.authenticguards.com/storage/" + image + ".jpg";
                             hadiahs.add(new Hadiah(idx,finalImage,title,harga,"5",tanggal,desc,termC));
-
+                            if(hadiahs.size() == 0 ){
+                                emptyView.setVisibility(View.VISIBLE);
+                            }
                             recyclerView.setHasFixedSize(true);
                             recyclerView.setNestedScrollingEnabled(false);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(PointActivity.this, LinearLayoutManager.VERTICAL, true);
                             layoutManager.setStackFromEnd(true);
                             recyclerView.setLayoutManager(layoutManager);
-
                             adapter = new hadiahAdapter(PointActivity.this, hadiahs);
                             recyclerView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();

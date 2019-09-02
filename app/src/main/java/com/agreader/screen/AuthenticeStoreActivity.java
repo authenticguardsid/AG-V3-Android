@@ -295,7 +295,7 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
 
     public void displaymarker(String id, final double culat, final double culong) {
         Log.d(TAG, "displaymarker: disni");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/locatorshow_/" + id + "?appid=003", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/locatorshow_/" + id + "?appid=003", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 JSONObject jsonObject = null;
@@ -308,7 +308,7 @@ public class AuthenticeStoreActivity extends FragmentActivity implements OnMapRe
                     String waStore = jsonObject.getString("whatsapp");
                     String callStore = jsonObject.getString("csPhone");
                     String address = jsonObject.getString("addressOfficeOrStore");
-                    String image = "http://admin.authenticguards.com/storage/app/public/" + jsonObject.getString("image") + ".jpg";
+                    String image = "https://admin.authenticguards.com/storage/" + jsonObject.getString("image") + ".jpg";
                     ArrayList<MarkerData> markers = new ArrayList<MarkerData>();
                     Log.d(TAG, "markerLOOLLL " + name + id + latitude + longitude + image);
                     markers.clear();

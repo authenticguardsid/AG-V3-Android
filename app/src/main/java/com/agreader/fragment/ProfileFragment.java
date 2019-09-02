@@ -23,6 +23,8 @@ import com.agreader.screen.EditProfileActivity;
 import com.agreader.R;
 import com.agreader.model.User;
 import com.agreader.screen.LoginScreenActivity;
+import com.agreader.screen.MasterActivity;
+import com.agreader.utils.DataRequest;
 import com.agreader.utils.TermEndService;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -70,7 +72,7 @@ public class ProfileFragment extends Fragment {
     TextView editProfile,name,email,phone,iconTerm,iconPrivacy;
     ImageView profilePicture;
 
-    RelativeLayout pmenu1,pmenu2,pmenu3,pmenu4,pmenu5;
+    RelativeLayout pmenu1,pmenu2,pmenu3,pmenu4,pmenu5,box1;
 
     private GoogleApiClient googleApiClient;
     private GoogleApiClient mGoogleSignInClient;
@@ -100,42 +102,79 @@ public class ProfileFragment extends Fragment {
         pmenu3 = v.findViewById(R.id.pmenu3);
         pmenu4 = v.findViewById(R.id.pmenu4);
         pmenu5 = v.findViewById(R.id.pmenu5);
+        box1 = v.findViewById(R.id.boxAccount1);
+
 
         profilePicture = v.findViewById(R.id.imageProfile);
+
+        logout = (Button)v.findViewById(R.id.logoutBtn);
 
 
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
-        dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User us = dataSnapshot.getValue(User.class);
-                if (us.getName().isEmpty()){
-                    name.setText("NAME");
-                }else {
-                    name.setText(us.getName());
+        if(currentUser != null ){
+            DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+            dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User us = dataSnapshot.getValue(User.class);
+                    if (us.getName().isEmpty()){
+                        name.setText("NAME");
+                    }else {
+                        name.setText(us.getName());
+                    }
+                    if (us.getEmail().isEmpty()){
+                        email.setText("EMAIL");
+                    }else {
+                        email.setText(us.getEmail());
+                    }
+
+                    if (us.getNumberPhone().isEmpty()){
+                        phone.setText("PHONE");
+                    }else {
+                        phone.setText(us.getNumberPhone());
+                    }
+                    Picasso.get().load(us.getGambar()).into(profilePicture);
+
                 }
-                if (us.getEmail().isEmpty()){
-                    email.setText("EMAIL");
-                }else {
-                    email.setText(us.getEmail());
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
+            });
 
-                if (us.getNumberPhone().isEmpty()){
-                    phone.setText("PHONE");
-                }else {
-                    phone.setText(us.getNumberPhone());
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseAuth.getInstance().signOut();
+                    getActivity().finish();
+                    if (mGoogleSignInClient != null){
+                        Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+
+                            }
+                        });
+                    }
+                    DataRequest.setUser(getContext(), "");
+                    startActivity(new Intent(getActivity(), MasterActivity.class));
                 }
-                Picasso.get().load(us.getGambar()).into(profilePicture);
+            });
 
-            }
+        }
+        else {
+            box1.setVisibility(View.GONE);
+            logout.setText("LOGIN");
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(),LoginScreenActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         pmenu1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +239,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        logout = (Button)v.findViewById(R.id.logoutBtn);
 
         editProfile = (TextView)v.findViewById(R.id.textEditProfile);
 
@@ -228,23 +266,6 @@ public class ProfileFragment extends Fragment {
                     .build();
         }
 
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                getActivity().finish();
-                if (mGoogleSignInClient != null){
-                    Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(@NonNull Status status) {
-
-                        }
-                    });
-                }
-                startActivity(new Intent(getActivity(), LoginScreenActivity.class));
-            }
-        });
 
 
         //Facebook

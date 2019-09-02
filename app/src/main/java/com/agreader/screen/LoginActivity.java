@@ -151,6 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                                                         intent.putExtra("completeProfile", user.getCompleteProfile());
                                                         intent.putExtra("onverify", user.getOnverifiednumber());
                                                         startActivity(intent);
+                                                        sendToHome();
                                                     } else {
                                                         sendToHome();
                                                     }

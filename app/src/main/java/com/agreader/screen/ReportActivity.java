@@ -68,7 +68,7 @@ public class ReportActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         token = task.getResult().getToken();
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/getuser?token=" + token + "&appid=002", null, new Response.Listener<JSONObject>() {
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/getuser?token=" + token + "&appid=002", null, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.e("token-firebase", "token-firebase : " + token);
@@ -105,7 +105,7 @@ public class ReportActivity extends AppCompatActivity {
             Toast.makeText(this, "All fields are required.", Toast.LENGTH_SHORT).show();
         } else {
             RequestQueue queue = Volley.newRequestQueue(ReportActivity.this);
-            StringRequest postRequest = new StringRequest(Request.Method.POST, "http://admin.authenticguards.com/api/report?token="+token+"&appid=003", new Response.Listener<String>() {
+            StringRequest postRequest = new StringRequest(Request.Method.POST, "https://admin.authenticguards.com/api/report?token="+token+"&appid=003", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.d("Response", "response berhasil : "+response);

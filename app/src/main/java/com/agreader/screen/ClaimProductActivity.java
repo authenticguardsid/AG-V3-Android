@@ -105,7 +105,7 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
                     }
                 });
         Log.d("ClaimActivity", "onCompleteBaru: " + token + code);
-        urlPost = "http://admin.authenticguards.com/api/claim_/" + code + "?token=" + token + "&appid=003";
+        urlPost = "https://admin.authenticguards.com/api/claim_/" + code + "?token=" + token + "&appid=003";
         Log.d("ClaimActivity", "new: " + urlPost);
         btnShare = (Button) findViewById(R.id.btn_share);
         imagePost = (ImageView) findViewById(R.id.img_post);
@@ -195,7 +195,7 @@ public class ClaimProductActivity extends AppCompatActivity implements LocationL
         Log.d("TES", "uploadImage:  " + code + token);
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest
                 (com.android.volley.Request.Method.POST,
-                        "http://admin.authenticguards.com/api/claim_/" + code + "?token=" + token + "&appid=003"
+                        "https://admin.authenticguards.com/api/claim_/" + code + "?token=" + token + "&appid=003"
                         , new Response.Listener<NetworkResponse>() {
 
                     @Override

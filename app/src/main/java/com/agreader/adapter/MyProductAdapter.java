@@ -20,14 +20,12 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
 
     private Context context;
     private ArrayList<ProductModel> mData;
-    private ArrayList<ProductModel> listData;
     private CustomItemClickListener listener;
 
-    public MyProductAdapter(Context context, ArrayList<ProductModel> mData, ArrayList<ProductModel> listData, CustomItemClickListener listener) {
+    public MyProductAdapter(Context context, ArrayList<ProductModel> mData , CustomItemClickListener listener) {
         this.context = context;
         this.mData = mData;
         this.listener = listener;
-        this.listData = listData;
     }
 
 

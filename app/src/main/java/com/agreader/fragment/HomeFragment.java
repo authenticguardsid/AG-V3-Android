@@ -4,6 +4,7 @@ package com.agreader.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -23,11 +24,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.agreader.R;
 import com.agreader.adapter.BrandAdapter;
 import com.agreader.adapter.NewsAdapter;
 import com.agreader.adapter.PromoAdapter;
 import com.agreader.adapter.hadiahAdapter;
+import com.agreader.base.BaseFragment;
 import com.agreader.model.Brand;
 import com.agreader.model.Hadiah;
 import com.agreader.model.NewsModel;
@@ -89,36 +93,52 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     View rootView;
-    Button mButtonAuthenticStore, mButtonMoreInfoStories, mButtonGoProfile, mButtonHighlight;
-    TextView mButtonSeeAllStories, mButtonSeeAllPromo, mButtonSeeAllBrand;
+
+    Button mButtonAuthenticStore,
+           mButtonMoreInfoStories,
+           mButtonGoProfile,
+           mButtonHighlight;
+
+    TextView mButtonSeeAllStories,
+             mButtonSeeAllPromo,
+             mButtonSeeAllBrand;
+
+    FirebaseAuth mFirebaseAuth;
     FirebaseUser firebaseUser;
-    String token;
+
+    String token,
+           finalImage;
+
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    String finalImage;
+
     List<String> imageUrls = new ArrayList<String>();
-    CardView aa;
-    FirebaseUser currentUser;
-    private ArrayList<String> mDataId;
-    private ArrayList<String> mDataIdPromo;
+
+    CardView completeProfileCard;
+
+    private ArrayList<String> mDataId,
+                              mDataIdPromo;
+
     private BrandAdapter mAdapter;
     private PromoAdapter mAdapterPromo;
+
     private ActionMode mActionMode;
     private ActionMode mActionPromo;
+
     RecyclerView recyclerView, recylerPromo;
+
     private ArrayList<Brand> mData = new ArrayList<>();
     private ArrayList<Promo> mDataPromo = new ArrayList<>();
-    ProgressBar mProgressBarPromo, mProgressBarBrand;
-    String JSON;
+
+    ProgressBar mProgressBarPromo,
+                mProgressBarBrand;
 
     ShimmerFrameLayout mShimmerViewContainer;
 
-
     CarouselView carouselView;
     int[] sampleImages = {R.drawable.slider1, R.drawable.slider2, R.drawable.slider3, R.drawable.slider4};
-    private ImageView gambar1, gambar2, gambar3, gambar4, gambar5, gambar6;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -142,152 +162,38 @@ public class HomeFragment extends Fragment {
         // Inflate the layoutarraylist: for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         //fragment home see all AG Stories
-
-        aa = rootView.findViewById(R.id.cardProfile);
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        mProgressBarPromo = (ProgressBar) rootView.findViewById(R.id.progressPromo);
-        mProgressBarBrand = (ProgressBar) rootView.findViewById(R.id.progressBrand);
-        mShimmerViewContainer = (ShimmerFrameLayout) rootView.findViewById(R.id.shimmer_view_container);
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseUser.getIdToken(true)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                        token = task.getResult().getToken();
-                        Log.d("lol", "onCompleteBaru: " + token);
-                        String result = "";
-                        DataRequest.setUser(getContext(), token);
-                    }
-                });
-
-        carouselView = rootView.findViewById(R.id.slider);
-//        getDataSlider(token);
-        mButtonGoProfile = rootView.findViewById(R.id.goProfile);
-        mButtonGoProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), EditProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mButtonHighlight = (Button) rootView.findViewById(R.id.more_info_highlight);
-        mButtonHighlight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), HighLightScreen.class);
-                intent.putExtra("hasil", "0");
-                startActivity(intent);
-            }
-        });
-
-        mButtonSeeAllPromo = (TextView) rootView.findViewById(R.id.seeAllPromo);
-        mButtonSeeAllPromo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), PointActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        //more info AG Stories
-        mButtonMoreInfoStories = rootView.findViewById(R.id.more_info_ag_stories);
-        mButtonMoreInfoStories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), HighLightScreen.class);
-                intent.putExtra("hasil", "1");
-                startActivity(intent);
-            }
-        });
-
-        //home_section_1
-
-
-        //home_section_7
-        mButtonAuthenticStore = rootView.findViewById(R.id.more_info_authentic_store);
-        mButtonAuthenticStore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ListAuthenticStoreActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mButtonSeeAllBrand = rootView.findViewById(R.id.seeAllBrand);
-        mButtonSeeAllBrand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SeeAllBrand.class);
-                startActivity(intent);
-            }
-        });
-        //homoesection4
-        recylerPromo = (RecyclerView) rootView.findViewById(R.id.listPromo);
-        recylerPromo.setHasFixedSize(false);
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false);
-        recylerPromo.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int firstItemVisible = linearLayoutManager.findFirstVisibleItemPosition();
-                if (firstItemVisible != 0 && firstItemVisible % mDataPromo.size() == 0) {
-                    recyclerView.getLayoutManager().scrollToPosition(0);
-                }
-            }
-        });
-        recylerPromo.setLayoutManager(linearLayoutManager);
-
-        recylerPromo.setBackgroundColor(Color.parseColor("#ffffff"));
-        PagerSnapHelper snapHelper = new PagerSnapHelper();
-
-        snapHelper.attachToRecyclerView(recylerPromo);
-//        recylerPromo.addItemDecoration(new LinePagerIndicatorDecoration());
-//        autoScroll();
-        getPromo(token);
-
-
-        //home_section_8
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.list_brand);
-        recyclerView.setHasFixedSize(false);
-
-        //getBrand(JSON);
-
-
-        mAdapter = new BrandAdapter(getContext(), mData, mDataId,
-                new BrandAdapter.ClickHandler() {
-                    @Override
-                    public void onItemClick(int position) {
-                        if (mActionMode != null) {
-                            mAdapter.toggleSelection(mDataId.get(position));
-                            if (mAdapter.selectionCount() == 0)
-                                mActionMode.finish();
-                            else
-                                mActionMode.invalidate();
-                            return;
-                        }
-                        Brand pet = mData.get(position);
-                        Intent intent = new Intent(getApplicationContext(), FeaturedDetailActivity.class);
-                        intent.putExtra("id", pet.getId());
-                        intent.putExtra("name", pet.getName());
-                        intent.putExtra("image", pet.getImage());
-                        startActivity(intent);
-                    }
-                });
-
-        mAdapterPromo = new PromoAdapter(getContext(), mDataPromo, mDataId);
-        recyclerView.setAdapter(mAdapter);
-        recylerPromo.setAdapter(mAdapterPromo);
-//        autoScroll();
+        setUpView(rootView);
+        generateView(rootView);
         return rootView;
     }
 
-    private void getDataSlider(String token) {
+    private void completeProfileLayout(){
+        final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
+        dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("completeProfile").exists()) {
+                    String complete = dataSnapshot.child("completeProfile").getValue().toString();
+                    if (complete.equals("true")) {
+                        completeProfileCard.setVisibility(View.GONE);
+                    } else {
+                        completeProfileCard.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    completeProfileCard.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getDataSlider() {
         Log.d("1", "getDataSlider: ");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/slider_?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/slider_?&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -299,7 +205,7 @@ public class HomeFragment extends Fragment {
                     for (int i = 0; i < results.length(); i++) {
                         JSONObject data = results.getJSONObject(i);
                         String image = data.getString("image");
-                        finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                        finalImage = "https://admin.authenticguards.com/storage/" + image + ".jpg";
                         imageUrls.add(finalImage);
                     }
                     carouselView.setViewListener(viewListener);
@@ -319,43 +225,26 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
 
-        final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
-        dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("completeProfile").exists()) {
-                    String complete = dataSnapshot.child("completeProfile").getValue().toString();
-                    if (complete.equals("true")) {
-                        aa.setVisibility(View.GONE);
-                    } else {
-                        aa.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    aa.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @Override
     public void onResume() {
+
         super.onResume();
         mShimmerViewContainer.startShimmerAnimation();
+
         getBrand();
-        getDataSlider(token);
+        getPromo(token);
+        getDataSlider();
+
         carouselView.setViewListener(viewListener);
         carouselView.setPageCount(imageUrls.size());
     }
 
     private void getBrand() {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/feature?appid=003", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, " https://admin.authenticguards.com/api/feature?appid=003", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
@@ -370,7 +259,7 @@ public class HomeFragment extends Fragment {
                             String image = data.getString("image");
                             String name = data.getString("Name");
                             JSONObject brand = data.getJSONObject("client");
-                            mData.add(new Brand(idString, name, "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg"));
+                            mData.add(new Brand(idString, name, "https://admin.authenticguards.com/storage/" + image + ".jpg"));
                         }
                         mAdapter.notifyDataSetChanged();
                         mProgressBarBrand.setVisibility(View.GONE);
@@ -385,7 +274,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
     }
 
     @Override
@@ -394,29 +283,9 @@ public class HomeFragment extends Fragment {
         super.onPause();
     }
 
-    public boolean isServicesOK() {
-        Log.d("lol", "isServicesOK: checking google services version");
-
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
-
-        if (available == ConnectionResult.SUCCESS) {
-            //everything is fine and the user can make map requests
-            Log.d("", "isServicesOK: Google Play Services is working");
-            return true;
-        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
-            //an error occured but we can resolve it
-            Log.d("", "isServicesOK: an error occured but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
-            dialog.show();
-        } else {
-            Toast.makeText(getContext(), "You can't make map requests", Toast.LENGTH_SHORT).show();
-        }
-        return false;
-    }
-
 
     private void getPromo(String token) {
-        String url = "http://admin.authenticguards.com/api/promo_?token=" + token + "&appid=003";
+        String url = "https://admin.authenticguards.com/api/promo_?token=" + token + "&appid=003";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -437,7 +306,7 @@ public class HomeFragment extends Fragment {
                             final String termC = data.getString("termCondition");
                             final String tanggal = time.substring(0, 10);
                             final String harga = price.substring(6, 9);
-                            finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                            finalImage = "https://admin.authenticguards.com/storage/" + image + ".jpg";
                             mDataPromo.add(new Promo(idx, finalImage, title, harga, "5", tanggal, desc, termC));
                         }
                         mAdapterPromo.notifyDataSetChanged();
@@ -454,23 +323,157 @@ public class HomeFragment extends Fragment {
                 error.printStackTrace();
             }
         });
-        Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
     }
 
-    public void autoScroll() {
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            int count = 0;
 
+
+    @Override
+    public void setUpView(View view) {
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = mFirebaseAuth.getCurrentUser();
+
+        completeProfileCard = view.findViewById(R.id.cardProfile);
+
+        mProgressBarPromo = (ProgressBar) view.findViewById(R.id.progressPromo);
+        mProgressBarBrand = (ProgressBar) view.findViewById(R.id.progressBrand);
+
+        mShimmerViewContainer = (ShimmerFrameLayout) view.findViewById(R.id.shimmer_view_container);
+        carouselView = view.findViewById(R.id.slider);
+
+        mButtonGoProfile = rootView.findViewById(R.id.goProfile);
+        mButtonHighlight = (Button) rootView.findViewById(R.id.more_info_highlight);
+        mButtonSeeAllPromo = (TextView) rootView.findViewById(R.id.seeAllPromo);
+        mButtonMoreInfoStories = rootView.findViewById(R.id.more_info_ag_stories);
+        mButtonAuthenticStore = rootView.findViewById(R.id.more_info_authentic_store);
+        mButtonSeeAllBrand = rootView.findViewById(R.id.seeAllBrand);
+
+        recylerPromo = (RecyclerView) rootView.findViewById(R.id.listPromo);
+        recylerPromo.setHasFixedSize(false);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
+                LinearLayoutManager.HORIZONTAL, false);
+
+        recylerPromo.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void run() {
-                recylerPromo.smoothScrollToPosition(++count);
-                if (count == mData.size() - 1) {
-                    count = 0;
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstItemVisible = linearLayoutManager.findFirstVisibleItemPosition();
+                if (firstItemVisible != 0 && firstItemVisible % mDataPromo.size() == 0) {
+                    recyclerView.getLayoutManager().scrollToPosition(0);
                 }
-                handler.postDelayed(this, 1000);
             }
-        };
-        handler.postDelayed(runnable, 1000);
+        });
+        recylerPromo.setLayoutManager(linearLayoutManager);
+
+        recylerPromo.setBackgroundColor(Color.parseColor("#ffffff"));
+        PagerSnapHelper snapHelper = new PagerSnapHelper();
+
+        snapHelper.attachToRecyclerView(recylerPromo);
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.list_brand);
+        recyclerView.setHasFixedSize(false);
+
+    }
+
+    @Override
+    public void generateView(View view) {
+
+        if(firebaseUser != null ) {
+            firebaseUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            token = task.getResult().getToken();
+                            Log.d("lol", "onCompleteBaru: " + token);
+                            String result = "";
+                            DataRequest.setUser(getApplicationContext(), token);
+                        }
+                    });
+            completeProfileLayout();
+        }
+        mButtonGoProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mButtonHighlight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), HighLightScreen.class);
+                //for HighlightScreen
+                intent.putExtra("hasil", "0");
+                startActivity(intent);
+            }
+        });
+
+        mButtonSeeAllPromo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PointActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //more info AG Stories
+        mButtonMoreInfoStories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), HighLightScreen.class);
+                intent.putExtra("hasil", "1");
+                startActivity(intent);
+            }
+        });
+
+        mButtonAuthenticStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ListAuthenticStoreActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mButtonSeeAllBrand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SeeAllBrand.class);
+                startActivity(intent);
+            }
+        });
+
+        mAdapter = new BrandAdapter(getApplicationContext(), mData, mDataId,
+                new BrandAdapter.ClickHandler() {
+                    @Override
+                    public void onItemClick(int position) {
+                        if (mActionMode != null) {
+                            mAdapter.toggleSelection(mDataId.get(position));
+                            if (mAdapter.selectionCount() == 0)
+                                mActionMode.finish();
+                            else
+                                mActionMode.invalidate();
+                            return;
+                        }
+                        Brand pet = mData.get(position);
+                        Intent intent = new Intent(getApplicationContext(), FeaturedDetailActivity.class);
+                        intent.putExtra("id", pet.getId());
+                        intent.putExtra("name", pet.getName());
+                        intent.putExtra("image", pet.getImage());
+                        startActivity(intent);
+                    }
+                });
+
+        mAdapterPromo = new PromoAdapter(getApplicationContext(), mDataPromo, mDataId);
+        recyclerView.setAdapter(mAdapter);
+        recylerPromo.setAdapter(mAdapterPromo);
+
+    }
+
+    @Override
+    public void setupListener(View view) {
+
     }
 }

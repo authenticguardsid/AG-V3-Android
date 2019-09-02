@@ -7,8 +7,6 @@
     android:background="#e7e7e7"
     tools:context="com.agreader.screen.PointActivity">
 
-
-
     <!-- Body -->
     <RelativeLayout
         android:id="@+id/rellayout0"
@@ -32,6 +30,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/go_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -54,92 +53,190 @@
                 android:paddingTop="2dp"
                 android:text="0 pts" />
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/go_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LOGIN"
+                android:textStyle="bold"
+                android:textColor="@color/colorGold"/>
+
+        </RelativeLayout>
     </RelativeLayout>
 
-    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:background="#e7e7e7"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:background="#e7e7e7"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#e7e7e7">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#e7e7e7"
-                android:orientation="vertical">
-
-
-                <RelativeLayout
-                    android:id="@+id/peringkat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/colorWhite"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:id="@+id/iconLanguange"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignTop="@+id/imageView2"
-                        android:clickable="true"
-                        android:tint="@color/colorAccent"
-                        android:src="@drawable/ic_three_star_hotel" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="6dp"
-                        android:layout_toRightOf="@+id/iconLanguange"
-                        android:text="Peringkat"
-                        android:textColor="@color/colorGREY"
-                        android:textSize="14sp"
-                        android:textStyle="normal"
-                        android:typeface="normal" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/ic_right_arrow"
-                        android:layout_marginTop="5dp"
-                        android:id="@+id/imageView2" />
-
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1px"
-                        android:layout_below="@+id/iconLanguange"
-                        android:layout_marginLeft="55dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/colorGREY" />
-
-                </RelativeLayout>
+                android:background="#e7e7e7">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center">
+                    android:layout_height="match_parent"
+                    android:background="#e7e7e7"
+                    android:orientation="vertical">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycleViewPoint"
-                        android:background="#e7e7e7"
+
+                    <RelativeLayout
+                        android:id="@+id/peringkat"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/colorWhite"
+                        android:padding="10dp">
 
+                        <ImageView
+                            android:id="@+id/iconLanguange"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignTop="@+id/imageView2"
+                            android:clickable="true"
+                            android:tint="@color/colorAccent"
+                            android:src="@drawable/ic_three_star_hotel" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_toRightOf="@+id/iconLanguange"
+                            android:text="Peringkat"
+                            android:textColor="@color/colorGREY"
+                            android:textSize="14sp"
+                            android:textStyle="normal"
+                            android:typeface="normal" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/ic_right_arrow"
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/imageView2" />
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@+id/iconLanguange"
+                            android:layout_marginLeft="55dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colorGREY" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycleViewPoint"
+                            android:background="#e7e7e7"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/empty_view_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            >
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@mipmap/login"
+                android:tint="@color/colorGREY" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:typeface="sans"
+                android:text="Login first to enjoy more features"
+                android:textColor="@color/colorGREY"
+                android:textStyle="bold"
+                android:textSize="17dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@mipmap/promotions"
+                android:tint="@color/colorGREY" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="No promo"
+                android:textColor="@color/colorGREY"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.5"
+                android:text="Promo will appear here"
+                android:textColor="@color/colorGREY"
+                android:textSize="12dp"
+                android:typeface="sans"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </LinearLayout>

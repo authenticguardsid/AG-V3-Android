@@ -1,11 +1,17 @@
 package com.agreader.screen;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +30,10 @@ import com.android.volley.toolbox.Volley;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
@@ -42,28 +52,57 @@ public class QRCodeBaruActivity extends AppCompatActivity {
 
     private CodeScanner mCodeScanner;
     private FirebaseUser firebaseUser;
-
+    private static final int RC_PERMISSION = 10;
+    private boolean mPermissionGranted;
     final int REQUEST_CODE_CAMERA = 999;
 
-    String brand, company, address, phone, email, web;
-    String GENIUNE_CODE = "success";
-    String token = "", token2 = "";
+    private String name, address, phone, web, product;
+    private String GENIUNE_CODE = "success";
+    private String token = "";
+    private String rvalid;
+    private String history;
     String GCODE = "";
-    String rvalid;
-    ArrayList<String> arrayList = new ArrayList<String>();
-    String size,color,material,price,distributor,expiredDate,img;
+    String size,color,material,price,distributor,expiredDate,img,brand,company,email;
+    ProgressDialog pDialog;
 
-    private ProgressDialog pDialog;
+    private double longitude, latitude;
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_baru);
 
-        arrayList.add("");
+
         CodeScannerView scannerView = (CodeScannerView) findViewById(R.id.scanner_view);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert firebaseUser != null;
+        firebaseUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        token = Objects.requireNonNull(task.getResult()).getToken();
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/getuser?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.e("status-token", "berhasil terdaftar");
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        });
+                        Volley.newRequestQueue(QRCodeBaruActivity.this).add(jsonObjectRequest);
+                        Log.e("status-token", "token-firebase : "+token);
+                    }
+                });
+
 
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -74,66 +113,54 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                     public void run() {
                         ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
                         toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
-                        Toast.makeText(QRCodeBaruActivity.this, "Code : " + result.getText(), Toast.LENGTH_SHORT).show();
-                        token2 = DataRequest.getResultToken(getApplicationContext());
+                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+// Vibrate for 500 milliseconds
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                        } else {
+                            //deprecated in API 26
+                            v.vibrate(300);
+                        }
+                        displayLoader();
                         String resultcode = result.getText();
                         int length = resultcode.length();
                         Log.d("length", "run: " + length);
 //                        if (length <= 9) {
-                            validation_code(result.getText(), token2);
-//                        } else {
-//                            Intent intent = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
-//                            startActivity(intent);
-//                        }
+                        if(firebaseUser != null){
+                            validation_code(result.getText());
+                        }else{
+                            Intent intent = new Intent(QRCodeBaruActivity.this,LoginScreenActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 });
             }
         });
+
+        mCodeScanner.setErrorCallback(error -> runOnUiThread(
+                () -> Toast.makeText(QRCodeBaruActivity.this, getString(R.string.scanner_error, error), Toast.LENGTH_LONG).show()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                mPermissionGranted = false;
+                requestPermissions(new String[] {Manifest.permission.CAMERA}, RC_PERMISSION);
+            } else {
+                mPermissionGranted = true;
+            }
+        } else {
+            mPermissionGranted = true;
+        }
+
         scannerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mCodeScanner.startPreview();
             }
         });
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
-        }
-
-
-
-
-
+        getLocation();
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        mCodeScanner.startPreview();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mCodeScanner.releaseResources();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull String[] permissions, @android.support.annotation.NonNull int[] grantResults) {
-        if(requestCode == REQUEST_CODE_CAMERA){
-            if(grantResults.length <0 && grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getApplicationContext(), "You don't have permission to access camera!", Toast.LENGTH_SHORT).show();
-            }
-            return;
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-
-    public void validation_code(final String scancode, String tokenbaru) {
-        displayLoader();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/check_/" + scancode + "?token=" + tokenbaru + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+    public void validation_code(final String scancode){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/check_/"+scancode+"?token="+token+"&appid=003&loclang="+latitude+"&loclong="+longitude, null,  new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
@@ -154,7 +181,6 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                                 img = resultObject.getString("image");
                                 GCODE = jsonObject.getString("code");
                                 Log.i("scancode", scancode);
-                                Log.i("tokenFirebase", token2);
                                 JSONObject dataclient = jsonObject.getJSONObject("client");
                                 JSONObject data = jsonObject.getJSONObject("brand");
                                 brand = data.getString("Name");
@@ -183,12 +209,9 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                                 email = clientnew.getString("email");
                                 web = clientnew.getString("web");
                             }
+                        } catch (JSONException ignored) {
 
-                        } catch (JSONException e) {
-                            Log.e("erorpisan", "onResponse: " + e);
                         }
-                        Log.e("scancode", ""+scancode);
-                        Log.e("token-firebase", ""+token);
                     }
                     if (rvalid.equals(GENIUNE_CODE)) {
                         pDialog.dismiss();
@@ -211,72 +234,83 @@ public class QRCodeBaruActivity extends AppCompatActivity {
                         intent_geniune.putExtra("expiredDate",expiredDate);
                         intent_geniune.putExtra("image",img);
                         startActivity(intent_geniune);
-                    } else if (scancode.equals("AG-PS1CW9")) {
-                        Intent intent = new Intent(QRCodeBaruActivity.this, Certificate.class);
-                        intent.putExtra("Code", scancode);
-                        intent.putExtra("Name", "Muhamad Taufiq Ramadhan (6706162106)");
-                        intent.putExtra("job", "Android Developer");
-                        intent.putExtra("company", "PT Authentikasi Garda Teknologi");
-                        intent.putExtra("instance", "Telkom University");
-                        intent.putExtra("in", "2 November 2018");
-                        intent.putExtra("out", "2 Februari 2019");
-                        intent.putExtra("nilai", "Sangat Baik (A)");
-                        startActivity(intent);
-                    } else if (scancode.equals("AG-U3NBCF")) {
-                        Intent intent = new Intent(QRCodeBaruActivity.this, Certificate.class);
-                        intent.putExtra("Code", scancode);
-                        intent.putExtra("Name", "Rahmad Satria Kurniawan (6706162127)");
-                        intent.putExtra("job", "Android Developer");
-                        intent.putExtra("company", "PT Authentikasi Garda Teknologi");
-                        intent.putExtra("instance", "Telkom University");
-                        intent.putExtra("in", "22 November 2018");
-                        intent.putExtra("out", "22 Februari 2019");
-                        intent.putExtra("nilai", "Sangat Baik (A)");
-                        startActivity(intent);
-                    } else if (scancode.equals("AG-F0OIEQ")) {
-                        Intent intent = new Intent(QRCodeBaruActivity.this, Certificate.class);
-                        intent.putExtra("Code", scancode);
-                        intent.putExtra("Name", "Yudhistira Caraka (6706164022)");
-                        intent.putExtra("job", "Android Developer");
-                        intent.putExtra("instance", "Telkom University");
-                        intent.putExtra("in", "22 November 2018");
-                        intent.putExtra("out", "22 Februari 2019");
-                        intent.putExtra("company", "PT Authentikasi Garda Teknologi");
-                        intent.putExtra("nilai", "Baik (B)");
-                        startActivity(intent);
-                    } else if (scancode.equals("AG-019BCJ")) {
-                        Intent intent = new Intent(QRCodeBaruActivity.this, Certificate.class);
-                        intent.putExtra("Code", scancode);
-                        intent.putExtra("Name", "Ficky Ikhsan Sujana (201503024)");
-                        intent.putExtra("job", "Business Developmet");
-                        intent.putExtra("instance", "Unisadhuguna Business School");
-                        intent.putExtra("in", "2 Februari 2018");
-                        intent.putExtra("out", "5 Mei 2019");
-                        intent.putExtra("company", "PT Authentikasi Garda Teknologi");
-                        intent.putExtra("nilai", "Sangat Baik (A)");
-                        startActivity(intent);
                     } else {
                         pDialog.dismiss();
                         Intent intent_fake = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
                         startActivity(intent_fake);
+//                        finish();
                     }
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                Toast.makeText(QRCodeBaruActivity.this, "Wrong Code, Check your connection", Toast.LENGTH_SHORT).show();
+                Intent intent_fake = new Intent(QRCodeBaruActivity.this, UnverifiedProductActivity.class);
+                startActivity(intent_fake);
+//                finish();
             }
         });
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
+    protected void getLocation() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+        }
+
+        FusedLocationProviderClient mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocation.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    Log.d("lol", "latitude"+latitude+"longitude"+longitude);
+                }
+            }
+        });
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mPermissionGranted) {
+            mCodeScanner.startPreview();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        mCodeScanner.releaseResources();
+        super.onPause();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == RC_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mPermissionGranted = true;
+                mCodeScanner.startPreview();
+            } else {
+                mPermissionGranted = false;
+            }
+        }
+    }
     private void displayLoader() {
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Code Verification...");
+        pDialog = new ProgressDialog(QRCodeBaruActivity.this);
+        pDialog.setMessage("Scanning...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         pDialog.show();
     }
+
 
 }

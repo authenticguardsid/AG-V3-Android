@@ -16,9 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agreader.R;
 import com.agreader.adapter.MyProductAdapter;
+import com.agreader.base.BaseFragment;
 import com.agreader.model.ProductModel;
 import com.agreader.screen.MyProductDetail;
 import com.agreader.utils.CustomItemClickListener;
@@ -45,28 +47,23 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductFragment extends Fragment {
+public class ProductFragment extends BaseFragment {
 
     FirebaseUser firebaseUser;
-    View progress;
-    private LinearLayout emptyView;
+    private LinearLayout emptyView,emptyViewLogin;
     View rootView;
-    private DatabaseReference database;
     private ArrayList<ProductModel> mData;
-    private ArrayList<ProductModel> listProduct;
     private MyProductAdapter mAdapter;
     private ActionMode mActionMode;
     private String token = "", finalImage = "", name_product = "", name_brand = "", date_claim_product = "", image_product = "", status = "";
     private String size, color, material, price, distributor, expiredDate, alamat, imageBrand, finalImage2;
     private RecyclerView recyclerView;
-
-
-    private String empty = "yes";
 
     public ProductFragment() {
         // Required empty public constructor
@@ -80,53 +77,14 @@ public class ProductFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_product, container, false);
 
-
-        mData = new ArrayList<>();
-        listProduct = new ArrayList<>();
-
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
-        token = DataRequest.getResultToken(getContext());
-        recyclerView = rootView.findViewById(R.id.listProduct);
-
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-
-        emptyView = (LinearLayout) rootView.findViewById(R.id.emptyView);
-
-        token = DataRequest.getResultToken(getContext());
-        getProduct(token);
-
-        mAdapter = new MyProductAdapter(getContext(), mData, listProduct, new CustomItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                final ProductModel productModel = mData.get(position);
-                Intent detail_intent = new Intent(getContext(), MyProductDetail.class);
-                detail_intent.putExtra("namaProduk", mData.get(position).getNameProduct());
-                detail_intent.putExtra("size", productModel.getSize());
-                detail_intent.putExtra("color", productModel.getColor());
-                detail_intent.putExtra("material", productModel.getMaterial());
-                detail_intent.putExtra("price", productModel.getPrice());
-                detail_intent.putExtra("distributor", productModel.getDistributor());
-                detail_intent.putExtra("expiredDate", productModel.getExpiredDate());
-                detail_intent.putExtra("image", mData.get(position).getImageProduct());
-                detail_intent.putExtra("nama_brand", mData.get(position).getBrand());
-                detail_intent.putExtra("alamat_brand", productModel.getAlamatBrand());
-                detail_intent.putExtra("logo_brand", productModel.getLogoBrand());
-                startActivity(detail_intent);
-            }
-        });
-        recyclerView.setAdapter(mAdapter);
-
+        setUpView(rootView);
+        generateView(rootView);
 
         return rootView;
     }
 
     private void getProduct(String tokenlol) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://admin.authenticguards.com/api/myproduct_?token=" + tokenlol + "&appid=003", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "https://admin.authenticguards.com/api/myproduct_?token=" + tokenlol + "&appid=003", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response.length() > 0) {
@@ -150,17 +108,17 @@ public class ProductFragment extends Fragment {
                             expiredDate = produk.getString("expireDate");
                             image_product = produk.getString("image");
 
-                            finalImage = "http://admin.authenticguards.com/product/" + image_product + ".jpg";
+                            finalImage = "https://admin.authenticguards.com/product/" + image_product + ".jpg";
 
 
                             JSONObject brand = (JSONObject) produk.get("brand");
                             name_brand = brand.getString("Name");
                             alamat = brand.getString("addressOfficeOrStore");
                             imageBrand = brand.getString("image");
-                            finalImage2 = "http://admin.authenticguards.com/storage/app/public/" + imageBrand + ".jpg";
+                            finalImage2 = "https://admin.authenticguards.com/storage/app/public/" + imageBrand + ".jpg";
                             mData.add(new ProductModel(finalImage, name_product, name_brand, date_claim_product, status, size, color, material, price, distributor, expiredDate, alamat, finalImage2));
                         }
-                        if (results.length() == 0) {
+                        if (mData.size() == 0) {
                             emptyView.setVisibility(View.VISIBLE);
                         } else {
                             emptyView.setVisibility(View.GONE);
@@ -182,4 +140,80 @@ public class ProductFragment extends Fragment {
         Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
     }
 
+    @Override
+    public void setUpView(View view) {
+
+        mData = new ArrayList<>();
+
+        emptyView = (LinearLayout) view.findViewById(R.id.emptyView);
+        emptyViewLogin = (LinearLayout) view.findViewById(R.id.empty_view_login);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        recyclerView = view.findViewById(R.id.listProduct);
+
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+    }
+
+    @Override
+    public void generateView(View view) {
+        if(firebaseUser != null ){
+            emptyViewLogin.setVisibility(View.GONE);
+            try {
+                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                assert firebaseUser != null;
+                firebaseUser.getIdToken(true)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                try{
+                                    token = Objects.requireNonNull(task.getResult()).getToken();
+                                    Log.d("tokenproduct", "onComplete: " + token);
+                                    getProduct(token);
+                                }catch (NullPointerException ignored){
+                                    Toast.makeText(getContext(), "Check your connection", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }catch (Exception e){
+                Toast.makeText(getContext(), "Check your connection", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+
+            emptyViewLogin.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+
+        }
+
+        mAdapter = new MyProductAdapter(getContext(), mData, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                final ProductModel productModel = mData.get(position);
+                Intent detail_intent = new Intent(getContext(), MyProductDetail.class);
+                detail_intent.putExtra("namaProduk", mData.get(position).getNameProduct());
+                detail_intent.putExtra("size", productModel.getSize());
+                detail_intent.putExtra("color", productModel.getColor());
+                detail_intent.putExtra("material", productModel.getMaterial());
+                detail_intent.putExtra("price", productModel.getPrice());
+                detail_intent.putExtra("distributor", productModel.getDistributor());
+                detail_intent.putExtra("expiredDate", productModel.getExpiredDate());
+                detail_intent.putExtra("image", mData.get(position).getImageProduct());
+                detail_intent.putExtra("nama_brand", mData.get(position).getBrand());
+                detail_intent.putExtra("alamat_brand", productModel.getAlamatBrand());
+                detail_intent.putExtra("logo_brand", productModel.getLogoBrand());
+                startActivity(detail_intent);
+            }
+        });
+        recyclerView.setAdapter(mAdapter);
+
+    }
+
+    @Override
+    public void setupListener(View view) {
+
+    }
 }

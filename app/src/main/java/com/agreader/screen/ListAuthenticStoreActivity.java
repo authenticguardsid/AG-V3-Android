@@ -141,7 +141,7 @@ public class ListAuthenticStoreActivity extends AppCompatActivity implements Loc
 
     private void getBrand(String token, double latitudeString, double longitudeString) {
         modelArrayList.clear();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/locator_?token=" + token + "&appid=003&lat=" + latitudeString + "&lon=" + longitudeString, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/locator_?token=" + token + "&appid=003&lat=" + latitudeString + "&lon=" + longitudeString, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -153,7 +153,7 @@ public class ListAuthenticStoreActivity extends AppCompatActivity implements Loc
                         imagebrand = data.getString("image");
                         Log.d("bismillahinidia", "onResponse: " + imagebrand);
                         addressbrand = data.getString("addressOfficeOrStore");
-                        modelArrayList.add(new ListStore(idbrand, "http://admin.authenticguards.com/storage/app/public/" + imagebrand + ".jpg", namebrand, addressbrand));
+                        modelArrayList.add(new ListStore(idbrand, "https://admin.authenticguards.com/storage/" + imagebrand + ".jpg", namebrand, addressbrand));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

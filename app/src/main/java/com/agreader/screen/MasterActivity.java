@@ -39,6 +39,7 @@ public class MasterActivity extends AppCompatActivity {
     private MenuItem prevMenuItem;
     private TextView pointt;
     private RelativeLayout goPoint;
+    private RelativeLayout goLogin;
     private Intent ada;
 
     String total = "";
@@ -51,6 +52,14 @@ public class MasterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_master);
         pointt = (TextView)findViewById(R.id.point);
         goPoint = (RelativeLayout) findViewById(R.id.toPoint);
+        goLogin = (RelativeLayout) findViewById(R.id.toLogin);
+        goLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MasterActivity.this,LoginScreenActivity.class);
+                startActivity(intent);
+            }
+        });
         loadData();
 
         goPoint.setOnClickListener(new View.OnClickListener() {
@@ -182,34 +191,41 @@ public class MasterActivity extends AppCompatActivity {
     }
 
     private void loadData(){
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
-        dbf.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User us = dataSnapshot.getValue(User.class);
-                try {
-                    String point = us.getTotalPoint();
-                    double parsepoint = Double.parseDouble(point);
-                    NumberFormat formatter = new DecimalFormat("#,###");
-                    String formattedNumber = formatter.format(parsepoint);
-                    if (us.getTotalPoint() != null)
-                        pointt.setText(formattedNumber + " pts");
-                    else {
-                        pointt.setText("0 pts");
+        FirebaseAuth mFirebaseAuth;
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            goLogin.setVisibility(View.GONE);
+            goPoint.setVisibility(View.VISIBLE);
+            currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            final DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("user").child(currentUser.getUid());
+            dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User us = dataSnapshot.getValue(User.class);
+                    try {
+                        String point = us.getTotalPoint();
+                        double parsepoint = Double.parseDouble(point);
+                        NumberFormat formatter = new DecimalFormat("#,###");
+                        String formattedNumber = formatter.format(parsepoint);
+                        if (us.getTotalPoint() != null)
+                            pointt.setText(formattedNumber + " pts");
+                        else {
+                            pointt.setText("0 pts");
+                        }
+                    } catch (NullPointerException e) {
+                        Log.e("errorbangsat", "onDataChange: ", e);
                     }
-                } catch (NullPointerException e) {
-                    Log.e("errorbangsat", "onDataChange: ", e);
                 }
-            }
 
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
+        }
     }
 
     private void changeStatusBarColor() {

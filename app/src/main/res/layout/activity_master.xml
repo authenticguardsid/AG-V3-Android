@@ -31,6 +31,26 @@
             </android.support.v7.widget.Toolbar>
 
             <RelativeLayout
+                android:visibility="visible"
+                android:id="@+id/toLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LOGIN"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorGold"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/toPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

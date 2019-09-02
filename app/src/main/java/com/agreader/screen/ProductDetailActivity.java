@@ -44,7 +44,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         img = getIntent().getStringExtra("image");
 
-        urlImage = "http://admin.authenticguards.com/product/" + img + ".jpg";
+        urlImage = "https://admin.authenticguards.com/product/" + img + ".jpg";
         imageUrls.add(urlImage);
 
 

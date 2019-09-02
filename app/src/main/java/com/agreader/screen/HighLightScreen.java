@@ -167,7 +167,7 @@ public class HighLightScreen extends AppCompatActivity {
     private void getDataHighlight(String token) {
         Log.d("1", "HERE!!! ");
 //        recyclerView.getRecycledViewPool().clear();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/newspromo_?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/newspromo_?&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -192,14 +192,14 @@ public class HighLightScreen extends AppCompatActivity {
                             Log.d("lol", "dataarraynya: " + id + title);
                             brand = data.getJSONObject("brand");
                             client = data.getJSONObject("client");
-                            mData.add(new NewsModel(idString, "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg",
+                            mData.add(new NewsModel(idString, "https://admin.authenticguards.com/storage/" + image + ".jpg",
                                     title, price, time, description, termCondition, agClientBrand_id, type,
                                     url, brand.toString(), client.toString()));
                         } else {
                             Log.d("lol", "ini data yang tidak ada promo" + type);
                             Log.d("lol", "dataarraynya: " + id + title);
 
-                            mData.add(new NewsModel(idString, "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg",
+                            mData.add(new NewsModel(idString, "https://admin.authenticguards.com/storage/" + image + ".jpg",
                                     title, price, time, description, termCondition, agClientBrand_id, type,
                                     url));
                         }
@@ -225,7 +225,7 @@ public class HighLightScreen extends AppCompatActivity {
     }
 
     private void getDataStories(String token) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://admin.authenticguards.com/api/news_?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://admin.authenticguards.com/api/news_?token=" + token + "&appid=003&loclang=a&loclong=a", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -241,7 +241,7 @@ public class HighLightScreen extends AppCompatActivity {
                         String article = data.getString("article");
                         String time = data.getString("time");
                         String url = data.getString("url");
-                        mData.add(new NewsModel(idString, "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg", title, article, time, url, "jvc"));
+                        mData.add(new NewsModel(idString, "https://admin.authenticguards.com/storage/" + image + ".jpg", title, article, time, url, "jvc"));
                         Log.d("lol", "mData : " + mData);
                         Log.d("lol", "dataArray: " + data);
                     }

@@ -114,7 +114,7 @@ public class SeeAllStoriesActivity extends AppCompatActivity {
     }
 
     private void dataRecycler(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "http://admin.authenticguards.com/api/news_?token=" + token + "&appid=003", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, "https://admin.authenticguards.com/api/news_?&appid=003", null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     if (response.length() > 0) {
@@ -128,7 +128,7 @@ public class SeeAllStoriesActivity extends AppCompatActivity {
                                 final String article = data.getString("article");
                                 final String url = data.getString("url");
 
-                                finalImage = "http://admin.authenticguards.com/storage/app/public/" + image + ".jpg";
+                                finalImage = "https://admin.authenticguards.com/storage/" + image + ".jpg";
                                 storiesList.add(new Stories(title,article,finalImage,url));
 
 

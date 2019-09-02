@@ -13,18 +13,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.agreader.base.BaseFragment;
+import com.agreader.screen.LoginScreenActivity;
 import com.agreader.screen.QRCodeBaruActivity;
 import com.agreader.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class QrcodeFragment extends Fragment {
+public class QrcodeFragment extends BaseFragment {
 
     private Button button;
 
     final int REQUEST_CODE_CAMERA = 999;
+
+    FirebaseAuth mFirebaseAuth;
+    FirebaseUser mFirebaseUser;
 
     public QrcodeFragment() {
         // Required empty public constructor
@@ -36,20 +43,8 @@ public class QrcodeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_qrcode, container, false);
 
-        button = view.findViewById(R.id.button_scan_QRCode);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
-                        == PackageManager.PERMISSION_DENIED){
-                    ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
-                }else {
-                    Intent intent = new Intent(getActivity(), QRCodeBaruActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        });
+        setUpView(view);
+        generateView(view);
 
         return view;
     }
@@ -60,12 +55,56 @@ public class QrcodeFragment extends Fragment {
             if(grantResults.length <0 && grantResults[0] != PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(getContext(), "You don't have permission to access camera!", Toast.LENGTH_SHORT).show();
             }else {
-                Intent intent = new Intent(getActivity(), QRCodeBaruActivity.class);
-                startActivity(intent);
+                mFirebaseAuth =FirebaseAuth.getInstance();
+                mFirebaseUser = mFirebaseAuth.getCurrentUser();
+                if(mFirebaseUser != null){
+                    Intent intent = new Intent(getActivity(), QRCodeBaruActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
+                    startActivity(intent);
+                }
             }
             return;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    @Override
+    public void setUpView(View view) {
+        button = view.findViewById(R.id.button_scan_QRCode);
+
+        mFirebaseAuth= FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+    }
+
+    @Override
+    public void generateView(View view) {
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_DENIED){
+                    ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+                }else {
+                    if(mFirebaseUser != null){
+                        Intent intent = new Intent(getActivity(), QRCodeBaruActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void setupListener(View view) {
+
+    }
 }
